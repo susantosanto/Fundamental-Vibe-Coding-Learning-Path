@@ -7,7 +7,7 @@
 ## 📋 Profil Belajar Anda
 
 | Item | Detail |
-|---|---|
+| --- | --- |
 | **Level Saat Ini** | Pemula (sudah paham dasar coding) |
 | **Target** | Software Engineer yang bisa desain arsitektur + pakai AI tools secara efektif |
 | **Waktu** | 1 jam/hari |
@@ -180,13 +180,13 @@ Setiap materi memiliki struktur:
 ## 📊 Estimasi Waktu
 
 | Fase | Topik | Durasi | Target Selesai |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **Fase 1** | 21 materi arsitektur | ~6 minggu (1 jam/hari) | Minggu ke-6 |
 | **Fase 2** | 10 materi AI tools | ~3 minggu | Minggu ke-9 |
 | **Fase 3** | 9 materi advanced | ~3 minggu | Minggu ke-12 |
 | **Fase 4** | 11 materi deep design | ~4 minggu | Minggu ke-16 |
 | **Fase 5** | Scenario praktis (Programmer + Office) | ~3 minggu | Minggu ke-19 |
-| **Fase 6** | Advanced OpenCode (reference) |按需查阅 | Kapan saja |
+| **Fase 6** | Advanced OpenCode (reference) | 按需查阅 | Kapan saja |
 
 **Total:** ~19 minggu (5 bulan) untuk menyelesaikan fase 1-5. Fase 6 = reference manual, dibaca saat butuh.
 
@@ -211,7 +211,7 @@ Setelah menyelesaikan learning path ini, Anda akan mampu:
 ## 📚 Sumber Asli (GitHub Repos)
 
 | Repo | Stars | Fokus |
-|---|---|---|
+| --- | --- | --- |
 | [donnemartin/system-design-primer](https://github.com/donnemartin/system-design-primer) | ⭐349k | System Design Fundamentals |
 | [ashishps1/awesome-system-design-resources](https://github.com/ashishps1/awesome-system-design-resources) | - | Kurasi Resource System Design |
 | [feiskyer/claude-code-settings](https://github.com/feiskyer/claude-code-settings) | ⭐1.5k | Claude Code Setup & Skills |
