@@ -21,27 +21,27 @@ Di akhir fase ini, Anda akan mampu:
 ## 📚 Urutan Belajar
 
 | Minggu | File | Topik | Estimasi |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **1** | 01 | Apa itu System Design? | 1 jam |
-| | 02 | Performance vs Scalability | 1 jam |
-| | 03 | Latency vs Throughput | 1 jam |
-| | 04 | Availability vs Consistency (CAP Theorem) | 1.5 jam |
-| | 05 | Pola Konsistensi Data | 1 jam |
+|  | 02 | Performance vs Scalability | 1 jam |
+|  | 03 | Latency vs Throughput | 1 jam |
+|  | 04 | Availability vs Consistency (CAP Theorem) | 1.5 jam |
+|  | 05 | Pola Konsistensi Data | 1 jam |
 | **2** | 06 | Availability Patterns (Fail-over, Replication) | 1.5 jam |
-| | 07 | DNS (Domain Name System) | 1 jam |
-| | 08 | CDN (Content Delivery Network) | 1 jam |
-| | 09 | Load Balancer | 1.5 jam |
-| | 10 | Reverse Proxy | 1 jam |
+|  | 07 | DNS (Domain Name System) | 1 jam |
+|  | 08 | CDN (Content Delivery Network) | 1 jam |
+|  | 09 | Load Balancer | 1.5 jam |
+|  | 10 | Reverse Proxy | 1 jam |
 | **3** | 11 | Application Layer & Microservices | 1.5 jam |
-| | 12 | Database RDBMS | 2 jam |
-| | 13 | Database NoSQL | 1.5 jam |
-| | 14 | Cache | 2 jam |
+|  | 12 | Database RDBMS | 2 jam |
+|  | 13 | Database NoSQL | 1.5 jam |
+|  | 14 | Cache | 2 jam |
 | **4** | 15 | Asynchronism (Message Queues, Task Queues) | 1.5 jam |
-| | 16 | Komunikasi Protokol (TCP, UDP, RPC, REST) | 1.5 jam |
-| | 17 | Keamanan Sistem | 1 jam |
+|  | 16 | Komunikasi Protokol (TCP, UDP, RPC, REST) | 1.5 jam |
+|  | 17 | Keamanan Sistem | 1 jam |
 | **5** | 18 | Studi Kasus: Pastebin/Bit.ly | 2 jam |
-| | 19 | Studi Kasus: Twitter Timeline | 2 jam |
-| | 20 | Studi Kasus: Web Crawler | 2 jam |
+|  | 19 | Studi Kasus: Twitter Timeline | 2 jam |
+|  | 20 | Studi Kasus: Web Crawler | 2 jam |
 | **6** | 21 | Ringkasan Fase 1 + Latihan Final | 2 jam |
 
 ---

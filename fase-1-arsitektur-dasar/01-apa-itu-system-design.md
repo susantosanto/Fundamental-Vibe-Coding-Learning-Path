@@ -49,7 +49,7 @@ Bayangkan Anda ingin membangun aplikasi absensi untuk sekolah:
 ### Analogi Sederhana: Membangun Rumah vs Membangun Aplikasi
 
 | Membangun Rumah | Membangun Aplikasi | Penjelasan Detail |
-|---|---|---|
+| --- | --- | --- |
 | Denah rumah (blueprint) | Arsitektur sistem | Keduanya adalah rencana awal yang menunjukkan bagaimana semua bagian terhubung |
 | Pondasi (foundation) | Database & infrastruktur | Pondasi yang kuat = database yang terstruktur. Pondasi lemah = rumah roboh, database buruk = aplikasi crash |
 | Dinding & atap | Frontend & Backend | Dinding = apa yang dilihat pengguna (UI). Atap = logika yang melindungi dan memproses data |
@@ -103,7 +103,7 @@ Bagaimana sistem mudah dipelihara dan dikembangkan:
 Dalam system design, **tidak ada solusi sempurna**. Setiap keputusan punya kelebihan dan kekurangan. Ini adalah prinsip paling penting yang ditekankan di System Design Primer.
 
 | Keputusan | Kelebihan | Kekurangan | Kapan Dipilih |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Pakai 1 server saja (Monolith) | Murah, sederhana, mudah deploy | Tidak scalable, single point of failure | Startup kecil, prototype, internal tool |
 | Pakai banyak server (Distributed) | Scalable, reliable, fault-tolerant | Mahal, kompleks, butuh DevOps | Aplikasi production dengan banyak user |
 | SQL Database (MySQL, PostgreSQL) | ACID compliant, terstruktur, query powerful | Sulit scale horizontal, schema rigid | Data transaksi, keuangan, data yang butuh konsistensi tinggi |
@@ -126,7 +126,7 @@ Dalam system design, **tidak ada solusi sempurna**. Setiap keputusan punya keleb
 Seringkali kedua istilah ini digunakan bergantian, tapi ada perbedaan halus:
 
 | Aspek | System Design | Software Architecture |
-|---|---|---|
+| --- | --- | --- |
 | Fokus | Bagaimana komponen berinteraksi pada skala besar | Bagaimana kode diorganisir dalam satu aplikasi |
 | Scope | Lebih luas: network, database, server, CDN | Lebih sempit: design patterns, class structure, modules |
 | Pertanyaan | "Server apa yang dipakai? Database apa? Bagaimana scaling?" | "Design pattern apa yang cocok? Bagaimana struktur class?" |
@@ -225,7 +225,7 @@ Setelah write, read LANGSUNG melihat data terbaru. Data direplikasi secara synch
 Availability diukur dalam persentase. Berikut tabel lengkapnya:
 
 | Availability | Nama | Downtime/Tahun | Downtime/Bulan | Downtime/Hari | Contoh |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | 99% | Two 9s | 3 hari 15 jam | 7 jam 18 menit | 14 menit 24 detik | Website kecil, blog |
 | 99.9% | Three 9s | 8 jam 45 menit | 43 menit 49 detik | 1 menit 26 detik | Aplikasi sekolah, e-commerce kecil |
 | 99.99% | Four 9s | 52 menit 35 detik | 4 menit 23 detik | 8.6 detik | Aplikasi perbankan, SaaS |
@@ -490,7 +490,7 @@ Downtime per tahun: ~0.03 detik!
 **"Right-sizing" adalah kunci.** Jangan over-engineer untuk masalah kecil, jangan under-engineer untuk masalah besar.
 
 | Skala | Arsitektur | Estimasi Biaya/Bulan |
-|---|---|---|
+| --- | --- | --- |
 | < 100 user, 1 lokasi | Monolith, 1 server, SQLite | Rp 100.000 - 500.000 |
 | 100-10.000 user | Monolith, 1-2 server, PostgreSQL | Rp 500.000 - 2.000.000 |
 | 10.000-100.000 user | Microservices, load balancer, cache | Rp 2.000.000 - 10.000.000 |
@@ -568,12 +568,12 @@ Storage 5 tahun: 600 GB × 5 = 3 TB
 
 **Untuk URL Shortener, bahas:**
 1. **Generate short URL:**
-   - Base62 encoding (a-z, A-Z, 0-9 = 62 karakter)
-   - 7 karakter = 62^7 ≈ 3.5 triliun kombinasi (cukup untuk 100 juta/bulan × 60 bulan = 6 miliar)
-   - Atau: Hash MD5 + truncate, tapi perlu handle collision
+  - Base62 encoding (a-z, A-Z, 0-9 = 62 karakter)
+  - 7 karakter = 62^7 ≈ 3.5 triliun kombinasi (cukup untuk 100 juta/bulan × 60 bulan = 6 miliar)
+  - Atau: Hash MD5 + truncate, tapi perlu handle collision
 
 2. **Database Schema:**
-   ```sql
+```sql
    CREATE TABLE url_mapping (
        id BIGINT PRIMARY KEY AUTO_INCREMENT,
        short_url VARCHAR(10) UNIQUE NOT NULL,
@@ -583,17 +583,17 @@ Storage 5 tahun: 600 GB × 5 = 3 TB
        user_id BIGINT NULL,
        INDEX idx_short_url (short_url)
    );
-   ```
+```
 
 3. **API Design:**
-   ```
+```
    POST /api/shorten
    Body: { "long_url": "https://example.com/very/long/url" }
    Response: { "short_url": "https://short.ly/abc1234" }
 
    GET /abc1234
    Response: 301 Redirect ke long_url
-   ```
+```
 
 ### Step 4: Scale the Design (10-15 menit)
 
@@ -601,13 +601,13 @@ Storage 5 tahun: 600 GB × 5 = 3 TB
 
 **Bottleneck yang mungkin:**
 1. **Database menjadi bottleneck** — 3.858 read/detik mungkin terlalu banyak untuk 1 database
-   - Solusi: Read replica, cache (Redis)
+  - Solusi: Read replica, cache (Redis)
 
 2. **Single point of failure** — 1 web server = kalau down, semua down
-   - Solusi: Multiple web servers + load balancer
+  - Solusi: Multiple web servers + load balancer
 
 3. **Hot keys** — Beberapa URL sangat populer (viral), diakses jutaan kali
-   - Solusi: Cache di Redis, TTL yang sesuai
+  - Solusi: Cache di Redis, TTL yang sesuai
 
 **Desain yang sudah di-scale:**
 ```
@@ -646,7 +646,7 @@ Storage 5 tahun: 600 GB × 5 = 3 TB
 Referensi cepat untuk konversi:
 
 | Power | Value | Approximation | Common Use |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 2^10 | 1,024 | ~1 thousand | 1 KB |
 | 2^20 | 1,048,576 | ~1 million | 1 MB |
 | 2^30 | 1,073,741,824 | ~1 billion | 1 GB |
@@ -659,7 +659,7 @@ Referensi cepat untuk konversi:
 Ini adalah angka-angka yang HARUS dihafal oleh setiap engineer. Dari [System Design Primer](https://github.com/donnemartin/system-design-primer):
 
 | Operasi | Waktu | Perbandingan |
-|---|---|---|
+| --- | --- | --- |
 | L1 cache reference | 0.5 ns | — |
 | Branch mispredict | 5 ns | 10× L1 |
 | L2 cache reference | 7 ns | 14× L1 |
@@ -678,7 +678,7 @@ Ini adalah angka-angka yang HARUS dihafal oleh setiap engineer. Dari [System Des
 **Pelajaran praktis:**
 - **Memory access 100× lebih lambat dari L1 cache** → Cache matters!
 - **Disk access 100.000× lebih lambat dari memory** → Hindari disk I/O kalau bisa
-- **Network round-trip dalam datacenter ~500 μs** → Minimalkan network call
+- **Network round-trip dalam datacenter \~500 μs** → Minimalkan network call
 - **SSD 100× lebih cepat dari HDD** → Pakai SSD untuk database
 
 ### Contoh Estimasi: Sistem Chat seperti WhatsApp
@@ -1142,7 +1142,7 @@ Toko 3: ...sync...                             │
 - Rata-rata ukuran foto: 2 MB
 - Berapa total storage yang dibutuhkan?
 
-<details>
+<details open>
 <summary><strong>Jawaban (klik untuk melihat)</strong></summary>
 
 ```
@@ -1154,7 +1154,6 @@ Dengan asumsi foto tidak berubah sering, 20 TB untuk semua foto profil. Kalau di
 Thumbnail storage = 10 juta × 100 KB = 1 TB
 Total = 20 TB + 1 TB = 21 TB
 ```
-
 </details>
 
 ---
@@ -1178,7 +1177,6 @@ Storage per tahun: 125 GB × 52 = 6.500 GB = 6.5 TB
 ```
 
 Catatan: Ini hanya untuk notifikasi, bukan email marketing. Kalau ada email marketing (bulk), angkanya bisa 10-100x lebih besar.
-
 </details>
 
 ---
@@ -1204,7 +1202,6 @@ Storage per tahun: 80.000.000 × 200 byte = 16.000.000.000 byte
 ```
 
 16 GB per tahun sangat kecil. Bahkan dengan 10 tahun data = 160 GB, masih bisa di-handle oleh 1 server dengan SSD.
-
 </details>
 
 ---
@@ -1313,7 +1310,6 @@ Sangat kecil. SQLite pun cukup, tapi PostgreSQL lebih baik untuk relasi dan quer
 - Search buku: kalau tanpa index, full table scan. Solusi: index pada title, author, category.
 - Concurrent borrow: 2 siswa pinjam buku terakhir bersamaan. Solusi: transaction dengan row-level lock.
 - Laporan: query aggregate bisa lambat kalau data sudah banyak. Solusi: materialized view atau pre-computed summary table.
-
 </details>
 
 ---
@@ -1334,7 +1330,7 @@ C. PostgreSQL + Redis + S3 (relasional di PostgreSQL, progress di Redis, video f
 
 **Tugas:** Analisis trade-off setiap pilihan. Rekomendasikan yang terbaik dan jelaskan kenapa.
 
-<details>
+<details open>
 <summary><strong>Analisis (klik untuk melihat)</strong></summary>
 
 **Opsi A: PostgreSQL saja**
@@ -1365,7 +1361,6 @@ Alasan:
 2. Progress tracking adalah high-write operation, Redis jauh lebih cocok
 3. PostgreSQL tetap untuk data yang butuh ACID (nilai, pembayaran)
 4. S3 bisa diintegrasikan dengan CDN untuk streaming video yang smooth
-
 </details>
 
 ---
@@ -1446,7 +1441,7 @@ Pastikan Anda memahami hal-hal ini sebelum lanjut ke materi berikutnya:
 ## 📚 GLOSARIUM ISTILAH TEKNIS
 
 | Istilah | Definisi | Contoh |
-|---|---|---|
+| --- | --- | --- |
 | **Scalability** | Kemampuan sistem menangani pertumbuhan | Aplikasi bisa handle dari 100 ke 1 juta user |
 | **Performance** | Kecepatan sistem merespons | Halaman load dalam 200ms |
 | **Latency** | Waktu untuk 1 request selesai | 50ms untuk query database |
@@ -1470,4 +1465,4 @@ Pastikan Anda memahami hal-hal ini sebelum lanjut ke materi berikutnya:
 
 ---
 
-> **Lanjut ke:** [`02-performance-vs-scalability.md`](./02-performance-vs-scalability.md)
+> **Lanjut ke:** [02-performance-vs-scalability.md](./02-performance-vs-scalability.md)
