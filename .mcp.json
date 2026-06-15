@@ -1,0 +1,62 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp-server"]
+    },
+    "memory": {
+      "command": "node",
+      "args": ["C:\\Users\\USER\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-memory\\dist\\index.js"]
+    },
+    "sequential-thinking": {
+      "command": "node",
+      "args": ["C:\\Users\\USER\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-sequential-thinking\\dist\\index.js"]
+    },
+    "filesystem": {
+      "command": "node",
+      "args": ["C:\\Users\\USER\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-filesystem\\dist\\index.js"]
+    },
+    "fetch": {
+      "command": "mcp-fetch-server"
+    },
+    "git": {
+      "command": "git-mcp-server"
+    },
+    "time": {
+      "command": "mcp-time"
+    },
+    "excel": {
+      "command": "excel-mcp-server"
+    },
+    "word": {
+      "command": "doc-tools-mcp"
+    },
+    "google-sheets": {
+      "command": "google-spreadsheet-mcp",
+      "env": {
+        "GOOGLE_SERVICE_ACCOUNT_KEY_PATH": "C:\\Users\\USER\\.openclaw\\credentials\\google-service-account.json"
+      }
+    },
+    "openclaw": {
+      "command": "openclaw-mcp",
+      "args": ["--openclaw-url", "http://127.0.0.1:18789"]
+    },
+    "winapp-mcp": {
+      "command": "winapp-mcp"
+    },
+    "shell": {
+      "command": "super-shell-mcp"
+    },
+    "pdf": {
+      "command": "uvx",
+      "args": ["mcp-pdf"]
+    },
+    "superpowers": {
+      "command": "superpowers-mcp"
+    },
+    "everything": {
+      "command": "node",
+      "args": ["C:\\Users\\USER\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-everything\\dist\\index.js"]
+    }
+  }
+}
