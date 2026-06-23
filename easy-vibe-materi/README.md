@@ -51,6 +51,42 @@
 |------|-----------|
 | [01-troubleshooting.md](./09-lampiran-teknis/01-troubleshooting.md) | Error handling, perbandingan 7 alat AI, debugging guide |
 
+### 🎯 BAB 10: Lampiran - Sumber Ide Produk
+| File | Deskripsi |
+|------|-----------|
+| [01-tiga-sumber-ide-produk.md](./10-lampiran-sumber-ide/01-tiga-sumber-ide-produk.md) | 3 referensi sumber ide: Reddit, Product Hunt, Indie Hackers + cara browsing |
+
+### 💎 BAB 11: Lampiran - Double Diamond
+| File | Deskripsi |
+|------|-----------|
+| [01-double-diamond.md](./11-lampiran-double-diamond/01-double-diamond.md) | Framework Double Diamond: Discover, Define, Develop, Deliver + panduan lengkap |
+
+### 🔧 BAB 12: Lampiran - Jobs to Be Done
+| File | Deskripsi |
+|------|-----------|
+| [01-jobs-to-be-done.md](./12-lampiran-jtbd/01-jobs-to-be-done.md) | JTBD framework: situasi, pemicu, kemajuan, solusi saat ini, kondisi sukses |
+
+### 👩 BAB 13: Lampiran - The Mom Test
+| File | Deskripsi |
+|------|-----------|
+| [01-the-mom-test.md](./13-lampiran-mom-test/01-the-mom-test.md) | Teknik wawancara pengguna, 3 prinsip inti, template wawancara + checklist |
+
+### 🏭 BAB 14: Lampiran - Skenario Industri B2B
+| File | Deskripsi |
+|------|-----------|
+| [01-skenario-industri-b2b.md](./14-lampiran-skenario-b2b/01-skenario-industri-b2b.md) | 50+ ide aplikasi AI untuk 10 sektor industri (manufaktur, kesehatan, fintech, dll) |
+
+### 🎨 BAB 15: Lampiran - Skenario Konsumen B2C
+| File | Deskripsi |
+|------|-----------|
+| [01-skenario-konsumen-b2c.md](./15-lampiran-skenario-b2c/01-skenario-konsumen-b2c.md) | 55+ ide aplikasi AI untuk 11 kategori konsumen (gaya hidup, emosi, hiburan, dll) |
+
+### 🌐 BAB 16: Lampiran - Artikel Tutorial Praktis
+| File | Deskripsi |
+|------|-----------|
+| [01-tutorial-snake-game.md](./16-lampiran-artikel/01-tutorial-snake-game.md) | Tutorial membuat game Snake dengan platform z.ai (hanya dengan bicara) |
+| [02-membangun-website-dengan-ai-agents.md](./16-lampiran-artikel/02-membangun-website-dengan-ai-agents.md) | Tutorial membangun website multi-halaman menggunakan multi-agent AI |
+
 ---
 
 ## 🎓 JALUR BELAJAR YANG DISARANKAN
@@ -92,6 +128,30 @@
    
 5. BAB 9: Lampiran Teknis
    → Pelajari troubleshooting dan tools
+
+6. BAB 10-13: Framework Validasi
+   → Pelajari sumber ide, Double Diamond, JTBD, The Mom Test
+   
+7. BAB 14-15: 100+ Ide Produk
+   → Dapatkan inspirasi dari skenario B2B & B2C
+   
+8. BAB 16: Tutorial Praktis
+   → Praktik langsung membuat game & website dengan AI
+```
+
+### Untuk Yang Ingin Eksplorasi Ide
+```
+1. BAB 14: Skenario B2B
+   → Cari ide di sektor yang Anda kenal
+   
+2. BAB 15: Skenario B2C
+   → Cari ide berdasarkan minat pribadi
+   
+3. BAB 10-13: Framework Validasi
+   → Validasi ide sebelum mulai coding
+   
+4. BAB 16: Tutorial Praktis
+   → Praktikkan dengan tutorial yang ada
 ```
 
 ---

@@ -1,8 +1,16 @@
 # PENELITIAN PENGGUNA DAN VALIDASI IDE
 
+> 📖 **Catatan:** Topik-topik di bab ini sekarang memiliki pembahasan lebih mendalam di lampiran terpisah:
+> - 🔗 [3 Sumber Ide Produk (Lengkap dengan 15+ link sumber)](../../10-lampiran-sumber-ide/01-tiga-sumber-ide-produk.md)
+> - 🔗 [Framework Double Diamond (Lengkap dengan panduan per fase)](../../11-lampiran-double-diamond/01-double-diamond.md)
+> - 🔗 [Jobs to Be Done (Lengkap dengan template dan contoh)](../../12-lampiran-jtbd/01-jobs-to-be-done.md)
+> - 🔗 [The Mom Test (Lengkap dengan template wawancara)](../../13-lampiran-mom-test/01-the-mom-test.md)
+
 ---
 
-## Bagian 1: Sumber Ide - 3 Referensi Terbaik untuk Pemula
+## Rangkuman: Sumber Ide - 3 Referensi Terbaik untuk Pemula
+
+> 📖 **Lihat detail lengkap di:** [10-Lampiran-Sumber-Ide](../../10-lampiran-sumber-ide/01-tiga-sumber-ide-produk.md)
 
 ### 1. Masalah Pribadi (Personal Pain Points)
 
@@ -11,19 +19,6 @@
 - Motivasi untuk menyelesaikan lebih tinggi
 - Validasi lebih mudah karena Anda sendiri target user
 
-**Cara menemukan:**
-- Catat masalah yang Anda hadapi setiap hari
-- Identifikasi tugas yang repetitif
-- Cari inefisiensi dalam rutinitas Anda
-- Tulis frustrasi yang sering muncul
-
-**Contoh:**
-- "Saya selalu lupa deadline tugas"
-- "Susah track pengeluaran bulanan"
-- "Tidak punya waktu untuk olahraga tapi ingin sehat"
-
----
-
 ### 2. Masalah Orang Terdekat (Circle of Influence)
 
 **Mengapa efektif:**
@@ -31,35 +26,12 @@
 - Biaya validasi rendah
 - Relasi yang sudah terbentuk
 
-**Cara menemukan:**
-- Tanya keluarga: "Apa yang membuat Anda kesal dalam kehidupan sehari-hari?"
-- Tanya teman: "Ada yang ingin diotomatisasi tapi belum bisa?"
-- Tanya rekan kerja: "Apa yang paling banyak menghabiskan waktu Anda?"
-
-**Contoh:**
-- Ibu: "Susah ingat-ingat jadwal dokter anak"
-- Teman: "Tidak punya sistem untuk catat ide bisnis"
-- Rekan: "Sering lupa meeting karena tidak ada reminder"
-
----
-
 ### 3. Analisis Kompetitor dan Pasar
 
 **Mengapa efektif:**
 - Masalah sudah validated oleh pasar
 - Ada benchmark untuk kualitas
 - Peluang untuk differentiate
-
-**Cara menemukan:**
-- Baca review produk sejenis (App Store, Play Store)
-- Eksplorasi forum keluhan pengguna (Reddit, Twitter)
-- Identifikasi gap dalam produk yang ada
-- Cari tren yang emerging
-
-**Contoh:**
-- "Semua task app bagus tapi tidak ada yang punya AI assistant"
-- "Produk mahal, tidak ada alternatif affordable"
-- "Fitur terlalu kompleks, butuh yang lebih simple"
 
 ---
 
