@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📊 Dashboard Keuangan</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>📊 Dashboard Keuangan Pribadi</h1>
+      <p>Kelola pemasukan dan pengeluaranmu dengan mudah</p>
+    </header>
+
+    <!-- Ringkasan -->
+    <section class="ringkasan" id="ringkasan">
+      <div class="kartu-ringkasan" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+        <div class="kartu-icon">💰</div>
+        <div class="kartu-label">Total Saldo</div>
+        <div class="kartu-angka" id="totalSaldo">Rp 0</div>
+      </div>
+      <div class="kartu-ringkasan" style="background: linear-gradient(135deg, #27AE60, #2ECC71);">
+        <div class="kartu-icon">📈</div>
+        <div class="kartu-label">Pemasukan</div>
+        <div class="kartu-angka" id="totalPemasukan">Rp 0</div>
+      </div>
+      <div class="kartu-ringkasan" style="background: linear-gradient(135deg, #E74C3C, #EF5350);">
+        <div class="kartu-icon">📉</div>
+        <div class="kartu-label">Pengeluaran</div>
+        <div class="kartu-angka" id="totalPengeluaran">Rp 0</div>
+      </div>
+      <div class="kartu-ringkasan" style="background: linear-gradient(135deg, #F39C12, #F1C40F);">
+        <div class="kartu-icon">📋</div>
+        <div class="kartu-label">Total Transaksi</div>
+        <div class="kartu-angka" id="totalTransaksi">0</div>
+      </div>
+    </section>
+
+    <!-- Aksi Cepat -->
+    <section class="aksi-cepat">
+      <button class="btn btn-primary" onclick="toggleForm()">+ Tambah Transaksi</button>
+      <button class="btn btn-secondary" onclick="State.exportCSV()">📥 Export CSV</button>
+      <select class="filter-select" id="filterBulan" onchange="State.applyFilter()"></select>
+      <select class="filter-select" id="filterKategori" onchange="State.applyFilter()"></select>
+    </section>
+
+    <!-- Form Tambah Transaksi -->
+    <section class="form-section" id="formSection" style="display:none;">
+      <div class="card">
+        <h3>Tambah Transaksi Baru</h3>
+        <form id="formTransaksi" onsubmit="return tambahTransaksi(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inputTanggal">Tanggal</label>
+              <input type="date" id="inputTanggal" required>
+            </div>
+            <div class="form-group">
+              <label for="inputTipe">Tipe</label>
+              <select id="inputTipe" required>
+                <option value="pemasukan">📈 Pemasukan</option>
+                <option value="pengeluaran">📉 Pengeluaran</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inputKategori">Kategori</label>
+              <select id="inputKategori" required></select>
+            </div>
+            <div class="form-group">
+              <label for="inputJumlah">Jumlah (Rp)</label>
+              <input type="number" id="inputJumlah" min="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDeskripsi">Deskripsi</label>
+            <input type="text" id="inputDeskripsi" placeholder="Mis: Gaji bulan Januari" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Simpan</button>
+            <button type="button" class="btn btn-secondary" onclick="toggleForm()">✕ Batal</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Grafik & Transaksi Terbaru -->
+    <section class="dual-section">
+      <div class="card" style="flex:1;">
+        <h3>🍩 Grafik Pengeluaran</h3>
+        <canvas id="grafikChart" width="280" height="280"></canvas>
+        <div id="grafikLegenda"></div>
+      </div>
+      <div class="card" style="flex:1;">
+        <h3>🕐 Transaksi Terbaru</h3>
+        <div id="transaksiTerbaru">
+          <p class="text-muted">Belum ada transaksi.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabel Transaksi -->
+    <section class="card">
+      <div class="tabel-header">
+        <h3>📋 Semua Transaksi</h3>
+        <div class="tabel-filter">
+          <button class="btn-filter active" data-filter="semua" onclick="State.setFilter('semua', this)">Semua</button>
+          <button class="btn-filter" data-filter="pemasukan" onclick="State.setFilter('pemasukan', this)">Pemasukan</button>
+          <button class="btn-filter" data-filter="pengeluaran" onclick="State.setFilter('pengeluaran', this)">Pengeluaran</button>
+        </div>
+      </div>
+      <div class="tabel-wrapper">
+        <table class="tabel">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Kategori</th>
+              <th>Deskripsi</th>
+              <th>Jumlah</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabelBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">📊</div>
+        <p>Belum ada transaksi. Yuk catat keuanganmu!</p>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

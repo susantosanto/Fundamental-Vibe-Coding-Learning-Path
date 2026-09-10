@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧮 Kalkulator Sederhana</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .kalkulator {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .kalkulator h1 {
+      text-align: center;
+      color: #1a1a2e;
+      margin-bottom: 24px;
+      font-size: 1.5em;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: #475569;
+      font-weight: 500;
+      font-size: 0.9em;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .operator-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .operator-group select {
+      flex: 1;
+    }
+
+    .btn-hitung {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-hitung:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-hitung:active {
+      transform: translateY(0);
+    }
+
+    .hasil-container {
+      margin-top: 20px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .hasil-label {
+      color: #64748b;
+      font-size: 0.9em;
+      margin-bottom: 4px;
+    }
+
+    .hasil-angka {
+      font-size: 2em;
+      font-weight: bold;
+      color: #1a1a2e;
+    }
+
+    .hasil-angka.positif { color: #10b981; }
+    .hasil-angka.negatif { color: #ef4444; }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 0.9em;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    /* Animasi */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="kalkulator">
+    <h1>🧮 Kalkulator Sederhana</h1>
+
+    <!-- Input Angka 1 -->
+    <div class="input-group">
+      <label for="angka1">Angka Pertama</label>
+      <input type="number" id="angka1" placeholder="Masukkan angka..." value="0">
+    </div>
+
+    <!-- Operator -->
+    <div class="input-group">
+      <label for="operator">Operator</label>
+      <select id="operator">
+        <option value="+">+ (Tambah)</option>
+        <option value="-">− (Kurang)</option>
+        <option value="*">× (Kali)</option>
+        <option value="/">÷ (Bagi)</option>
+      </select>
+    </div>
+
+    <!-- Input Angka 2 -->
+    <div class="input-group">
+      <label for="angka2">Angka Kedua</label>
+      <input type="number" id="angka2" placeholder="Masukkan angka..." value="0">
+    </div>
+
+    <!-- Tombol Hitung -->
+    <button class="btn-hitung" onclick="hitung()">= Hitung</button>
+
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage"></div>
+
+    <!-- Hasil -->
+    <div class="hasil-container fade-in" id="hasilContainer">
+      <div class="hasil-label">Hasil</div>
+      <div class="hasil-angka" id="hasilAngka">0</div>
+    </div>
+  </div>
+
+  <script>
+    // Fungsi validasi input
+    function validasiInput(angka1, angka2) {
+      if (angka1 === '' || angka2 === '') {
+        return 'Input tidak boleh kosong!';
+      }
+      if (isNaN(angka1) || isNaN(angka2)) {
+        return 'Input harus berupa angka!';
+      }
+      return null; // Tidak ada error
+    }
+
+    // Fungsi kalkulasi (fungsi murni untuk perhitungan)
+    function kalkulasi(angka1, angka2, operator) {
+      switch (operator) {
+        case '+': return angka1 + angka2;
+        case '-': return angka1 - angka2;
+        case '*': return angka1 * angka2;
+        case '/': 
+          if (angka2 === 0) return 'Error: Pembagian dengan 0!';
+          return angka1 / angka2;
+        default: return 'Error: Operator tidak dikenal!';
+      }
+    }
+
+    // Fungsi tampilkan hasil
+    function tampilkanHasil(hasil) {
+      const hasilElement = document.getElementById('hasilAngka');
+      
+      if (typeof hasil === 'string') {
+        // Error message
+        hasilElement.textContent = hasil;
+        hasilElement.className = 'hasil-angka negatif';
+      } else {
+        // Format angka
+        const formatted = Number.isInteger(hasil) ? hasil : hasil.toFixed(2);
+        hasilElement.textContent = formatted;
+        hasilElement.className = 'hasil-angka ' + (hasil < 0 ? 'negatif' : 'positif');
+      }
+    }
+
+    // Fungsi utama
+    function hitung() {
+      // Ambil input
+      const input1 = document.getElementById('angka1');
+      const input2 = document.getElementById('angka2');
+      const operator = document.getElementById('operator').value;
+      const errorElement = document.getElementById('errorMessage');
+
+      // Validasi
+      const error = validasiInput(input1.value, input2.value);
+      if (error) {
+        errorElement.textContent = error;
+        errorElement.classList.add('show');
+        return;
+      }
+
+      errorElement.classList.remove('show');
+
+      // Konversi ke number
+      const angka1 = parseFloat(input1.value);
+      const angka2 = parseFloat(input2.value);
+
+      // Hitung
+      const hasil = kalkulasi(angka1, angka2, operator);
+
+      // Tampilkan
+      tampilkanHasil(hasil);
+    }
+
+    // Event listener untuk Enter key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        hitung();
+      }
+    });
+  </script>
+</body>
+</html>

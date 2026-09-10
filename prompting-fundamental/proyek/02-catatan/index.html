@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📝 Aplikasi Catatan</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a1a2e;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 16px;
+      color: white;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .header h1 {
+      font-size: 1.8em;
+      margin-bottom: 4px;
+    }
+
+    .header .subtitle {
+      opacity: 0.9;
+      font-size: 0.95em;
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      flex: 1;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .stat-card .angka {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .stat-card .label {
+      font-size: 0.85em;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    /* Input Area */
+    .input-area {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .input-area textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .input-area textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .input-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .char-count {
+      font-size: 0.85em;
+      color: #94a3b8;
+    }
+
+    .btn-tambah {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-tambah:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-tambah:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Filter */
+    .filter-area {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-filter {
+      padding: 8px 16px;
+      border: 2px solid #e2e8f0;
+      background: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .btn-filter:hover {
+      border-color: #667eea;
+      color: #667eea;
+    }
+
+    .btn-filter.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    /* Catatan List */
+    .catatan-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .catatan-card {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      animation: slideIn 0.3s ease;
+      border-left: 4px solid #667eea;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .catatan-card .teks {
+      font-size: 15px;
+      margin-bottom: 8px;
+      word-wrap: break-word;
+      cursor: pointer;
+    }
+
+    .catatan-card .teks.edit-mode {
+      display: none;
+    }
+
+    .catatan-card .edit-input {
+      display: none;
+    }
+
+    .catatan-card .edit-input.show {
+      display: block;
+    }
+
+    .catatan-card .edit-input textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 8px;
+      border: 2px solid #667eea;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    .catatan-card .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85em;
+      color: #94a3b8;
+    }
+
+    .catatan-card .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .catatan-card .actions button {
+      padding: 4px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-edit {
+      background: #e0e7ff;
+      color: #4338ca;
+    }
+
+    .btn-edit:hover { background: #c7d2fe; }
+
+    .btn-hapus {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .btn-hapus:hover { background: #fecaca; }
+
+    .btn-simpan-edit {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-simpan-edit:hover { background: #059669; }
+
+    .btn-batal-edit {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #94a3b8;
+    }
+
+    .empty-state .icon {
+      font-size: 3em;
+      margin-bottom: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .stats { flex-direction: column; }
+      .container { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>📝 Catatan Saya</h1>
+      <p class="subtitle">Simpan ide dan catatan pentingmu di sini</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="angka" id="totalCatatan">0</div>
+        <div class="label">Total Catatan</div>
+      </div>
+      <div class="stat-card">
+        <div class="angka" id="hariIni">0</div>
+        <div class="label">Hari Ini</div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <textarea id="inputCatatan" placeholder="Tulis catatan baru..." maxlength="500" oninput="updateCharCount()"></textarea>
+      <div class="input-footer">
+        <span class="char-count"><span id="charCount">0</span>/500</span>
+        <button class="btn-tambah" id="btnTambah" onclick="tambahCatatan()">+ Tambah Catatan</button>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-area">
+      <button class="btn-filter active" onclick="filterCatatan('semua', this)">📋 Semua</button>
+      <button class="btn-filter" onclick="filterCatatan('hariini', this)">📅 Hari Ini</button>
+      <button class="btn-filter" onclick="filterCatatan('kemarin', this)">📆 Kemarin</button>
+    </div>
+
+    <!-- Daftar Catatan -->
+    <div class="catatan-list" id="catatanList">
+      <div class="empty-state">
+        <div class="icon">📝</div>
+        <p>Belum ada catatan. Yuk buat catatan pertama!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==================== STATE MANAGEMENT ====================
+    const State = {
+      catatan: [],
+      filter: 'semua',
+
+      init() {
+        this.catatan = this.loadData();
+        this.render();
+      },
+
+      tambah(teks) {
+        const now = new Date();
+        const catatanBaru = {
+          id: Date.now(),
+          teks: teks,
+          createdAt: now.toISOString(),
+          updatedAt: now.toISOString()
+        };
+        this.catatan.unshift(catatanBaru);
+        this.simpanData();
+        this.render();
+      },
+
+      hapus(id) {
+        this.catatan = this.catatan.filter(c => c.id !== id);
+        this.simpanData();
+        this.render();
+      },
+
+      edit(id, teksBaru) {
+        const catatan = this.catatan.find(c => c.id === id);
+        if (catatan) {
+          catatan.teks = teksBaru;
+          catatan.updatedAt = new Date().toISOString();
+          this.simpanData();
+          this.render();
+        }
+      },
+
+      simpanData() {
+        localStorage.setItem('catatanApp', JSON.stringify(this.catatan));
+      },
+
+      loadData() {
+        const data = localStorage.getItem('catatanApp');
+        return data ? JSON.parse(data) : [];
+      },
+
+      getFilteredData() {
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const todayStr = today.toDateString();
+        const yesterdayStr = yesterday.toDateString();
+
+        switch (this.filter) {
+          case 'hariini':
+            return this.catatan.filter(c => new Date(c.createdAt).toDateString() === todayStr);
+          case 'kemarin':
+            return this.catatan.filter(c => new Date(c.createdAt).toDateString() === yesterdayStr);
+          default:
+            return this.catatan;
+        }
+      },
+
+      render() {
+        renderStats();
+        renderCatatan();
+      }
+    };
+
+    // ==================== FUNGSI RENDER ====================
+
+    function renderStats() {
+      const total = State.catatan.length;
+      const today = new Date().toDateString();
+      const hariIni = State.catatan.filter(c => new Date(c.createdAt).toDateString() === today).length;
+
+      document.getElementById('totalCatatan').textContent = total;
+      document.getElementById('hariIni').textContent = hariIni;
+    }
+
+    function renderCatatan() {
+      const list = document.getElementById('catatanList');
+      const filteredData = State.getFilteredData();
+
+      if (filteredData.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">📝</div>
+            <p>${State.catatan.length === 0 ? 'Belum ada catatan. Yuk buat catatan pertama!' : 'Tidak ada catatan untuk filter ini.'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = filteredData.map(catatan => `
+        <div class="catatan-card" id="card-${catatan.id}">
+          <div class="teks" id="teks-${catatan.id}">${escapeHtml(catatan.teks)}</div>
+
+          <div class="edit-input" id="edit-${catatan.id}">
+            <textarea id="editText-${catatan.id}">${escapeHtml(catatan.teks)}</textarea>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <button class="btn-simpan-edit" onclick="simpanEdit(${catatan.id})">💾 Simpan</button>
+              <button class="btn-batal-edit" onclick="batalEdit(${catatan.id})">✕ Batal</button>
+            </div>
+          </div>
+
+          <div class="meta">
+            <span>${formatTanggal(catatan.createdAt)}</span>
+            <div class="actions">
+              <button class="btn-edit" onclick="mulaiEdit(${catatan.id})">✏️ Edit</button>
+              <button class="btn-hapus" onclick="hapusCatatan(${catatan.id})">🗑️ Hapus</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==================== FUNGSI UTILITAS ====================
+
+    function escapeHtml(teks) {
+      const div = document.createElement('div');
+      div.textContent = teks;
+      return div.innerHTML;
+    }
+
+    function formatTanggal(dateStr) {
+      const date = new Date(dateStr);
+      const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+      const namaHari = hari[date.getDay()];
+      const tgl = date.getDate();
+      const bln = bulan[date.getMonth()];
+      const tahun = date.getFullYear();
+      const jam = date.getHours().toString().padStart(2, '0');
+      const menit = date.getMinutes().toString().padStart(2, '0');
+
+      return `${namaHari}, ${tgl} ${bln} ${tahun} · ${jam}:${menit}`;
+    }
+
+    function updateCharCount() {
+      const count = document.getElementById('inputCatatan').value.length;
+      document.getElementById('charCount').textContent = count;
+      document.getElementById('btnTambah').disabled = count === 0;
+    }
+
+    // ==================== FUNGSI CRUD ====================
+
+    function tambahCatatan() {
+      const input = document.getElementById('inputCatatan');
+      const teks = input.value.trim();
+
+      if (teks === '') return;
+
+      State.tambah(teks);
+      input.value = '';
+      updateCharCount();
+    }
+
+    function hapusCatatan(id) {
+      if (confirm('Hapus catatan ini?')) {
+        State.hapus(id);
+      }
+    }
+
+    function mulaiEdit(id) {
+      document.getElementById(`teks-${id}`).style.display = 'none';
+      document.getElementById(`edit-${id}`).classList.add('show');
+    }
+
+    function simpanEdit(id) {
+      const teksBaru = document.getElementById(`editText-${id}`).value.trim();
+      if (teksBaru === '') return;
+
+      State.edit(id, teksBaru);
+    }
+
+    function batalEdit(id) {
+      document.getElementById(`teks-${id}`).style.display = 'block';
+      document.getElementById(`edit-${id}`).classList.remove('show');
+    }
+
+    function filterCatatan(filter, btn) {
+      State.filter = filter;
+      
+      // Update active button
+      document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      State.render();
+    }
+
+    // ==================== INITIALIZATION ====================
+    document.addEventListener('DOMContentLoaded', () => {
+      State.init();
+      updateCharCount();
+    });
+
+    // Enter to add
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        const textarea = document.getElementById('inputCatatan');
+        if (document.activeElement === textarea) {
+          e.preventDefault();
+          tambahCatatan();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

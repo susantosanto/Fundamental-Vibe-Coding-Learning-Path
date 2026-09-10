@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>🧠 Latihan Prompt Interaktif</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                background: #f0f4f8;
+                color: #1a1a2e;
+                line-height: 1.6;
+                padding: 20px;
+            }
+            .container {
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+            .header {
+                text-align: center;
+                padding: 30px 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 16px;
+                color: white;
+                margin-bottom: 30px;
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            }
+            .header h1 {
+                font-size: 2.2em;
+                margin-bottom: 10px;
+            }
+            .header p {
+                opacity: 0.9;
+                font-size: 1.1em;
+            }
+            .progress-section {
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 24px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+            .progress-bar {
+                height: 8px;
+                background: #e2e8f0;
+                border-radius: 4px;
+                overflow: hidden;
+                margin: 12px 0;
+            }
+            .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #667eea, #764ba2);
+                border-radius: 4px;
+                transition: width 0.5s ease;
+                width: 0%;
+            }
+            .progress-stats {
+                display: flex;
+                justify-content: space-between;
+                color: #64748b;
+                font-size: 0.9em;
+            }
+            .soal-card {
+                background: white;
+                border-radius: 12px;
+                padding: 24px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                transition: transform 0.2s;
+                display: none;
+            }
+            .soal-card.active {
+                display: block;
+                animation: fadeIn 0.4s ease;
+            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .badge {
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.8em;
+                font-weight: 600;
+                margin-bottom: 12px;
+            }
+            .badge-mudah {
+                background: #d4edda;
+                color: #155724;
+            }
+            .badge-sedang {
+                background: #fff3cd;
+                color: #856404;
+            }
+            .badge-sulit {
+                background: #f8d7da;
+                color: #721c24;
+            }
+            .soal-card h3 {
+                font-size: 1.3em;
+                margin-bottom: 8px;
+                color: #1a1a2e;
+            }
+            .soal-desc {
+                color: #475569;
+                margin-bottom: 16px;
+                padding: 12px;
+                background: #f8fafc;
+                border-radius: 8px;
+                border-left: 4px solid #667eea;
+            }
+            .soal-hint {
+                background: #fef9c3;
+                padding: 12px;
+                border-radius: 8px;
+                margin-bottom: 16px;
+                font-size: 0.9em;
+                color: #713f12;
+            }
+            .soal-hint strong {
+                display: block;
+                margin-bottom: 4px;
+            }
+            .prompt-area {
+                margin: 16px 0;
+            }
+            .prompt-area label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 6px;
+                color: #334155;
+            }
+            .prompt-area textarea {
+                width: 100%;
+                min-height: 100px;
+                padding: 12px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-family: "Courier New", monospace;
+                font-size: 14px;
+                resize: vertical;
+                transition: border-color 0.2s;
+            }
+            .prompt-area textarea:focus {
+                outline: none;
+                border-color: #667eea;
+            }
+            .btn-group {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-top: 16px;
+            }
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .btn-primary {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+            }
+            .btn-primary:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            }
+            .btn-secondary {
+                background: #e2e8f0;
+                color: #475569;
+            }
+            .btn-secondary:hover {
+                background: #cbd5e1;
+            }
+            .btn-success {
+                background: #10b981;
+                color: white;
+            }
+            .btn-success:hover {
+                background: #059669;
+            }
+            .btn-warning {
+                background: #f59e0b;
+                color: white;
+            }
+            .btn-warning:hover {
+                background: #d97706;
+            }
+            .feedback {
+                margin-top: 16px;
+                padding: 16px;
+                border-radius: 8px;
+                display: none;
+            }
+            .feedback.show {
+                display: block;
+                animation: fadeIn 0.3s ease;
+            }
+            .feedback-baik {
+                background: #d4edda;
+                border: 1px solid #c3e6cb;
+                color: #155724;
+            }
+            .feedback-kurang {
+                background: #fff3cd;
+                border: 1px solid #ffeeba;
+                color: #856404;
+            }
+            .feedback p {
+                margin-bottom: 8px;
+            }
+            .feedback ul {
+                margin-left: 20px;
+            }
+            .jawaban {
+                margin-top: 12px;
+                padding: 12px;
+                background: #1e293b;
+                color: #e2e8f0;
+                border-radius: 8px;
+                font-family: "Courier New", monospace;
+                font-size: 13px;
+                white-space: pre-wrap;
+                display: none;
+            }
+            .jawaban.show {
+                display: block;
+            }
+            .nav-buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 24px;
+                padding-top: 20px;
+                border-top: 1px solid #e2e8f0;
+            }
+            .score-container {
+                text-align: center;
+                padding: 40px 20px;
+                display: none;
+            }
+            .score-container.show {
+                display: block;
+                animation: fadeIn 0.6s ease;
+            }
+            .score-circle {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 20px auto;
+                color: white;
+                font-size: 2.5em;
+                font-weight: bold;
+            }
+            .ceklis-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 0;
+            }
+            .ceklis-item input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                accent-color: #667eea;
+            }
+            .ceklis-item label {
+                cursor: pointer;
+            }
+            .ceklis-item.selesai label {
+                text-decoration: line-through;
+                color: #94a3b8;
+            }
+            @media (max-width: 600px) {
+                .header h1 {
+                    font-size: 1.5em;
+                }
+                .soal-card {
+                    padding: 16px;
+                }
+                .btn {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🧠 Latihan Prompt Interaktif</h1>
+                <p>
+                    Praktikkan skill prompt engineering kamu langsung di sini!
+                </p>
+            </div>
+            <div class="progress-section">
+                <h3>📊 Progress Belajar</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-stats">
+                    <span
+                        >Selesai: <strong id="selesaiCount">0</strong>/<span
+                            id="totalSoal"
+                            >11</span
+                        ></span
+                    >
+                    <span>Skor: <strong id="skorDisplay">0</strong></span>
+                </div>
+            </div>
+            <div id="soalContainer"></div>
+            <div class="score-container" id="scoreContainer">
+                <h2>🎉 Selamat! Kamu sudah menyelesaikan semua latihan!</h2>
+                <div class="score-circle" id="scoreCircle">0%</div>
+                <p id="scoreMessage">Terus berlatih biar makin jago!</p>
+                <button class="btn btn-primary" onclick="resetLatihan()">
+                    🔄 Ulangi Latihan
+                </button>
+            </div>
+        </div>
+        <script>
+            const soalData = [
+                {
+                    id: 1,
+                    title: "📝 Prompt dengan 3 Komponen",
+                    level: "Mudah",
+                    levelClass: "badge-mudah",
+                    desc: "Buat prompt yang menggunakan 3 komponen: KONTEKS, TUGAS, dan FORMAT. Topik: Minta AI jelasin cara membuat kopi.",
+                    hint: "Ingat format: [KONTEKS] Siapa kamu? [TUGAS] Apa yang diminta? [FORMAT] Bagaimana outputnya?",
+                    jawabanContoh:
+                        "[KONTEKS]\nSaya pemula yang baru pertama kali mau bikin kopi sendiri.\n\n[TUGAS]\nJelaskan langkah-langkah membuat kopi tubruk yang enak.\n\n[FORMAT]\n1. Daftar bahan dan alat\n2. Langkah-langkah (step by step)\n3. Tips tambahan (2-3 tips)",
+                },
+                {
+                    id: 2,
+                    title: "🎭 Persona Pattern",
+                    level: "Mudah",
+                    levelClass: "badge-mudah",
+                    desc: "Buat prompt menggunakan Persona Pattern. Minta AI menjelaskan konsep 'Variable' di JavaScript, tapi AI harus berperan sebagai guru SD yang suka pakai analogi.",
+                    hint: "Mulai dengan: 'Kamu adalah... yang...' lalu jelaskan tugasnya.",
+                    jawabanContoh:
+                        "Kamu adalah guru SD yang sabar dan suka menggunakan analogi dari dunia mainan.\n\nJelaskan apa itu 'Variable' di JavaScript padaku, murid kelas 5 SD.\n\nGunakan bahasa yang sangat sederhana dan berikan 1 analogi yang mudah diingat.",
+                },
+                {
+                    id: 3,
+                    title: "🧮 Chain-of-Thought (CoT)",
+                    level: "Sedang",
+                    levelClass: "badge-sedang",
+                    desc: "Buat prompt yang meminta AI menjelaskan LANGKAH DEMI LANGKAH cara menghitung diskon 20% untuk barang seharga Rp150.000. Jangan langsung kasih jawaban!",
+                    hint: "Gunakan kata-kata: 'Jelaskan langkah demi langkah...' atau 'Pertama-tama...'",
+                    jawabanContoh:
+                        "Jelaskan langkah demi langkah cara menghitung diskon 20% untuk barang seharga Rp150.000.\n\nLangkah 1: ...\nLangkah 2: ...\nLangkah 3: ...\n\nSetelah semua langkah, baru berikan jawaban akhirnya.",
+                },
+                {
+                    id: 4,
+                    title: "📋 Few-Shot Prompting",
+                    level: "Sedang",
+                    levelClass: "badge-sedang",
+                    desc: "Buat prompt dengan memberikan 2 CONTOH format output. Topik: Minta AI membuat 3 soal matematika untuk anak SD. Format setiap soal harus punya: Soal + Jawaban.",
+                    hint: "Kasih 1-2 contoh format yang kamu mau, lalu minta AI bikin dengan format yang sama.",
+                    jawabanContoh:
+                        "Buatkan 3 soal matematika untuk anak SD dengan format seperti contoh di bawah:\n\nContoh 1:\nSoal: Budi punya 5 apel. Ibu memberi 3 apel lagi. Berapa apel Budi sekarang?\nJawaban: 8 apel\n\nContoh 2:\nSoal: Ada 12 kue dibagi ke 4 anak sama rata. Berapa kue per anak?\nJawaban: 3 kue\n\nSekarang buat 3 soal dengan format yang sama: Soal + Jawaban.",
+                },
+                {
+                    id: 5,
+                    title: "🔍 Self-Correction",
+                    level: "Sedang",
+                    levelClass: "badge-sedang",
+                    desc: "Buat prompt untuk minta AI membuat function hitung diskon, lalu SETELAH itu minta AI memeriksa jawabannya sendiri. Topik: function hitungDiskon(harga, persen). Minta AI cek dengan test case: hitungDiskon(100000, 20) harus 80000.",
+                    hint: "Gunakan format: [Tugas] → [Setelah selesai, periksa kembali...] → [Perbaiki jika ada masalah]",
+                    jawabanContoh:
+                        "Buatkan function JavaScript hitungDiskon(harga, persen).\n\nSetelah selesai, periksa kembali:\n1. Test: hitungDiskon(100000, 20) → harus 80000\n2. Test: hitungDiskon(50000, 0) → harus 50000\n3. Apakah function handle diskon 100%?\n4. Apakah function handle harga negatif?\n\nPerbaiki jika ada yang salah sebelum memberikan jawaban akhir.",
+                },
+                {
+                    id: 6,
+                    title: "⛓️ Prompt Chaining",
+                    level: "Sedang",
+                    levelClass: "badge-sedang",
+                    desc: "Buat 3 PROMPT BERTAHAP (chaining) untuk membuat aplikasi kalkulator. LANGKAH 1: minta desain/arsitektur. LANGKAH 2: minta HTML structure. LANGKAH 3: minta CSS + JavaScript.",
+                    hint: "Jangan minta semuanya dalam 1 prompt. Pecah jadi 3 langkah terpisah, setiap langkah hanya 1 tanggung jawab.",
+                    jawabanContoh:
+                        'LANGKAH 1:\n"Saya mau bikin kalkulator. Bantu desain dulu:\n1. Fitur apa saja yang diperlukan?\n2. Bagaimana struktur HTML-nya?\n3. Function JS apa saja yang perlu ada?"\n\nLANGKAH 2:\n"Berdasarkan desain di atas, buatkan struktur HTML untuk kalkulator."\n\nLANGKAH 3:\n"Sekarang tambahkan CSS styling (modern, warna biru) dan JavaScript logic untuk fitur kalkulator."',
+                },
+                {
+                    id: 7,
+                    title: "📄 XML Tagging",
+                    level: "Sulit",
+                    levelClass: "badge-sulit",
+                    desc: "Buat prompt menggunakan XML TAGS untuk minta AI membuat daftar 3 hobi. Gunakan tag: <instructions>, <context>, <output_format>, dan <examples>.",
+                    hint: "Bungkus setiap bagian dalam tag XML: <instructions>...</instructions>, <context>...</context>, <output_format>...</output_format>",
+                    jawabanContoh:
+                        "<instructions>\n  Buatkan daftar 3 hobi yang direkomendasikan untuk pemula.\n</instructions>\n\n<context>\n  Saya punya banyak waktu luang di akhir pekan.\n  Saya suka kegiatan yang tidak butuh banyak alat.\n</context>\n\n<output_format>\n  Berikan dalam format:\n  | No | Hobi | Alasan | Biaya |\n  |----|------|--------|-------|\n  | 1  | ...  | ...    | ...   |\n</output_format>\n\n<examples>\n  <example>\n    Hobi: Membaca\n    Alasan: Melatih imajinasi dan menambah pengetahuan\n  </example>\n</examples>",
+                },
+                {
+                    id: 8,
+                    title: "🔄 Iterative Refinement",
+                    level: "Sedang",
+                    levelClass: "badge-sedang",
+                    desc: "Buat PROMPT PERTAMA untuk minta AI bikin halaman HTML dengan 3 tombol (Merah, Kuning, Hijau). Lalu di prompt seperti apa untuk minta perbaikan (tambah efek hover)?",
+                    hint: "Pertama minta yang sederhana dulu. Baru minta perbaikan spesifik.",
+                    jawabanContoh:
+                        "PUTARAN 1:\n\"Buatkan halaman HTML dengan 3 tombol:\n1. Tombol merah dengan teks 'Merah'\n2. Tombol kuning dengan teks 'Kuning'\n3. Tombol hijau dengan teks 'Hijau'\nSetiap tombol warna background sesuai namanya.\"\n\nPUTARAN 2:\n\"Sekarang tambah efek hover:\n- Saat cursor di atas tombol, tombol membesar 1.2x\n- Warna tombol jadi lebih terang saat hover\n- Tambah transisi smooth 0.3 detik\"",
+                },
+                {
+                    id: 9,
+                    title: "🎯 Structured Output (JSON)",
+                    level: "Sulit",
+                    levelClass: "badge-sulit",
+                    desc: "Buat prompt yang meminta AI memberikan informasi 3 method JavaScript (map, filter, reduce) dalam format JSON array.",
+                    hint: "Tentukan format JSON dengan properti: nama, fungsi, contoh_kode, return_value",
+                    jawabanContoh:
+                        'Jelaskan 3 method JavaScript: map, filter, dan reduce.\n\nBerikan output dalam format JSON:\n[\n  {\n    "nama": "map",\n    "fungsi": "Mentransformasi setiap element array",\n    "contoh_kode": "[1,2,3].map(x => x * 2)",\n    "return_value": "[2, 4, 6]"\n  }\n]\n\nIsi untuk map, filter, dan reduce.',
+                },
+                {
+                    id: 10,
+                    title: "🏗️ Prompt Arsitektur",
+                    level: "Sulit",
+                    levelClass: "badge-sulit",
+                    desc: "Kamu mau bikin aplikasi DAFTAR BELANJA. Buat prompt arsitektur yang mencakup: DESKRIPSI, FITUR, STRUKTUR FILE, dan ALUR (Input → Proses → Output).",
+                    hint: "Gunakan template: Deskripsi → Fitur → Struktur File → Alur",
+                    jawabanContoh:
+                        "Saya ingin membuat aplikasi daftar belanja.\n\nDESKRIPSI:\nAplikasi untuk mencatat barang yang akan dibeli, lengkap dengan harga dan total belanja.\n\nFITUR:\n\u2022 Tambah item (nama barang + harga)\n\u2022 Lihat daftar belanja\n\u2022 Hapus item\n\u2022 Lihat total harga\n\u2022 Simpan ke localStorage\n\nSTRUKTUR:\n\u2022 index.html \u2192 struktur halaman\n\u2022 style.css \u2192 styling modern\n\u2022 app.js \u2192 logika dengan function terpisah\n\nALUR:\nINPUT: User ketik nama barang dan harga \u2192 klik Tambah\nPROSES: JS simpan ke array \u2192 update localStorage \u2192 render ulang\nOUTPUT: Item muncul di daftar dengan total harga terupdate",
+                },
+                {
+                    id: 11,
+                    title: "🎪 Kombinasi Semua Teknik",
+                    level: "Sulit",
+                    levelClass: "badge-sulit",
+                    desc: "Buat 1 PROMPT LENGKAP dalam XML tags yang menggabungkan: Persona + Chain-of-Thought + Few-Shot + Structured Output + Self-Correction. Topik: Meminta AI buatkan function JavaScript untuk konversi suhu.",
+                    hint: "Gabungin semua teknik dalam 1 prompt dengan XML tags: <persona>, <instructions>, <reasoning>, <examples>, <output_format>, <verification>",
+                    jawabanContoh:
+                        "<persona>\n  Kamu adalah developer JavaScript yang jago menjelaskan.\n</persona>\n\n<instructions>\n  Buatkan function konversiSuhu(celcius) yang mengubah Celcius ke Fahrenheit.\n</instructions>\n\n<reasoning>\n  Sebelum menulis kode, jelaskan:\n  1. Rumus Celcius ke Fahrenheit\n  2. Parameter dan return value\n</reasoning>\n\n<examples>\n  <example>\n    <input>konversiSuhu(0)</input>\n    <output>32</output>\n  </example>\n</examples>\n\n<output_format>\n  Berikan kode dalam 1 function dengan komentar.\n</output_format>\n\n<verification>\n  Setelah selesai, cek:\n  - konversiSuhu(0) harus 32\n  - konversiSuhu(100) harus 212\n  Perbaiki jika salah.\n</verification>",
+                },
+            ];
+
+            let soalTerjawab = {};
+            let skor = 0;
+            let currentSoal = 0;
+
+            function renderSoal() {
+                const container = document.getElementById("soalContainer");
+                container.innerHTML = "";
+                document.getElementById("totalSoal").textContent =
+                    soalData.length;
+                soalData.forEach((soal, index) => {
+                    const div = document.createElement("div");
+                    div.className =
+                        "soal-card" + (index === 0 ? " active" : "");
+                    div.id = `soal-${index}`;
+                    div.innerHTML = `
+          <span class="badge ${soal.levelClass}">${soal.level}</span>
+          <h3>${soal.title}</h3>
+          <div class="soal-desc">${soal.desc}</div>
+          <div class="soal-hint"><strong>💡 Petunjuk:</strong> ${soal.hint}</div>
+          <div class="prompt-area">
+            <label for="jawaban-${index}">✍️ Tulis prompt kamu di sini:</label>
+            <textarea id="jawaban-${index}" placeholder="Tulis prompt kamu..." oninput="checkProgress()"></textarea>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="toggleJawaban(${index})">👁️ Lihat Contoh</button>
+            <button class="btn btn-success" onclick="nilaiJawaban(${index})">✅ Cek Jawaban</button>
+          </div>
+          <div class="jawaban" id="jawaban-${index}-contoh"><strong>📝 Contoh Prompt:</strong> ${soal.jawabanContoh}</div>
+          <div class="feedback" id="feedback-${index}"></div>
+          <div class="ceklis-item" id="ceklis-${index}">
+            <input type="checkbox" id="cek-${index}" onchange="checkProgress()">
+            <label for="cek-${index}">Tandai selesai (setelah kamu paham)</label>
+          </div>`;
+                    container.appendChild(div);
+                });
+            }
+
+            function showSoal(index) {
+                document
+                    .querySelectorAll(".soal-card")
+                    .forEach((card, i) =>
+                        card.classList.toggle("active", i === index),
+                    );
+                currentSoal = index;
+                const counter = document.getElementById("soalCounter");
+                if (counter)
+                    counter.textContent = `${index + 1} / ${soalData.length}`;
+            }
+
+            function prevSoal() {
+                if (currentSoal > 0) showSoal(currentSoal - 1);
+            }
+            function nextSoal() {
+                if (currentSoal < soalData.length - 1)
+                    showSoal(currentSoal + 1);
+            }
+
+            function toggleJawaban(index) {
+                document
+                    .getElementById(`jawaban-${index}-contoh`)
+                    .classList.toggle("show");
+            }
+
+            function nilaiJawaban(index) {
+                const textarea = document.getElementById(`jawaban-${index}`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                const jawaban = textarea.value.trim();
+                let poin = 0,
+                    pesan = "",
+                    saran = [];
+                if (jawaban.length < 20) {
+                    pesan =
+                        "❌ Prompt masih terlalu pendek. Coba lebih detail!";
+                    saran.push("Tambahkan lebih banyak detail");
+                    saran.push("Gunakan format: Konteks, Tugas, Format");
+                } else {
+                    poin += 1;
+                    pesan = "✅ Panjang prompt sudah cukup!";
+                }
+                if (
+                    jawaban.toLowerCase().includes("jelaskan") ||
+                    jawaban.toLowerCase().includes("buatkan") ||
+                    jawaban.toLowerCase().includes("tolong")
+                ) {
+                    poin += 1;
+                    pesan += "<br>✅ Ada kata perintah yang jelas!";
+                } else {
+                    saran.push(
+                        "Tambahkan kata perintah (buatkan, jelaskan, tolong)",
+                    );
+                }
+                if (jawaban.includes("\n") && jawaban.includes(":")) {
+                    poin += 1;
+                    pesan += "<br>✅ Ada struktur/format yang rapi!";
+                } else {
+                    saran.push(
+                        "Gunakan format dengan baris baru dan tanda titik dua (:)",
+                    );
+                }
+                if (jawaban.includes("<") && jawaban.includes(">")) {
+                    poin += 1;
+                    pesan += "<br>✅ Menggunakan XML tags!";
+                }
+                if (
+                    jawaban.toLowerCase().includes("periksa") ||
+                    jawaban.toLowerCase().includes("cek") ||
+                    jawaban.toLowerCase().includes("verifikasi")
+                ) {
+                    poin += 1;
+                    pesan += "<br>✅ Ada self-correction!";
+                }
+                if (poin >= 3) {
+                    feedback.className = "feedback show feedback-baik";
+                    feedback.innerHTML = `<p>${pesan}</p><p>🎉 Bagus! Prompt kamu sudah lengkap!</p><p>Coba prompt ini ke ChatGPT/Claude dan lihat hasilnya.</p>`;
+                    simpanSkor(index, 2);
+                } else {
+                    feedback.className = "feedback show feedback-kurang";
+                    feedback.innerHTML = `<p>${pesan}</p><p>💪 Masih perlu perbaikan:</p><ul>${saran.map((s) => `<li>${s}</li>`).join("")}</ul><p>Lihat contoh prompt untuk referensi.</p>`;
+                    simpanSkor(index, 1);
+                }
+                checkProgress();
+            }
+
+            function simpanSkor(index, nilai) {
+                if (!soalTerjawab[index] || soalTerjawab[index] < nilai)
+                    soalTerjawab[index] = nilai;
+                updateSkor();
+            }
+
+            function updateSkor() {
+                let total = 0;
+                for (let i = 0; i < soalData.length; i++)
+                    total += soalTerjawab[i] || 0;
+                skor = total;
+                document.getElementById("skorDisplay").textContent =
+                    skor + "/" + soalData.length * 2;
+            }
+
+            function checkProgress() {
+                let selesai = 0;
+                for (let i = 0; i < soalData.length; i++) {
+                    const cek = document.getElementById(`cek-${i}`);
+                    if (cek && cek.checked) {
+                        selesai++;
+                        document
+                            .getElementById(`ceklis-${i}`)
+                            .classList.add("selesai");
+                    }
+                }
+                document.getElementById("selesaiCount").textContent = selesai;
+                document.getElementById("progressFill").style.width =
+                    (selesai / soalData.length) * 100 + "%";
+                if (selesai === soalData.length) showScore();
+            }
+
+            function showScore() {
+                document.getElementById("scoreContainer").classList.add("show");
+                const pct = Math.round((skor / (soalData.length * 2)) * 100);
+                document.getElementById("scoreCircle").textContent = pct + "%";
+                const msgs = [
+                    "💪 Ayo semangat! Coba ulangi latihannya.",
+                    "👍 Lumayan, tapi masih perlu banyak latihan.",
+                    "🌟 Bagus! Tingkatkan sedikit lagi!",
+                    "🏆 Luar biasa! Kamu sudah master prompt engineering!",
+                ];
+                document.getElementById("scoreMessage").textContent =
+                    msgs[Math.min(3, Math.floor(pct / 25))];
+            }
+
+            function resetLatihan() {
+                soalTerjawab = {};
+                skor = 0;
+                document
+                    .getElementById("scoreContainer")
+                    .classList.remove("show");
+                document.getElementById("progressFill").style.width = "0%";
+                document.getElementById("selesaiCount").textContent = "0";
+                document.getElementById("skorDisplay").textContent = "0";
+                soalData.forEach((_, i) => {
+                    const ta = document.getElementById(`jawaban-${i}`);
+                    if (ta) ta.value = "";
+                    const fb = document.getElementById(`feedback-${i}`);
+                    if (fb) fb.className = "feedback";
+                    const ck = document.getElementById(`cek-${i}`);
+                    if (ck) ck.checked = false;
+                    const cl = document.getElementById(`ceklis-${i}`);
+                    if (cl) cl.classList.remove("selesai");
+                    const ct = document.getElementById(`jawaban-${i}-contoh`);
+                    if (ct) ct.classList.remove("show");
+                });
+                showSoal(0);
+            }
+
+            renderSoal();
+            document.addEventListener("DOMContentLoaded", () => {
+                const container = document.getElementById("soalContainer");
+                const nav = document.createElement("div");
+                nav.className = "nav-buttons";
+                nav.innerHTML = `<button class="btn btn-secondary" onclick="prevSoal()">◀ Sebelumnya</button><span id="soalCounter">1 / ${soalData.length}</span><button class="btn btn-primary" onclick="nextSoal()">Selanjutnya ▶</button>`;
+                container.appendChild(nav);
+            });
+        </script>
+    </body>
+</html>

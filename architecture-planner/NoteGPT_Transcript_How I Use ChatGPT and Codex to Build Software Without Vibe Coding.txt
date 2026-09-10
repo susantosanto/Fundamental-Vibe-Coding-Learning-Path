@@ -1,0 +1,296 @@
+00:00:01 - 00:00:59
+Most people are using AI coding tools the wrong way. They're using it backwards. They'll open up Codex or Cloud Code or Cursor or Lovable or another AI builder and they'll say, "Build me an app." And then they wonder why the result gets too messy. Well, the problem isn't always with the AI. The problem is with the structure and the handoff. So, if you give an AI builder a vague idea, scattered notes, and messy chat thread, it has to guess the business rules, the workflow, the edge cases, and
+
+00:00:30 - 00:01:28
+what does done look like? What does success look like? That's not how you build real serious software. That's not how it gets built. In this video, I'm going to show you the system that I've used over the last 18 months that I've perfected here at 120x.ai. I call it the architect builder method. Where I use a large language model like Chat GPT or Claude as the architect layer. The large language model becomes my brainstorming and keeps me on track with my project. Takes some setting up,
+
+00:00:59 - 00:02:09
+which I'm going to show you in this video, how you can do that using these tools. And then the builder layer is the coding tool like Codex or Claude Code or Cursor. So, architect is your large language model, Chat GPT or Claude, and then the builder becomes Codex or Claude Code. And then the source of truth isn't the history of the chats per se. No, the source of truth is the project folder or the folder system that I'm going to share with you to show you becomes the brains and the the kind of source of
+
+00:01:34 - 00:02:31
+truth for the entire project. So, this is relevant to you. If you're an owner, an operator, somewhere in a business, you're a consultant, you're an executive, you're someone that already knows how to use the basics of technology. You can use tools like Excel. You can build pivot tables. You see the big picture whatever your role is. You understand workflows, you understand inputs, outputs, rules, approvals, reporting. If you are that person, you have the raw material embedded in you to become
+
+00:02:03 - 00:03:07
+efficient at building software solutions within your organization, not buying some expensive SaaS solution or hiring a whole series of developers. You can do this yourself. I taught many a CEO how to do this for themselves with the tools that we have at our disposal. You don't need to learn how to become a full-time developer. It helps, but what really is most important is you need to learn how to turn this operational knowledge, this tribal knowledge you have in some cases, into builder-ready instructions
+
+00:02:35 - 00:03:41
+to solve your challenging pain points and problems within your organization. You can do it in-house. You can customize and weave to how you do business today. Architect first, builder second. Trust the file folder system, right? So, why does vibe coding break? Why does it suck? Why does it have this bad reputation? Well, because usually what happens with vibe coding is you'll take these powerful tools like Claude Code or Codex. You start with an idea. And even some of developers of these like lovable and replet, they say just
+
+00:03:08 - 00:03:58
+go into the tool and start explaining your idea and you can start creating something in it. Usually can, sometimes it can create a pretty powerful MVP, a powerful demo. The AI will create some files, you'll correct it, you'll go back and forth, you'll change something else, you'll show it to somebody. They'll say, "Hey, it'd be cool if you did this." Next thing you know, you're adding, you're doing, you add a new business rule, and then you realize that it misunderstood the workflow maybe
+
+00:03:33 - 00:04:31
+three prompts ago. Then you got to go search the chat. Now, maybe the real project knowledge is scattered across the chat. You know, maybe uh a decision is buried somewhere in message 12 from 3 days ago. And a key exception is buried in message 27. The acceptance criteria doesn't even exist because you're just vibing through it. And when you're vibing through it, well, the builder, the tool, it wants to do well. It'll start to improvise. That's how AI models work. But, I don't
+
+00:04:02 - 00:05:06
+want Codex or Claude Code guessing at my business model. I don't want these tools inventing permissions, and I don't want these tools deciding what done looks like. They will try to tell you it in the lack of your giving the input. I want the builder, Codex and Claude Code, to build from approved plans. And this is where you as an operator or a business owner or somebody who's passionate about this have an advantage. If you're embedded in your business, and you're the closest to the workflow,
+
+00:04:34 - 00:05:36
+well, you usually know the real rules better than anyone else. You know which spreadsheet column always breaks. You know which approval step gets skipped. You know which report the owner is actually looking at. So, that knowledge that you have is valuable. But, it has to be structured, and these tools can help you. That's the architect layer. That architect layer can get very powerful in showing you, in helping you create a very organized system and process to develop pretty much anything that you can think of and you can put
+
+00:05:06 - 00:06:12
+your mind to. But, the builder, your builder, these Codex and Claude Code, they should not be guessing at the business rules. And so, let's explore this architect builder analogy just a little bit more. Think about building your dream house, and maybe some of you have built a house, you know. You would not go to the actual builder, the actual general contractor maybe, or the framing crew, that's a better example, and take a napkin sketch and say, "Build me something modern with three bedrooms and a nice kitchen, and
+
+00:05:38 - 00:06:36
+go figure it out." Well, but you're not going to get what you want, right? If you're going to do it right, you've got to articulate your vision to the person who gets paid to do that, to extract it out of you, and that's an architect, right? You would go visit with the architect, you would communicate your vision and dreams. They would ask you a bunch of questions, and they would essentially build a set of detailed plans that they could hand over to the builder. Software needs to work the same way. The
+
+00:06:07 - 00:07:04
+architect defines the goals, the business goals, the users, the workflows, the requirements, the blueprints, the risks, the decisions, the validation plans, the acceptance criteria, and the handoff. The builder is going to excel when it has all of that written detailed disciplined structure. It's going to perform amazingly well. And so, my background shaped this approach. I've got a computer science degree from 1991, but I didn't really use it that much because I was 35 years a professional aviator with the Marine
+
+00:06:36 - 00:07:37
+Corps and American Airlines. But, that computer science degree back from 1991 taught me to plan before building. In fact, our professors would always say, the ones when we were creating code, they said, "If you're spending more than 10%" should be 5% or less, but if you're spending more than 10% on your computer, that's a hacker. A professional programmer will spend most of his time architecting and detailing it out on paper before we start coding. And it's true. When you spend all that time doing that,
+
+00:07:07 - 00:08:06
+when you actually got the coding, it worked like a champ. The same happens here. You spend the bulk of your time communicating with an architect, setting up this detailed plans, this file structure, and what will happen is your architect will come up with a set of detailed plans to give to the builder. Computer science taught me to plan before the building. Aviation taught me to use checklists, procedures, risk management, and clear handoffs. You don't brief a flight by saying, "Let's just wing it," right? You plan it
+
+00:07:36 - 00:08:42
+out. And you should not build software by just saying, "Hey, let's vibe through do with the AI until it looks right." You're going to come up with a mess. So, a clear flight plan beats this improvisation. So, let's talk about why the folder is the handoff. And let's go over this file folder structure to give you a sense of how I build things. This is a folder called 120x I got on my desktop. And we're going to look at the folder structure of what I call the 120x scaffold. Now, I'm going to use a thing
+
+00:08:09 - 00:09:05
+called Obsidian to look at this, but I just wanted to show you first that this is just a normal file structure that I have. And I've got files in here, and I'm going to go over that. But there's a tool that I use that is reading the exact same thing called Obsidian. You don't have to use this. It's just It helps me read markdown files, okay? And so, we're using this tool I'm going to And I will go over that. So, we're in this 120x scaffold. This is a template where I'm going to show you how to
+
+00:08:37 - 00:09:36
+organize your project before we actually start coding. So, please bear with me on this. It's important that you understand how this works. Because how I used to do projects in the past, I didn't have this much detail. This has really come about over the last 7 to 8 months. Where in the beginning, I would still managing context, I would have a similar folder structure, but it was a little more There was less detail in here. In fact, I was putting everything in what was called a Claude markdown file. These
+
+00:09:07 - 00:10:05
+files, they don't have .md, but these are markdown files, which just are essentially text files. That's the markdown file. It's just a text file. It just makes it versatile, it's easy to read, it's easy to edit, and it's kind of universal. So, we use markdown. .md are markdown files. And so, even though it doesn't have .md, all these that are all caps, those are markdown files. And then I use this Obsidian because I can read the contents right next to it. And it's nice and
+
+00:09:35 - 00:10:35
+formatted. It's really easy to read. And so, when you look at this, the handoff, the whole file structure, every project is going to have the similar project structure. And the reason why I set it up this way is because your chats get messy in Claude code and in Codex. Everything in in the context window as you keep the chat going on and on, the more that you use it, the worse it gets, right? Because you're eating up that memory and that context. And so, when you're doing a large project, you need to break
+
+00:10:06 - 00:11:11
+things down into chunks. Now, I used to put everything in this claw.md folder, and it would just grow. Like, we would put the coding rules, the business rules, the sprints notes, all decisions, open questions, random notes, validation reminders, everything. This stuff would start to grow. And the problem is, eventually that this folder, the only one I was using in addition to my source code and everything else, this would get so messy. It was just too noisy. The answer was not more context. The answer was to get
+
+00:10:39 - 00:11:44
+cleaner context. And that's why I created this more detailed Every project that I do, that I create, you create a fold on your desktop, and you name the project something, and then you got to have a file structure. And eventually, all your code is going to be put in this SRC folder. But, I'm going to go over these other folders that I created with these markdown documents, if you will, and explain some of the logic behind it. And hopefully, it will make sense, okay? So, instead of having one big claw.md
+
+00:11:11 - 00:12:17
+folder that just gets grows and bloated, I broke everything into chunks, so it's a little more Everything's more digestible. And then, anybody can read up, and particularly the claw the Codex or the Claude code, when I'm starting a new sprint, which I'll talk about here in a minute, it can easily find out where it's at, as long as we keep all this stuff updated. And I'll show you how we do that. And so the way to look at this file structure is not bureaucracy and not and though it's good to be organized and
+
+00:11:44 - 00:12:50
+for easy to pick up, but the real thing around this is context engineering. Remember what I said, context is king. It will give the builder, Codex or Claude code, the right information at the right time, having it organized this way. And so again, remember the answer is not more context, the answer is cleaner context. So, let's talk about all this. What is this? Let's walk through each one of these files. Again, when the project is small, you could probably get away with just putting everything in a claw.md folder
+
+00:12:16 - 00:13:16
+or a codex.md folder. But but let's assume you want to create something that's somewhat complex. It's good to build it out this way. So, let's start with here with this first file. agents.md markdown. What is it? Well, this is the main router. This is kind of like the main folder or if you will, or file. And this is the first file that every AI agent or human builder should read. You read this, you're going to get all the context about the operating model, what files to read first, what rules the
+
+00:12:46 - 00:13:42
+builder must follow, the workflow that we do and everything else. The claw.md and the codex are kind of the same thing. Depending on which tool you're using, if you're using Claude code, I reference the claw.md codex or if you're using chat GPT and codex, I will reference this folder, but they essentially do the same thing. They're thin adapters for the tool that you're using. But it shouldn't become the whole project brain. It's a little part of the brain, and this grows, and I'll show you
+
+00:13:15 - 00:14:19
+some examples when we start building a project. But it's like the mini part of the brain that works with the agent. And it sits at the root level, right? So, this is sitting at the root level. And then the read.me is just a human overview. Right? And if someone opens this folder cold, it should tell them what the project is and where to look next, right? And so what all these other things other files or folders hold. Okay, so then I go back up here. I have a docs folder. So in the docs folder,
+
+00:13:47 - 00:14:49
+this is for the durable technical documentation, right? So if we look here, if I look at architecture for example, this is the system map. And again, these are templates. I'll show you when it's filled out here in a little bit. It explains the major parts of the application, how they fit together. Data model is explains the core entities, the fields, the relationships. If you got a spreadsheet heavy or database heavy project, this a lot, right? And if I'm looking at API, if you've got a lot of connectors or
+
+00:14:18 - 00:15:19
+endpoints contracts, inputs, outputs, and integration rules for other tools like I'm connected to Intacct, Sage Intacct for it. All your API information will go into here. Permissions defines the roles and the accesses and who accesses what and as we create things, a lot of times you got different types of users, access rules, so it's good to have that documented. And then the validation explains how we prove the system is correct. Like for business systems, this is where we define how outputs tie back to the source data. So
+
+00:14:49 - 00:15:49
+that's important to have defined as well. So you see if I had all of that information sitting in one clawed dot markdown document, it would just be huge and things would get lost. And so you break it up into little chunks, so it makes it a little more disciplined, right? And then I've got the planning folder. So if I go here and I look in the planning folder, I've got a place for meetings. Again, this is a place where I put meeting notes. If I'm recording a conversation with my client,
+
+00:15:19 - 00:16:21
+all the auto notes, the the will go into here. And so, let's go there. And then, if I look at the root markdown files that are here, this one is important state. It's the current moment, right? Where we at? What sprint are we in? What just happened? What is next? What is blocked? That is a very important one. This gets updated as we're making more code and more sprints. Decisions is important. I found this is critical. That's the house rules. What we decide when something is important
+
+00:15:50 - 00:16:41
+and we'll make decisions constantly through the product project, particularly at the beginning. We'll make decisions, and when we make decisions, we document them. And it particularly so goes here, so we're not re-litigating it three sprints later or trying to remember what we did. Domain, that's the client's world. It's not your domain, your name domain. It's like, what is the business that your client's domain or your business itself? The terminology, the workflow, the
+
+00:16:16 - 00:17:15
+users, the people that are in it, the business rules, operational reality. We put things in here just to keep it for context. For risks, very important one. This is the known traps list. It keeps fragile assumptions and project scripts project risks visible. And then, questions, very good for particularly for keeping the client informed. If you got open questions, you got to require the client to architect or stakeholder input, and we don't have the answers for it, we'll put it here. And once we get answers,
+
+00:16:45 - 00:17:50
+we'll close it out. This is a very helpful to have this in the file structure. And then, file inventory track source materials like PDF spreadsheets, export screenshots, repo notes, anything that is kind of a catch-all, I put into file inventory, particularly if the client has documents that I may want to reference and use, like output documents, PDF files. All that can kind of go into there that we can reference, right? And then, uh I talked about the meeting notes. This is where all the meeting notes go
+
+00:17:17 - 00:18:13
+because it can be messy Uh and sometimes decisions and that if decisions come out of a meeting I move it into decisions. And then there's the planning the sprints. This is the kind of the heart of everything. When you start going in a roll, say your overall plan has 15 sprints. Right? And it's broken up into chunks and then each of the sprints does a certain thing. It has a finite beginning and a finite ending where we define success. And so that's how you build the plan. You would attack it in chunks.
+
+00:17:46 - 00:18:56
+And for every sprint there are four files. For each sprint, what's going to happen, your architect is going to break up the plan into a certain number of sprints. And when you're working on whatever sprint, you're going to tell the architect chat GPT or Claude chat to build me an architect pack that I can give my builder. And what that will do is the architect pack will define four documents for each sprint. It will come up with the requirements document, which again says what we're building and why.
+
+00:18:21 - 00:19:28
+And then it also come up with the blueprint, which says how we plan to build it. So again, this is your architect coming up with requirements and drawings plans to give your builder so they can execute without any question. And a couple bonus documents that I just recently added and it really helps is an acceptance criteria for this sprint. Like what does success look like is very important. Basically, what does done mean for this sprint? And then a handoff prompt, which will get from your architect, but we
+
+00:18:54 - 00:19:54
+also document it here and we can always go back. This is the handoff prompt for this sprint that I will give the builder to read all the documents and start building and planning. And I'll show you that here in a minute. So this four sprint architecture is really the heart of the workflow. This is where the rubber really meets the road. And all the remaining folders and files really support everything that happens in these sprints. So, references and the rest of it for the rest of these, again,
+
+00:19:24 - 00:20:21
+these are just read me documents to tell you what to store and where. Again, these are kind of optional, but these are just for me. Like, I put sample data in here, but I put a read me file just so people can know what do we put into what. Maybe some people think it's overkill, but I think this is a great way to keep it organized, particularly for big projects. And this SRC is where your source code is going to be developed and pushed and eventually pushed to a GitHub, which will be in another video.
+
+00:19:52 - 00:20:58
+But, that is it. That is the scaffolding or the kind of details for the file folder system that becomes the brain of your operating system when we're building code. And so, for every project you create, you will create this scaffold with all those documents being populated. Well, that can seem a little overwhelming, so I did build a tool. You can do that manually with putting in prompts and building things, and they will build it for sure. But, I built a tool that helps particularly in the very beginning to
+
+00:20:25 - 00:21:31
+help build these projects. And so, I'll show that to you now. So, when you're going to start with a project, you're going to want to have to start having a conversation with your large language model, the architect. Remember the architect is Claude or it is ChatGPT. You can use either one. And what you're going to do if you're going to use Claude or you're going to use ChatGPT, you're going to want to use things in you're going to create a project for your solution you're trying
+
+00:20:59 - 00:21:59
+to create or app you're trying to create. And so, you notice here in Claude, I have all these projects, right? Apps that I've built and things that I've done and I put them into projects. And the reason why we put them into projects is because each of the projects not only gets a lot more context and memory to help you with the project, you can also set custom instructions to help define how that project should react. Again, you can learn how to create projects in here, but I'm going to
+
+00:21:28 - 00:22:32
+demonstrate in ChatGPT today just because 5.5 is really impressive and I'm using Codex. I just want to show you that you can do it in order. I'm a big fan of Claude. I'm a big fan of ChatGPT's Codex. So, I'll try it Codex here. But essentially, when you're going to start, you're going to want to create a new project folder. And we will create it in the folder on our desktop, but we also want to create a project within the large language model. And so, we'll call it a new project
+
+00:22:00 - 00:23:17
+here. We'll just call it demo project three. And we'll create the project. Now, like any of the project, you got a place for sources and we're going to populate anything that we have in here that we think is going to be applicable to all the multiple chats we'll have in our project. In this case, I do want to give it some of my context around my philosophy. So, if I look at my 120X folder, there's a couple in my latest philosophy. This again, this is just mine. I have some markdown files that
+
+00:22:39 - 00:23:38
+talk about my philosophy, right? There's my philosophy about my 120X architecture. And even though ChatGPT knows about it, I want this project make sure there's no question that they know what we're talking about. So, I'm adding that file there. I also have a quick start method to how to start a project. It gives a step-by-step. And so, So want that to know that, too. And I'll put in the scaffold instructions even though we know what it is. I don't want it to have any doubt about that. And then I have a
+
+00:23:09 - 00:24:11
+couple other things. Maybe this workflow pack architect just so it knows. And a template for the architect pack template even though generally it should know what it is, but it can't hurt having it in here. Now, what other files could I put into here? Well, if I've got Excel files or PDF documents, I will put it in my file structure that I have, but I also want it for my architect. So it's kind of like even though I've got these files existing in my home, if I'm going to meet with the architect, I need to bring
+
+00:23:40 - 00:24:36
+my files with me to the office meeting, and that's what I'm doing here. The other thing I want to do is set up uh how do I want this project to react? So I'll edit some instructions. And so you could literally tell it to be whatever you want it to be. You don't have to do this, but boy, this really sets itself apart and can really get specific about how you want to do your software development. How do you want it to handle the situations? I'm going to copy it from a another project that I have
+
+00:24:08 - 00:25:13
+for my 120X project launcher which I did. I'm going to copy these instructions that pop up here. And basically it just reinforces my architect builder projects, what the architect layer should do, how to use the methodology, important boundary, this is internal tooling not a client app, when creating implementation plans, separate this from that. There's a lot of stuff in here and what we should do, but I want no doubt what I want the architect to be. Now you may say, "Well, how did I create this?"
+
+00:24:40 - 00:25:44
+Well, I used the large language models ChatGPT and Claude to help me come up with the set of custom instructions. Of course, coming up with this philosophy has been developed over the past year or so, but eventually I would have the large language model help me come up with these instructions. So I'm going to copy those instructions from this project here. We're going to go into our demo project and I'm going to edit the instructions and put that into here. All right? So, now my architect is
+
+00:25:12 - 00:26:27
+primed and ready to go for me to start communicating with it. Well, I did have in some set of instructions some architecture prompts and to get it started, but I built a tool that you become part of my cohort, you can use this tool for free, but it helps start the architect conversation. It builds the folder structure for the project. And so, that looks like this. This is a tool that I built using the same methodology, right? To build this micro app, if you will. And so, I'm going to start a new project
+
+00:25:50 - 00:27:06
+and essentially, when we start it, it'll take me through five steps. And when I start the project, we're going to name it demo project three and it's for my company. And the project slug slug is we'll just go demo project three and it's an internal tool for me. One sentence description, I'll just kind of make this up here. I would like to build an app that takes multiple disparate Excel spreadsheets and PDFs for a CEO and it collates and parses them all and generates a weekly
+
+00:26:32 - 00:27:30
+newsletter and a monthly board meeting HTML dashboard based on the financials of the spreadsheets. The destination parent folder is where I want this to be built. I want it to be built to my desktop 120 x top builds. I can pick a folder here. Implementation repo path, that's if I get it set up in GitHub, that's for another I'm going to leave it blank. Same with the GitHub repo. Tech stack, I could define it here, but I'm going to leave it blank. And then I'll continue to the intake.
+
+00:27:02 - 00:27:58
+And again, this is where you want to spend some time. We can do this in our architect chat, but if we can do a lot of it up front here, you might as well do it. I'm going to keep a lot of these intentionally blank just to show you that the prompt that gets generated out of this, which is the ultimate goal of this tool, an initial prompt to start your architect conversation. You know, what business problem are we solving? The problem is taking disparate information from multiple spreadsheets,
+
+00:27:29 - 00:28:52
+import input sources, PDFs, etc. and turning it into a fast way for the CEO to generate a weekly newsletter and a monthly a board review meeting in a shareable HTML. Who are the primary users? I'll say primary user is the CEO and business owners and the CFO. Pain points. It takes almost 3 to 4 hours a week to put together and collate all the disparate data and come up with the weekly newsletter. We want to get that down to less than 30 minutes. And then I could dictate the workflow here, the target workflow. I'm going to
+
+00:28:15 - 00:29:07
+leave these blank. But if you could spend the time and take the time to really think about this, brainstorm, talk about it, populate it, you'll be in a much better position. Now we review the project, it kind of goes over everything that we're going to build and where all these TBDs needs discovery means I didn't answer them and I'll show you why in a second. And then we'll create the project. And so it did a couple things right here, but the first thing that the main thing that it
+
+00:28:40 - 00:29:45
+did it gave me a nice architect prompt. And again, this prompt is pretty detailed, but it helps you kickstart your conversation with the architect in the right way. And so, I'm starting as the 120X architect. Here's the project metadata, the name, everything else, the current status. This folder's been created here. Here's the methodology context. Here's the operation optional source references. Here's the source material. Here's a project intake context, making sure that it asks questions on things
+
+00:29:13 - 00:30:18
+that are TBD, right? And so, this is a pretty detailed prompt in what it comes up with. But, I also wanted to show you the file structure that was created. And so, we called that project demo three, right? So, in my builds folder, and I go down here to my builds, here's demo project three. So, it created this and populated this in the place that I wanted it to, giving all the templates and all the documents. It started to fill out some of the things, but it's going to get filled out even more as we go through
+
+00:29:46 - 00:30:52
+our conversation. Comes up with a code x MD, Claude, again, it just some basic population. And in the planning, our first sprint we're getting ready to create. It will create an architect pack. So, anyway, it's all set up and ready to go in the right place. That was the important thing that I wanted to do. In the past, I would kind of manually copy and paste and then put things in here. Now, it does it through just this one using this project here. So, now I'm going to copy this prompt.
+
+00:30:19 - 00:31:18
+And again, this is the architect starter prompt that I'm going to share with my architect. In this case, it's going to be chat GPT. And so, I go to our demo project three, which I'm in. We've got our sources files that were all there. We've got our custom instructions, and we just paste the prompt, and we'll start the conversation. And so, what I should see here, because I didn't answer all the questions in my starter tool, it's going to generate a conversation and ask me a
+
+00:30:48 - 00:31:49
+whole series of questions. Okay, so that took about 3 minutes or so, but look how powerful this is what it did. So, he says I'm applying the first discover discovery gate first. Notice he said discovery gate, we're not ready for the first architect pack yet. Do not generate the pack yet. This idea is useful, but we still got a lot of brainstorming to do is what he's saying, right? He said, "Here's what it's recommending for the first useful version of the MVP, the minimal viable product. Here's some
+
+00:31:19 - 00:32:16
+three possible project directions. Option one, option two, option three. So, it's You see what I'm doing? It's like we're having the initial meeting and we're brainstorming together. It's giving me a recommendation. We'll start out with that. And then the first sprint after planning would be this. Here's some discovery questions. Answer these in rough notes. And perfect answers are fine. It's still asking me all these questions. It's asking what the current workflow is.
+
+00:31:47 - 00:32:47
+Where does the 3 to 4 hours get burned? Who are the users? So, it's already asking me a lot of stuff. So, I've got a lot of work to do still, but this is good work, right? This is where you can define it. This is what you would really do with an architect anyway. You would define your vision. You would go back and forth. And the good news is the architect does a really good job of asking you questions of what it should look like. But that's what I wanted to show you that you get it set up and now you start
+
+00:32:17 - 00:33:12
+having these conversations. And it's a back and forth iterative conversation until you get everything answered and then it'll create that first architect pack. For the sake of the demo, look at all this. This is just beautiful what it's doing. It says, "Here's our biggest risks. Here's my strong default action for architect pack two. I will structure it this way. What I need from you next is this. Reply with rough answers of these five only, so on and so forth. After that, I'll create
+
+00:32:45 - 00:33:41
+the architect pack when you say generate the pack. For the sake of the demo, I'm going to tell it "Hey, I'm doing a demo. Can you fill in the blanks with your best guess?" In reality, you would be filling in all these questions out, right? But for the sake of time for the sake of this demo, can you fill in the unanswered questions with your best guess? This is just for demonstration purposes. I'm trying to save time. So, if you can fill in your unanswered questions with what you
+
+00:33:13 - 00:34:22
+think is best, then I will go with whatever you recommend, and you can generate the pack from this point forward. Guys, I'm just doing this to accelerate the time for the demo. I'll pause this, and I'll let it build and generate, and I'll get back to you when it's all done. Okay, that took 2 minutes and 28 seconds. But essentially, what it did, what the architect did for me, was it generated the architect pack that we're going to eventually have the builder read. We'll take a look what's
+
+00:33:48 - 00:34:56
+inside of this here in a second. And then, it also gave us the Codex prompt to apply and review the pack. So, we'll come back to that. So, let's go ahead. I'm going to download this architect pack 001 into our project. And so, I'm going to navigate to our demo 3 project, which is right here. And I'm going to download this architect pack discovery at the root level, right, of the project. And I'm going to save it. Now, I'm going to go into Obsidian to view this. So, I go to demo project 3 right here.
+
+00:34:23 - 00:35:26
+Let me minimize some of these so you can see this. You can see at the root level, I have architect pack 001 discovery. Now, look at everything what's in here, what was created. It gave us the project state, it gave us the current status of what we're trying to do. This is a demonstration product. This is the product direction, build a low internal reporting prototype. Active sprint will be this one, recommended next sprint is this one, recently completed next actions file and everything to put into these markdown,
+
+00:34:55 - 00:36:03
+right? The decision log, the decisions that we've already made, the demo assumptions accepted for planning, what goes into domain. All of this stuff. So, you do see how this is getting this architect pack that your architect went to work and did brilliant beautifully is it starts to populate your files in here to help Codex. So, it's just an amazing amount of work and detail. All of our risks that are in here, the questions that we have, the open-ended questions that we have. The questions answered by the demo. This
+
+00:35:29 - 00:36:44
+is just amazing stuff. I mean, you're getting all of this created. This detail. So, that is what's in this first architect pack. Okay? So, the architect has done his job or in its office, he gave us some deliverables that we now need to go take to our builder and see how well that we do. And so, if I go back to my chat with the architect, it gave me a prompt to give Codex. You are the builder, first apply this architect pack that we just looked at. Run this for a dry run. If the dry run looks safe, run this and after
+
+00:36:07 - 00:37:09
+applying the pack, don't write the code, but read these files, then summarize what we're building, what V1 is not, what assumptions are made. And so, this is what the first sprint looks like. We're not creating code per se, but we're getting Codex to define for us what they're going to build and then we'll sanity check it back with our architect to see if we're on track. Does that make sense? One other thing before I do that, I always like to know me a sense of how many sprints
+
+00:36:38 - 00:37:53
+we will do for success. And so that just gives me a big picture. I could go look it up, but I like to ask my architect directly, you know, how many sprints are we looking at for this project, right? And so what did he say? Yep. He's saying, "Demo 3, I plan on five to six total sprints. Here's what they look like and they're defined." So we just know. I got about six sprints and the real success point would be this. And probably achievable in sprint four or five. My candidate take is this.
+
+00:37:16 - 00:38:21
+So anyway, real nice there. So anyway, let's go back and take copy this prompt. And now we're going to go to our builder's office, go across town, and we're going to knock on our builder's project and we going to start a new Codex project. So we're going to need a new chat. And so when I start a new chat, I need to point it into the file structure that we created. So in this case, I'm going to add a new project and it's going to give me a window to navigate to. And so in
+
+00:37:48 - 00:38:58
+this case, I'm going to go to 120X, want to go to my builds, and in my builds, I'm going to demo project three, and I'm going to open it there and that's where I want Codex to look for the files, okay? And then we've got that nice prompt from our architect and let's have him take a stab at it. Okay, it worked for a minute and 23 seconds on this. And essentially what it came up with was saying that it applied the architect pack discovery successfully after safe dry run. And this is the summary we're doing,
+
+00:38:23 - 00:39:40
+what V1 is and what it's not, demo assumptions, a sprint zero one acceptance, the gaps, contradictions, and the recommended sprint zero two, and then one environmental note, and it created a markdown folder for us to look at in here, created this project state of where we're at. And so, again, I would review this, and for the sake of the demo, I'm going to go ahead and copy this. I'm going to go back to my architect, and I'm going to tell them, "Hey, Codex just finished.
+
+00:39:01 - 00:40:00
+Here is his summary." And I will paste what Codex gave me. So, you see how I'm using the architect to sanity check the work that the builder did. And so, obviously, you're going to want to review it yourself. You'll catch things, but then you also want to go back to your architect and say, "How did we do here?" Because your architect is certainly going to see the big picture and catch things. I always go back and forth, and people say, "Oh, well, you're you know,
+
+00:39:32 - 00:40:37
+taking a lot of time, and you're using all these tokens to do it." But again, I have less errors on the back end. If I do it this way, I can almost build something with minimal errors or logic errors. It usually works pretty well, and it's already organized. So, I'll pause this as we're waiting for the architect to look and come up with other recommendations. Oh, and while it's cooking, I guess what I can show you, if I go back to the file structure for our demo project three, if I go to
+
+00:40:04 - 00:41:15
+planning and I go to sprints, here's sprint one, discovery architecture, and notice how this document got updated, right? Here's all the criteria for acceptance. Here's the blueprint that Codex read. Uh which is pretty powerful. Right? Look in how much more detail is there? Here's the handoff prompt that we gave it. There's just another copy there that we gave Codex. Here's the requirements. Again, that Codex is basing that first sprint off of. I would also like to rename
+
+00:40:41 - 00:41:52
+in Codex that sprint. Like here we are in demo project three. Here's the first chat that we're in. I can rename these chats and we'll call it sprint 001. Uh and you can name it whatever, but whatever is kind of applicable discovery and architecture. And then that way when you're over here, every time you're doing a new feature, a new sprint, I start a new chat underneath the project. And so for example, if you look at this 120 project launcher, I've got 15 sprints. You can
+
+00:41:18 - 00:42:20
+see all the sprints and what I did and what they were named, right? Just keeps it nice and organized and you can see what you did when. And so that was the first sprint that we did on Codex. Let's go back. How's our architect doing? Did it complete? Yes, it completed. What did it recommend here? It said Codex did the right thing. Reviewed it, didn't start coding. I'm treating Codex note about the stale read me as part of the cleanup. Codex summary is clean. I created the next architect pack. So when now we're
+
+00:41:48 - 00:43:01
+on architect pack two. And what sprint two will do, this is the first implementation. It tells Codex to build this. Important scope call. Intentionally made this to turn this into demo save. And so here is the nice prompt that it gave me to give Codex. And we can just go back to the builder now. Oh, before we do that, we need to take our architect pack 002, right? And we need to save it in the root of our demo project three. It'll go right next to the other architect pack. So, we'll save that
+
+00:42:26 - 00:43:33
+there. Let me go look in the file structure and I'll show you where it is. So, demo project three. And if you look at the root level, you will see architect pack two sample bundle parts of the newsletter. And that's what it looks like inside. Everything You certainly could study this. But for the sake of the demo, I'm going to assume all of this is good. But certainly in real life, I would be reviewing all of this to make sure it's doing what we said we're going to do. And then see back to the architect.
+
+00:42:59 - 00:44:15
+And we put the pack in the right place. Now, we will copy the prompt that we will put into Codex. And so, there's my builder in Codex. I'm going to start a new chat cuz we did sprint one. So, I'm going to go up to demo project new chat. We're still in the same demo project three. I'm going to paste this. And then, I'm going to copy this. So, it makes sense here. And then, I'm going to rename this sprint and then I copy that 002 sample bundle parcel archer newsletter.
+
+00:43:37 - 00:44:38
+Save. Hey, and do you see how I've organized that now? I just renamed that so I know what this is the current sprint that I'm in. And so, I just get a fresh context every time. And so, we know what the sprint is. And then, I'll come back to you when this gets done. Okay, minute and 10 seconds. And what did we get here? He applied the architect pack what sprint two is building. Again, this is the applied it after a safe dry run. So, it did a dry run, said it was okay, and then he hasn't started
+
+00:44:09 - 00:45:13
+implementing yet. So, here's the primary command explicitly out of scope. I would be reviewing this, but for the sake of time, I'm just kind of speeding through this. Here's the implementation plan. These are files it expects to create and modify. Risks and ambiguities looks good to me. I'm going to copy that. I'm going to go back to my architect and say, here is his summary of sprint two. And so, our architect says, "Hey, good. Codex understood the sprint correctly and stopped at the checkpoint. My read,
+
+00:44:41 - 00:45:30
+this is ready for implementation. The only real decision point is the Excel dependency. Using this is reasonable for this demo. It's better than pretending Pretending I would approve it. Okay, good. I agree with that." And look, it gives me another prompt to go give to the builder. My architect is doing the heavy lifting for me, and this is what I love about it. This is why these tools are so great. One note, it says the factless tool is not in a get repo, and that's fine because I'm doing a demo.
+
+00:45:05 - 00:46:12
+I'll I'll show that in another video. But, once we start getting more, we need to commit these things to GitHub eventually, right? But, that's another video. So, after sprint two finishes, I want Codex to show us this, and that's cool. And so, I'm going to copy this and then go back to our builder. And in the same sprint, because we're didn't start a new one, right? I'm going to continue with my sprint two to continue and do what the architect asked us to do. And
+
+00:45:39 - 00:47:11
+see how he does. Okay, so that took 5 minutes and 25 seconds. But, our builder did looks like a pretty good job. This is everything that it created from source-wise. Modified these documents to these command runs, gave me these test results, gave me some things to look at from HTML, which we'll look at here in a second. Some known limitations. So, I will take this, do an audit check with our architect to see how they did. Say here is the results of sprint two from Codex. And while it's cooking, I'll go ahead
+
+00:46:25 - 00:47:47
+and look at the file structure just to show you see for the output of the sprint two and then for the outputs demo weekly, he gave me two HTMLs. So, this is what the monthly dashboard looks like. Again, this is just a concept in sprint two. We wanted to come up with some concepts. And then, if I also look at the other HTML, the weekly newsletter, it looks like this. So, again, this is very basic information, but it shows you in sprint two, it's giving us some ideas of what our output could look like for
+
+00:47:07 - 00:48:12
+our application. So, that's good there. Let's see how the architect is coming along. It's still thinking, and so I'll pause and bring it back when it's done. And so, here it took a minute and 26 seconds. Sprint two was a success. Sprint two landed exactly where it should. Important thing is we now have working software, not just planning docs and just synthetic reporting bundle. And then, it went ahead and created the architect pack 003 for executive output polish. Codex state and scope, the main
+
+00:47:40 - 00:48:37
+issue is now engineering its demo quality. Right now, we need to make it generate newsletter. Sprint three direction is this. Should be focusing on this. Again, I know I'm kind of going through this quick because I'm just trying to save time. But, it just shows you how good the architect is when you set it up. How powerful it can be in setting it up. And so, let's go ahead and download the Architect Pack 3. And then we'll stop the demo here, but I'm just showing you now for my third
+
+00:48:08 - 00:49:35
+one, I would put it at the root level at my demo project. And then I would copy the prompt to give my Builder Codex. I would head into Codex. Start a new chat in my demo project 3. Would paste that there. I'm going to copy this for my sprint name. And then let the Builder go to work. And I'm going to rename this sprint 003. And it is executive output polish. We'll save it and we'll go from there. So, you get the idea, right? So, we go back and forth. We're just giving Codex the Builder
+
+00:48:53 - 00:49:57
+specific plans to do for specific times and specific things. You keep things organized. And then when it's done, it updates the folder structure so that the context never gets lost. And to me, I just think this is one of the most powerful ways to build project. I've built like I said, 35 projects. In particular, this last 12 months, I built some really intense enterprise level projects. And I couldn't have done it without doing this level of organization. Now, you're looking at workflows that we're trying
+
+00:49:26 - 00:50:26
+to solve, you could learn how to do this, and then I could teach you how to learn. You got people in-house right now that could do this for you. If not yourself, I guarantee you got a couple hard chargers in there that could figure this out. And the key is it's great if you know a little bit about software development and engineering, but the big thing is can you understand the big picture? If you can see the big picture, can you organize things? That is the key to building quality software and using
+
+00:49:55 - 00:50:51
+these AI tools, right? And so again, it's a great place to start. And of course, I can do this for you, but I think it'd be more important and more exciting is if you learn how to do this yourself for small little projects, for small little challenges that you have within an organization. So, the key I want you to walk away with is you don't need to become a full-time software engineer to start thinking this way, but you do need to learn how to define the workflows, how to define your rules, your data, your risk,
+
+00:50:24 - 00:51:23
+your acceptance criteria and clearly enough for the AI builder to execute, right? So, the main idea I want you to walk away from this video is don't ask an AI builder to build from a vague idea, right? You've got to use your architect. And if you're an owner, an operator, a consultant, you sell capable non-coder, the opportunity's just not to learn how to code. This is how to solve real business problems, real bottlenecks in your organization in-house. You can learn how to architect these
+
+00:50:53 - 00:51:52
+workflows and use these tools using this method. There's nothing stopping you and like except someone showing you how to do it. Create the requirements, you create the blueprint, you create the acceptance criteria, the risk, the decisions, the validation, the handoff prompt. All of that can be done with your architect using a large language model. Then let Codex or Claude code or another builder execute it. Work in manageable chunks. Keep it in a disciplined flow. The handoff is not the chat. The handoff is a folder file
+
+00:51:23 - 00:52:17
+system that's going to keep everything organized for you. I can teach you I can certainly build this in-house for you, but I like to teach your people how to fish as well. And that's what we're doing here. I'm starting a builder cohort for 10 people. It's in a beta program right now, but I'm going to teach this method hands-on with you to show you. You bring a workflow. We're going to have 10 owner operators, CEOs, operators, department heads, people within organizations.
+
+00:51:50 - 00:52:50
+10 people from different organizations and we'll take whatever workflow bottleneck that you have and we'll build a real working micro applications for you in here. I'd love to be a part of it. You can go to 120x.ai and look at the builder cohort. Again, it's four four weeks long. 10 people, couple times a week, shouldn't take up more than I would say 7 to 8 hours per week. They can get you there in short amount of time and teach you this skill that can totally transform your organization. If you want
+
+00:52:20 - 00:52:35
+to learn more, click the links in the bio below or links in the notes and I look forward to seeing you in that builder cohort.

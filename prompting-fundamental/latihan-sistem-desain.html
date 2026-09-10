@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏗️ Latihan Sistem Desain & Arsitektur</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .header {
+      text-align: center; padding: 30px 20px;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-radius: 16px; margin-bottom: 24px;
+      border: 1px solid #475569;
+    }
+    .header h1 { font-size: 1.8em; color: #60a5fa; }
+    .header p { color: #94a3b8; font-size: 0.95em; }
+
+    .progress-section {
+      background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 24px;
+      border: 1px solid #334155;
+    }
+    .progress-bar { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin: 12px 0; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #60a5fa, #a78bfa); border-radius: 4px; transition: width 0.5s ease; width: 0%; }
+    .progress-stats { display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.9em; }
+
+    .soal-card {
+      background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 20px;
+      border: 1px solid #334155; display: none;
+    }
+    .soal-card.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; margin-bottom: 12px; }
+    .badge-dasar { background: #1e3a5f; color: #60a5fa; }
+    .badge-menengah { background: #5b3a1e; color: #fbbf24; }
+    .badge-lanjut { background: #5b1e2e; color: #f87171; }
+
+    .soal-card h3 { font-size: 1.2em; margin-bottom: 8px; color: #60a5fa; }
+    .soal-desc { color: #94a3b8; margin-bottom: 16px; padding: 16px; background: #0f172a; border-radius: 8px; border-left: 4px solid #60a5fa; }
+    .soal-hint { background: #1e3a5f; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 0.9em; color: #93c5fd; }
+
+    .diagram-area {
+      background: #0f172a; border-radius: 8px; padding: 20px; margin-bottom: 16px;
+      font-family: 'Consolas', 'Courier New', monospace; font-size: 14px;
+      overflow-x: auto; border: 1px solid #334155; color: #a78bfa;
+    }
+
+    .prompt-area { margin: 16px 0; }
+    .prompt-area label { display: block; font-weight: 600; margin-bottom: 6px; color: #94a3b8; }
+    .prompt-area textarea {
+      width: 100%; min-height: 100px; padding: 12px;
+      border: 2px solid #334155; border-radius: 8px;
+      background: #0f172a; color: #e2e8f0;
+      font-family: 'Consolas', 'Courier New', monospace; font-size: 14px;
+      resize: vertical; transition: border-color 0.2s;
+    }
+    .prompt-area textarea:focus { outline: none; border-color: #60a5fa; }
+
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .btn {
+      padding: 10px 20px; border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary { background: linear-gradient(135deg, #60a5fa, #a78bfa); color: #0f172a; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(96,165,250,0.4); }
+    .btn-secondary { background: #334155; color: #94a3b8; }
+    .btn-secondary:hover { background: #475569; }
+    .btn-success { background: #10b981; color: white; }
+    .btn-warning { background: #f59e0b; color: #0f172a; }
+
+    .feedback { margin-top: 16px; padding: 16px; border-radius: 8px; display: none; }
+    .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+    .feedback-baik { background: #064e3b; border: 1px solid #10b981; color: #6ee7b7; }
+    .feedback-kurang { background: #5b1e2e; border: 1px solid #f87171; color: #fca5a5; }
+
+    .jawaban {
+      margin-top: 12px; padding: 16px; background: #0f172a; color: #60a5fa;
+      border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px; white-space: pre-wrap; display: none; border: 1px solid #334155;
+    }
+    .jawaban.show { display: block; }
+
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 24px; padding-top: 20px; border-top: 1px solid #334155; }
+
+    .score-container { text-align: center; padding: 40px 20px; display: none; }
+    .score-container.show { display: block; animation: fadeIn 0.6s ease; }
+    .score-circle {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      display: flex; align-items: center; justify-content: center;
+      margin: 20px auto; color: #0f172a; font-size: 2.5em; font-weight: bold;
+    }
+
+    .ceklis-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+    .ceklis-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #60a5fa; }
+    .ceklis-item label { cursor: pointer; color: #94a3b8; }
+    .ceklis-item.selesai label { text-decoration: line-through; color: #475569; }
+
+    @media (max-width: 600px) { .header h1 { font-size: 1.3em; } .soal-card { padding: 16px; } .btn { width: 100%; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏗️ Latihan Sistem Desain & Arsitektur</h1>
+      <p>Belajar merancang arsitektur aplikasi sambil praktik prompt engineering</p>
+    </div>
+    <div class="progress-section">
+      <h3>📊 Progress</h3>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-stats">
+        <span>Selesai: <strong id="selesaiCount">0</strong>/<span id="totalSoal">8</span></span>
+        <span>Skor: <strong id="skorDisplay">0</strong></span>
+      </div>
+    </div>
+    <div id="soalContainer"></div>
+    <div class="score-container" id="scoreContainer">
+      <h2 style="color:#60a5fa;">🎉 Selamat! Kamu sudah menguasai dasar sistem desain!</h2>
+      <div class="score-circle" id="scoreCircle">0%</div>
+      <p id="scoreMessage" style="color:#94a3b8;">Sekarang kamu bisa merancang arsitektur aplikasi sambil prompting!</p>
+      <button class="btn btn-primary" onclick="resetLatihan()">🔄 Ulangi Latihan</button>
+    </div>
+  </div>
+
+  <script>
+    const soalData = [
+      { id: 1, title: "🏠 Arsitektur = Bangun Rumah", level: "Dasar", levelClass: "badge-dasar",
+        diagram: "+---------------------------------------+\n|         ARSITEKTUR APLIKASI           |\n|  HTML (Struktur) = Pondasi & Tembok   |\n|  CSS (Tampilan)  = Cat & Dekorasi    |\n|  JS (Logika)     = Listrik & Pipa    |\n+---------------------------------------+",
+        desc: "Prompt: Minta AI jelaskan arsitektur aplikasi catatan dengan analogi bangun rumah.\nTulis prompt yang mencakup: DESKRIPSI, 3 FITUR, STRUKTUR (HTML+CSS+JS), dan ALUR (Input-Proses-Output).",
+        hint: "Gunakan template: Deskripsi → Fitur → Struktur File → Alur",
+        jawabanContoh: "Saya ingin membuat aplikasi catatan.\n\nDESKRIPSI:\nAplikasi untuk menulis dan menyimpan catatan harian.\n\nFITUR:\n\u2022 Tambah catatan baru\n\u2022 Lihat daftar catatan\n\u2022 Hapus catatan\n\nSTRUKTUR:\n\u2022 index.html \u2192 struktur halaman\n\u2022 style.css \u2192 styling\n\u2022 app.js \u2192 logika\n\nALUR:\nINPUT: User menulis teks \u2192 klik Tambah\nPROSES: JS simpan ke array \u2192 render ulang\nOUTPUT: Catatan muncul di daftar" },
+      { id: 2, title: "📥 Input \u2192 Proses \u2192 Output", level: "Dasar", levelClass: "badge-dasar",
+        diagram: "+----------+     +----------+     +----------+\n|  INPUT   | --> |  PROSES  | --> |  OUTPUT  |\n| User     |     | Kode JS  |     | Tampilan |\n| klik/isi |     | ngitung  |     | di layar |\n+----------+     +----------+     +----------+",
+        desc: "Untuk aplikasi KONVERSI SUHU, tuliskan:\n1. INPUT: apa yang user lakukan?\n2. PROSES: bagaimana JS memproses?\n3. OUTPUT: apa yang muncul?\nLalu buat prompt ke AI untuk bikin aplikasi ini dengan struktur Input-Proses-Output.",
+        hint: "Pisahkan dengan jelas: INPUT (dari user), PROSES (di JS), OUTPUT (ke layar)",
+        jawabanContoh: "INPUT:\n- User pilih jenis konversi (C\u2192F atau F\u2192C)\n- User masukkan angka suhu\n- User klik tombol 'Konversi'\n\nPROSES:\n- JS baca input user\n- Jika C\u2192F: (celcius x 9/5) + 32\n- Jika F\u2192C: (fahrenheit - 32) x 5/9\n- Bulatkan hasil 2 desimal\n\nOUTPUT:\n- Tampilkan hasil konversi\n- Contoh: '30\u00b0C = 86\u00b0F'" },
+      { id: 3, title: "🔧 1 Function = 1 Tugas", level: "Dasar", levelClass: "badge-dasar",
+        diagram: "+---------------------------------------+\n|  PRINSIP: 1 FUNCTION = 1 TUGAS       |\n|                                       |\n|  ❌ SATU FUNCTION BESAR:              |\n|  function handleSemua() {             |\n|    ambil data; validasi; hitung;      |\n|    simpan; tampilkan;                 |\n|  }                                    |\n|                                       |\n|  ✅ PISAH:                            |\n|  function ambilData() { ... }        |\n|  function validasi() { ... }         |\n|  function hitung() { ... }           |\n+---------------------------------------+",
+        desc: "Buat prompt untuk aplikasi TODO LIST dengan FUNCTION TERPISAH:\n\u2022 tambahTugas(teks) \u2192 1 tugas: menambah\n\u2022 hapusTugas(id) \u2192 1 tugas: menghapus\n\u2022 toggleSelesai(id) \u2192 1 tugas: centang\n\u2022 renderTugas() \u2192 1 tugas: tampilkan\n\u2022 simpanData() \u2192 1 tugas: simpan ke localStorage",
+        hint: "Sebutkan SETIAP function dengan jelas: [nama function] \u2192 [1 tugas spesifik]",
+        jawabanContoh: "Buat aplikasi Todo List dengan function terpisah:\n\n1. tambahTugas(teks) \u2192 menambah tugas baru ke array\n2. hapusTugas(id) \u2192 menghapus tugas berdasarkan id\n3. toggleSelesai(id) \u2192 mengubah status selesai/belum\n4. renderTugas() \u2192 menampilkan semua tugas ke HTML\n5. simpanData() \u2192 menyimpan semua tugas ke localStorage\n\nSetiap function hanya mengerjakan SATU tugas. Satu function tidak boleh melakukan 2 hal sekaligus." },
+      { id: 4, title: "📁 Struktur Folder Rapi", level: "Menengah", levelClass: "badge-menengah",
+        diagram: "+---------------------------------------+\n|  STRUKTUR FOLDER APLIKASI             |\n|                                       |\n|  aplikasi-ku/                         |\n|  +-- index.html    (struktur)         |\n|  +-- style.css     (tampilan)         |\n|  +-- app.js        (logika utama)     |\n|                                       |\n|  UNTUK YANG LEBIH BESAR:              |\n|  +-- index.html                       |\n|  +-- css/style.css                    |\n|  +-- js/data.js                       |\n|  +-- js/utils.js                      |\n|  +-- js/components.js                 |\n|  +-- js/app.js                        |\n+---------------------------------------+",
+        desc: "Prompt AI untuk merancang STRUKTUR FOLDER aplikasi MANAJEMEN KEUANGAN:\n\nMinta AI untuk:\n1. Tentukan file apa saja yang diperlukan\n2. Jelaskan isi masing-masing file\n3. Urutan load file (HTML harus load file dalam urutan yang benar)\n4. Contoh data dummy (3-5 transaksi)",
+        hint: "Minta AI: 'JANGAN LANGSUNG KASIH KODE. Bantu desain struktur foldernya dulu.'",
+        jawabanContoh: "Saya ingin membuat aplikasi Manajemen Keuangan.\n\nTOLONG JANGAN LANGSUNG NGASIH KODE.\n\nBantu desain struktur foldernya dulu:\n1. File apa saja yang diperlukan?\n2. Masing-masing file isinya apa?\n3. Bagaimana urutan load file di HTML?\n4. Berikan 3 contoh data dummy transaksi\n\nSetelah saya setuju, baru kita lanjut ke kode." },
+      { id: 5, title: "💾 State Management Terpusat", level: "Menengah", levelClass: "badge-menengah",
+        diagram: "+---------------------------------------+\n|  STATE MANAGEMENT: DATA DI 1 TEMPAT   |\n|                                       |\n|  const State = {                      |\n|    data: [],                          |\n|    tambah(item) { ... },              |\n|    hapus(id) { ... },                 |\n|    simpan() { ... },                  |\n|    render() { ... }                   |\n|  };                                   |\n|                                       |\n|  State.tambah(...) --> otomatis       |\n|  -> simpan ke localStorage            |\n|  -> render ulang UI                   |\n+---------------------------------------+",
+        desc: "Buat prompt untuk aplikasi DAFTAR BELANJA dengan State Management:\n\nGunakan XML tags:\n<instructions>\n  Buat aplikasi daftar belanja dengan State object\n</instructions>\n\nBuat function di dalam State:\n\u2022 tambahItem(item)\n\u2022 hapusItem(id)\n\u2022 getTotal()\n\u2022 simpanData()\n\u2022 muatData()\n\u2022 render()",
+        hint: "Gunakan XML tags dan minta State object dengan method terpisah",
+        jawabanContoh: "<instructions>\n  Buat aplikasi daftar belanja dengan State management terpusat.\n  Semua data harus di 1 tempat (State object).\n</instructions>\n\n<structure>\n  State.tambahItem(item) \u2192 tambah ke array + simpan\n  State.hapusItem(id) \u2192 hapus dari array + simpan\n  State.getTotal() \u2192 hitung total harga\n  State.simpanData() \u2192 simpan ke localStorage\n  State.muatData() \u2192 load dari localStorage\n  State.render() \u2192 tampilkan ulang semua UI\n</structure>\n\n<rules>\n  - Jangan ada data di luar State object\n  - Setiap method hanya 1 tugas\n  - render() dipanggil otomatis setelah tambah/hapus\n</rules>" },
+      { id: 6, title: "📐 Desain Arsitektur + Prompt Chaining", level: "Menengah", levelClass: "badge-menengah",
+        diagram: "+---------------------------------------+\n|  PROMPT CHAINING UNTUK ARSITEKTUR    |\n|                                       |\n|  LANGKAH 1: Desain Arsitektur        |\n|  \"Bantu desain struktur aplikasi...\"  |\n|         |                            |\n|  LANGKAH 2: Implementasi Tahap 1    |\n|  \"Buat HTML structure...\"            |\n|         |                            |\n|  LANGKAH 3: Implementasi Tahap 2    |\n|  \"Tambahkan CSS styling...\"          |\n|         |                            |\n|  LANGKAH 4: Implementasi Tahap 3    |\n|  \"Tambahkan JavaScript logic...\"     |\n+---------------------------------------+",
+        desc: "Buat 3 prompt BERTAHAP (chaining) untuk aplikasi PENGELOLA TUGAS:\n\nLANGKAH 1: Minta desain arsitektur (data, fitur, struktur, flow)\nLANGKAH 2: Minta HTML + CSS (berdasarkan desain)\nLANGKAH 3: Minta JavaScript + localStorage (berdasarkan desain)",
+        hint: "Setiap prompt bergantung pada hasil prompt sebelumnya. Jangan minta semua dalam 1 prompt!",
+        jawabanContoh: "LANGKAH 1:\n\"Saya mau bikin aplikasi Pengelola Tugas. Bantu desain:\n1. Struktur data (properti apa saja?)\n2. Fitur yang diperlukan\n3. Struktur file dan folder\n4. Flow: Input \u2192 Proses \u2192 Output\"\n\nLANGKAH 2:\n\"Berdasarkan desain di atas, buatkan:\n1. index.html dengan struktur halaman\n2. style.css dengan styling modern (warna biru/putih)\nPastikan form input, daftar tugas, dan tombol filter sudah ada.\"\n\nLANGKAH 3:\n\"Sekarang tambahkan JavaScript:\n\u2022 CRUD tugas (tambah, hapus, toggle selesai)\n\u2022 Simpan ke localStorage\n\u2022 Filter tugas (semua/aktif/selesai)\nSetiap function 1 tugas.\"" },
+      { id: 7, title: "🏛️ Arsitektur Multi-File + Self-Correction", level: "Lanjut", levelClass: "badge-lanjut",
+        diagram: "+---------------------------------------+\n|  ARSITEKTUR MULTI-FILE               |\n|                                       |\n|  dashboard-keuangan/                  |\n|  +-- index.html                       |\n|  +-- css/style.css                    |\n|  +-- js/                              |\n|  |   +-- data.js    (CRUD + storage)  |\n|  |   +-- utils.js   (format helpers)  |\n|  |   +-- components.js (UI render)    |\n|  |   +-- app.js     (main logic)      |\n|                                       |\n|  Setelah selesai, CEK:               |\n|  1. Semua function 1 tugas?          |\n|  2. Data terpusat?                    |\n|  3. Tidak ada kode duplikat?          |\n+---------------------------------------+",
+        desc: "Buat prompt untuk DASHBOARD KEUANGAN dengan ARSITEKTUR MULTI-FILE + SELF-CORRECTION.\n\nMinta AI:\n1. Buat 5 file terpisah (index.html, style.css, data.js, utils.js, components.js, app.js)\n2. Setelah selesai, minta AI review sendiri:\n   - Apakah ada function yang punya lebih dari 1 tugas?\n   - Apakah ada kode duplikat?\n   - Apakah ada bug potensial?",
+        hint: "Gabungkan arsitektur multi-file dengan self-correction (minta AI cek sendiri hasilnya)",
+        jawabanContoh: "<instructions>\n  Buat aplikasi Dashboard Keuangan dengan arsitektur multi-file:\n</instructions>\n\n<files>\n  1. index.html \u2192 struktur halaman\n  2. css/style.css \u2192 styling\n  3. js/data.js \u2192 CRUD + localStorage\n  4. js/utils.js \u2192 formatRupiah, formatTanggal\n  5. js/components.js \u2192 render UI components\n  6. js/app.js \u2192 main logic\n</files>\n\n<features>\n  - CRUD transaksi (tambah, lihat, hapus)\n  - 4 kartu ringkasan (saldo, pemasukan, pengeluaran, total)\n  - Filter berdasarkan bulan dan kategori\n  - Export CSV\n</features>\n\n<verification>\n  Setelah selesai, periksa kembali:\n  1. Apakah setiap function hanya 1 tugas?\n  2. Apakah ada kode duplikat?\n  3. Apakah semua fitur berfungsi?\n  Perbaiki jika ada masalah.\n</verification>" },
+      { id: 8, title: "🎪 Final Challenge: Arsitektur + Prompting Lengkap", level: "Lanjut", levelClass: "badge-lanjut",
+        diagram: "+---------------------------------------+\n|  FINAL CHALLENGE                      |\n|                                       |\n|  Buat prompt LENGKAP dengan:         |\n|                                       |\n|  <persona> ... </persona>            |\n|  <instructions> ... </instructions>  |\n|  <reasoning> ... </reasoning>        |\n|  <structure> ... </structure>        |\n|  <examples> ... </examples>          |\n|  <verification> ... </verification>  |\n|                                       |\n|  TOPIK: APLIKASI CATATAN KEUANGAN    |\n|  (single user, localStorage)         |\n+---------------------------------------+",
+        desc: "Buat 1 PROMPT LENGKAP untuk aplikasi CATATAN KEUANGAN dengan:\n\n1. <persona> Peran AI\n2. <instructions> Instruksi utama\n3. <reasoning> Minta AI jelaskan langkah2 dulu\n4. <structure> Struktur folder + function\n5. <examples> 1 contoh function\n6. <output_format> Format output (tabel + kode)\n7. <verification> Minta AI cek sendiri hasilnya\n\nFitur: tambah transaksi, lihat daftar, hapus, filter, total saldo",
+        hint: "Gabungkan SEMUA yang sudah dipelajari: Persona + CoT + XML tags + Struktur + Self-Correction",
+        jawabanContoh: "<persona>\n  Kamu adalah arsitek aplikasi web senior.\n</persona>\n\n<instructions>\n  Buat aplikasi Catatan Keuangan dengan struktur multi-file.\n</instructions>\n\n<reasoning>\n  Sebelum kode, jelaskan:\n  1. Struktur data transaksi\n  2. File apa saja yang diperlukan\n  3. Urutan pembuatan\n</reasoning>\n\n<structure>\n  index.html, css/style.css, js/data.js, js/components.js, js/app.js\n</structure>\n\n<features>\n  - Tambah transaksi (tanggal, kategori, jumlah, deskripsi)\n  - Lihat daftar transaksi\n  - Hapus transaksi\n  - Filter berdasarkan kategori\n  - Tampilkan total saldo\n  - Simpan ke localStorage\n</features>\n\n<examples>\n  <example>\n    Input: tambahTransaksi({ kategori: \"Makanan\", jumlah: 50000 })\n    Output: Transaksi muncul di daftar, saldo terupdate\n  </example>\n</examples>\n\n<output_format>\n  Berikan kode dalam file terpisah.\n  Setiap function hanya 1 tugas.\n</output_format>\n\n<verification>\n  Setelah selesai, cek:\n  1. Semua function 1 tugas?\n  2. Data tersimpan di localStorage?\n  3. Filter berfungsi?\n  Perbaiki jika ada masalah.\n</verification>" }
+    ];
+
+    let soalTerjawab = {};
+    let skor = 0;
+    let currentSoal = 0;
+
+    function renderSoal() {
+      const container = document.getElementById('soalContainer');
+      container.innerHTML = '';
+      document.getElementById('totalSoal').textContent = soalData.length;
+      soalData.forEach((soal, index) => {
+        const div = document.createElement('div');
+        div.className = 'soal-card' + (index === 0 ? ' active' : '');
+        div.id = `soal-${index}`;
+        div.innerHTML = `
+          <span class="badge ${soal.levelClass}">${soal.level}</span>
+          <h3>${soal.title}</h3>
+          <div class="diagram-area">${soal.diagram}</div>
+          <div class="soal-desc">${soal.desc}</div>
+          <div class="soal-hint"><strong>💡 Petunjuk:</strong> ${soal.hint}</div>
+          <div class="prompt-area">
+            <label for="jawaban-${index}">✍️ Tulis prompt/desain kamu:</label>
+            <textarea id="jawaban-${index}" placeholder="Tulis prompt atau desain arsitektur..." oninput="checkProgress()"></textarea>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="toggleJawaban(${index})">👁️ Lihat Contoh</button>
+            <button class="btn btn-success" onclick="nilaiJawaban(${index})">✅ Cek Jawaban</button>
+          </div>
+          <div class="jawaban" id="jawaban-${index}-contoh"><strong>📝 Contoh:</strong> ${soal.jawabanContoh}</div>
+          <div class="feedback" id="feedback-${index}"></div>
+          <div class="ceklis-item" id="ceklis-${index}">
+            <input type="checkbox" id="cek-${index}" onchange="checkProgress()">
+            <label for="cek-${index}">Tandai selesai (setelah paham)</label>
+          </div>`;
+        container.appendChild(div);
+      });
+    }
+
+    function showSoal(index) {
+      document.querySelectorAll('.soal-card').forEach((card, i) => card.classList.toggle('active', i === index));
+      currentSoal = index;
+      const counter = document.getElementById('soalCounter');
+      if (counter) counter.textContent = `${index + 1} / ${soalData.length}`;
+    }
+    function prevSoal() { if (currentSoal > 0) showSoal(currentSoal - 1); }
+    function nextSoal() { if (currentSoal < soalData.length - 1) showSoal(currentSoal + 1); }
+
+    function toggleJawaban(index) {
+      document.getElementById(`jawaban-${index}-contoh`).classList.toggle('show');
+    }
+
+    function nilaiJawaban(index) {
+      const textarea = document.getElementById(`jawaban-${index}`);
+      const feedback = document.getElementById(`feedback-${index}`);
+      const jawaban = textarea.value.trim();
+      let poin = 0, pesan = '', saran = [];
+
+      if (jawaban.length < 30) {
+        pesan = '❌ Masih terlalu pendek. Jelaskan lebih detail!';
+        saran.push('Tambahkan struktur folder yang jelas');
+        saran.push('Sebutkan function-function yang diperlukan');
+      } else { poin += 1; pesan = '✅ Panjang sudah cukup!'; }
+
+      if (jawaban.includes('input') || jawaban.includes('INPUT')) { poin += 1; pesan += '<br>✅ Ada bagian INPUT!'; }
+      else saran.push('Tambahkan bagian INPUT');
+
+      if (jawaban.includes('proses') || jawaban.includes('PROSES')) { poin += 1; pesan += '<br>✅ Ada bagian PROSES!'; }
+      else saran.push('Tambahkan bagian PROSES');
+
+      if (jawaban.includes('output') || jawaban.includes('OUTPUT')) { poin += 1; pesan += '<br>✅ Ada bagian OUTPUT!'; }
+      else saran.push('Tambahkan bagian OUTPUT');
+
+      if (jawaban.includes('fitur') || jawaban.includes('FITUR')) { poin += 1; pesan += '<br>✅ Ada daftar fitur!'; }
+      else saran.push('Tambahkan daftar fitur');
+
+      if (jawaban.includes('index.html') || jawaban.includes('.js') || jawaban.includes('.css')) {
+        poin += 1; pesan += '<br>✅ Ada struktur file!';
+      } else saran.push('Sebutkan file-file yang diperlukan (.html, .css, .js)');
+
+      if (poin >= 4) {
+        feedback.className = 'feedback show feedback-baik';
+        feedback.innerHTML = `<p>${pesan}</p><p>🎉 Desain arsitektur yang bagus! Coba prompt ini ke AI.</p>`;
+        simpanSkor(index, 2);
+      } else {
+        feedback.className = 'feedback show feedback-kurang';
+        feedback.innerHTML = `<p>${pesan}</p><p>💪 Masih kurang:</p><ul>${saran.map(s => `<li>${s}</li>`).join('')}</ul><p>Lihat contoh untuk referensi.</p>`;
+        simpanSkor(index, 1);
+      }
+      checkProgress();
+    }
+
+    function simpanSkor(index, nilai) {
+      if (!soalTerjawab[index] || soalTerjawab[index] < nilai) soalTerjawab[index] = nilai;
+      updateSkor();
+    }
+
+    function updateSkor() {
+      let total = 0;
+      for (let i = 0; i < soalData.length; i++) total += soalTerjawab[i] || 0;
+      skor = total;
+      document.getElementById('skorDisplay').textContent = skor + '/' + (soalData.length * 2);
+    }
+
+    function checkProgress() {
+      let selesai = 0;
+      for (let i = 0; i < soalData.length; i++) {
+        const cek = document.getElementById(`cek-${i}`);
+        if (cek && cek.checked) { selesai++; document.getElementById(`ceklis-${i}`).classList.add('selesai'); }
+      }
+      document.getElementById('selesaiCount').textContent = selesai;
+      document.getElementById('progressFill').style.width = (selesai / soalData.length * 100) + '%';
+      if (selesai === soalData.length) showScore();
+    }
+
+    function showScore() {
+      document.getElementById('scoreContainer').classList.add('show');
+      const pct = Math.round((skor / (soalData.length * 2)) * 100);
+      document.getElementById('scoreCircle').textContent = pct + '%';
+      const msgs = ['💪 Ayo semangat! Coba ulangi.', '👍 Lumayan, tingkatkan lagi.', '🌟 Bagus! Hampir sempurna!', '🏆 Arsitek handal! Kamu siap bikin aplikasi kompleks!'];
+      document.getElementById('scoreMessage').textContent = msgs[Math.min(3, Math.floor(pct / 25))];
+    }
+
+    function resetLatihan() {
+      soalTerjawab = {}; skor = 0;
+      document.getElementById('scoreContainer').classList.remove('show');
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('selesaiCount').textContent = '0';
+      document.getElementById('skorDisplay').textContent = '0';
+      soalData.forEach((_, i) => {
+        const ta = document.getElementById(`jawaban-${i}`); if (ta) ta.value = '';
+        const fb = document.getElementById(`feedback-${i}`); if (fb) fb.className = 'feedback';
+        const ck = document.getElementById(`cek-${i}`); if (ck) ck.checked = false;
+        const cl = document.getElementById(`ceklis-${i}`); if (cl) cl.classList.remove('selesai');
+        const ct = document.getElementById(`jawaban-${i}-contoh`); if (ct) ct.classList.remove('show');
+      });
+      showSoal(0);
+    }
+
+    renderSoal();
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('soalContainer');
+      const nav = document.createElement('div');
+      nav.className = 'nav-buttons';
+      nav.innerHTML = `<button class="btn btn-secondary" onclick="prevSoal()">◀ Sebelumnya</button><span id="soalCounter">1 / ${soalData.length}</span><button class="btn btn-primary" onclick="nextSoal()">Selanjutnya ▶</button>`;
+      container.appendChild(nav);
+    });
+  </script>
+</body>
+</html>
