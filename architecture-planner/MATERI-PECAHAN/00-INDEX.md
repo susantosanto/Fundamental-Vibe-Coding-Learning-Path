@@ -67,6 +67,11 @@
 | 19 | [Glosarium Lengkap](19-Glosarium-Lengkap.md) | `19-Glosarium-Lengkap.md` | Definisi semua istilah teknis yang digunakan |
 | 24 | [Referensi & Sumber](24-Referensi-Sumber.md) | `24-Referensi-Sumber.md` | 12 sumber utama dan konsep pendukung |
 
+### BAGIAN 7.5: SKILL & WORKFLOW LENGKAP (Bab 25) ⭐ BARU
+| No | Judul | File | Deskripsi |
+|----|-------|------|-----------|
+| 25 | [Skill Lengkap: Workflow 12 Skill dari Ide sampai Production](25-Skill-Lengkap-Workflow.md) | `25-Skill-Lengkap-Workflow.md` | 6 skill baru (Scaffolder, Sprint Planner, State Keeper, Acceptance Runner, Security Auditor, Deploy Gate) + peta alur 12 skill lengkap dengan kontrak folder & referensi bab |
+
 ### BAGIAN 7: SYSTEM DESIGN & PRODUCTION (Bab 20-23) ⭐ BARU
 | No | Judul | File | Deskripsi |
 |----|-------|------|-----------|
@@ -81,7 +86,7 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Bab | 24 bab |
+| Total Bab | 25 bab |
 | Total Baris | 4.524 baris |
 | Sumber Utama | 12 sumber |
 | Bahasa | Indonesia |
@@ -108,9 +113,10 @@
 2. Ikuti Bab 6 (Buat folder scaffold)
 3. Ikuti Bab 8 (Workflow 6 tahap)
 4. Gunakan Bab 11 (Template prompt)
+5. Gunakan Bab 25 (Peta 12 skill + skill yang belum ada)
 
 ---
 
-**📅 Terakhir diperbarui:** Agustus 2026  
+**📅 Terakhir diperbarui:** September 2026 (tambah Bab 25)  
 **✍️ Disusun dari:** 12 sumber utama  
 **🎯 Tujuan:** Materi pembelajaran ultra-detail untuk membangun perangkat lunak dengan AI secara terstruktur dan profesional
