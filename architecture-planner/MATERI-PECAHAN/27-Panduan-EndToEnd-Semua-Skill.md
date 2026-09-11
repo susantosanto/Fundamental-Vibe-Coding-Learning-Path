@@ -1,6 +1,6 @@
 # PANDUAN END-TO-END: Semua Skill dari Ide sampai Aplikasi Siap Production
 
-> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 4 skill pendukung: **taste**, **impeccable**, **browser-skill**, dan **pen-design (MCP Pencil)**.
+> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 4 skill pendukung (**taste**, **impeccable**, **browser-skill**, **pen-design**) dan 3 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**).
 
 ---
 
@@ -21,6 +21,16 @@ LAPIS 2 — LAPIS PENDUKUNG (4 skill, dipanggil DI DALAM tahap tertentu)
 /taste         → arah desain anti-slop untuk halaman marketing (Tahap 5)
 /impeccable    → kualitas UI semua permukaan + polish/harden (Tahap 5-6)
 /browser-skill → bukti visual & verifikasi di browser nyata (Tahap 6)
+
+LAPIS 3 — SKILL OTENTIK PIHAK KETIGA (3 skill, verbatim dari sumber asli,
+TANPA modifikasi — atribusi di 27.4b)
+═══════════════════════════════════════════════════════════════════
+/observability-and-instrumentation → mata produksi: logging/metrics/
+                                     tracing/alerting (addyosmani)
+/debugging-and-error-recovery      → root-cause saat ada bug
+                                     (addyosmani)
+/systematic-debugging              → root-cause 4 fase (obra/
+                                     superpowers)
 
 LAPIS 0 — ROUTER (selalu aktif)
 ═══════════════════════════════════════════════════════════════════
@@ -54,6 +64,11 @@ LAPIS 0 — ROUTER (selalu aktif)
 | `/security-dependency-auditor` | Tahap 6b | Setelah acceptance PASS; wajib ulang jika dependensi berubah | — |
 | `/deploy-production-gate` | Sprint akhir | Checklist P1 berbukti → GO/NO-GO | Deploy "sekalian coba-coba" tanpa gate |
 | `/constitution` | Awal proyek (opsional tapi disarankan) | Tetapkan aturan proyek + standar keamanan sekali di awal | — |
+| `/observability-and-instrumentation` 📦 | Tahap 5 (bersama build) + saat butuh bukti produksi | Fitur punya retry/queue/external call → instrumentasi DIBERSAMA build: 2-4 pertanyaan on-call dulu, log structured + requestId, RED metrics, OTel tracing, alert symptom-based + runbook | Diagnosis bug yang sedang terjadi (itu ranah debugging) |
+| `/debugging-and-error-recovery` 📦 | Saat bug/error muncul | Tests gagal, build rusak, "kemarin jalan sekarang error" → root-cause sistematis, BUKAN tebakan | langsung patch tanpa akar masalah |
+| `/systematic-debugging` 📦 | Saat bug/error muncul (alternatif/pasangan) | 4 fase root-cause: akar masalah → pola → hipotesis minimal → implement, dengan bukti per fase | — |
+
+📦 = skill otentik pihak ketiga (verbatim dari repo sumber, atribusi di 27.4b).
 
 ⭐ = fokus bab ini (lapis pendukung).
 
@@ -217,6 +232,42 @@ BATAL  : Tugas tanpa browser.
 
 ---
 
+## 27.4b Skill Otentik Pihak Ketiga (Verbatim, Tanpa Modifikasi)
+
+Tiga skill berikut **bukan kreasi materi ini** — diunduh apa adanya dari repo sumber terpercaya dan populer, tersimpan juga di `fundamental-vibe-coding/skills-vendor/` untuk sinkronisasi ulang:
+
+| Skill | Sumber | Peran dalam pipeline | Pemetaan bab |
+|---|---|---|---|
+| `observability-and-instrumentation` | **addyosmani/agent-skills** (Addy Osmani, Google) | Mata produksi: telemetri sebagai bagian dari definisi selesai. Kunci: pertanyaan on-call dulu → structured logging + correlation ID + entry-point stamping → RED/USE metrics (p99, bukan average; label bebas cardinality bomb) → OpenTelemetry tracing → alert **symptom-based** + **runbook 3 baris** per alert → verifikasi telemetri itu sendiri | Bab 13, 22.5 |
+| `debugging-and-error-recovery` | **addyosmani/agent-skills** | Pasangan resmi skill observability: saat ada bug — root-cause sistematis sebelum fix | Bab 12, 17 |
+| `systematic-debugging` | **obra/superpowers** (Jesse Vincent) | Root-cause 4 fase dengan bukti per fase; anti-tebakan | Bab 12, 21 |
+
+**Aturan penggunaan (BUG FIX ROUTING — juga terpasang di WORKFLOW.md semua agent):**
+
+```
+BUG/ERROR DITEMUKAN
+  1. Perlu tahu APA yang terjadi?    → /observability-and-instrumentation
+     (cari requestId di log structured, metrics p99, trace)
+  2. Cari AKAR MASALAH, bukan gejala → /debugging-and-error-recovery
+     ATAU /systematic-debugging
+  3. Klasifikasi per CHANGE MANAGEMENT (27.6):
+     bug kecil + penyebab jelas → fix langsung + log STATE.MD
+     selain itu                 → /sprint-planner pack (regression
+                                  test GEJALA ASLI wajib di ACCEPTANCE)
+  4. Fix via /ai-coding-coach
+  5. Verifikasi via /acceptance-runner: "Bug fixed" = test gejala asli
+     PASS + red-green dicek — BUKAN "kode sudah diubah"
+  6. /state-keeper → catat akar masalah; ada runbook? perbarui runbook
+
+ATURAN: TIDAK BOLEH menulis fix SEBELUM akar masalah terbukti.
+```
+
+**Dua tambahan kebiasaan dari skill observability yang masuk ke Tahap 5:**
+1. **Telemetri = definisi selesai**: fitur dengan retry/queue/external call tanpa telemetri = RED FLAG di dry run.
+2. **Setiap alert punya runbook 3 baris** (artinya → cek pertama → eskalasi ke siapa) di `docs/runbooks/` — diperbarui saat menutup incident.
+
+---
+
 ## 27.5 Cheat Sheet Satu Halaman
 
 ```
@@ -238,6 +289,12 @@ IDE ─────────────────────────�
  ├─ /deploy-production-gate .......... P1 berbukti → GO/NO-GO
  │    └─ verifikasi live ............. /browser-skill (lagi)
  └─ /state-keeper .................... folder ter-update → chat baru ♻️
+
+SAAT ADA BUG:
+ /observability-and-instrumentation → lihat APA yang terjadi
+   → /debugging-and-error-recovery atau /systematic-debugging
+   → klasifikasi per 27.6 → fix → /acceptance-runner (gejala asli)
+   → /state-keeper + perbarui runbook
 ```
 
 **Tiga kesalahan yang paling sering:**
@@ -247,6 +304,131 @@ IDE ─────────────────────────�
 
 ---
 
-**📅 Ditambahkan:** September 2026
-**📚 Referensi utama:** Bab 8, 10, 12, 13, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design
-**🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, dan router — dari ide sampai aplikasi dipantau di production
+### 27.5b Workflow Perubahan di Tengah Development (Ringkas)
+
+Fitur baru / revisi fitur / ganti fitur JANGAN pernah masuk ke builder
+langsung — alur lengkapnya di section 27.6:
+
+```
+FITUR BARU      → backlog (state-keeper) → idea-clarifier mini
+                  → perencanaan mini → sprint-planner → loop standar
+REVISI FITUR    → idea-clarifier mini (KEEP/CHANGE/REMOVE)
+                  → cek dampak data (entity-modeler)
+                  → sprint-planner + acceptance REGRESI wajib
+                  → browser-skill: screenshot SEBELUM vs SESUDAH
+GANTI FITUR X→Y → 2 sprint: dekomisi X (pack ringkas) lalu sprint Y
+BUG KECIL/TYPEO → fix langsung + log STATE.MD (tanpa sprint)
+```
+
+---
+
+## 27.6 Workflow Tambahan: Fitur Baru, Revisi & Ganti Fitur di Tengah Development
+
+Kondisi nyata: proyek sudah jalan, sprint 003 sedang berjalan, lalu muncul
+kebutuhan baru. Aturan emasnya (Bab 8.7 Tahap 6.5 + Bab 17 #5):
+
+> **Tidak ada jalur pintas ke builder. Fitur/revisi/ganti fitur = sprint baru
+> melalui perencanaan — bukan improvisasi di sprint yang sedang berjalan.**
+
+### 27.6.1 Kasus A — Fitur Baru (belum pernah dibrainstorming)
+
+```
+1. JANGAN ganggu sprint aktif
+   /state-keeper → catat request ke QUESTIONS.MD/STATE.MD (backlog)
+   Selesaikan sprint yang sedang jalan dulu ♻️
+
+2. /idea-clarifier (versi mini)
+   Brainstorm fitur itu SAJA: masalah, pengguna, success metric
+   → problem brief fitur
+
+3. Perencanaan mini (right-sized — pakai yang relevan saja):
+   butuh data baru?          → /entity-modeler
+   endpoint/UI baru?         → /tech-stack-advisor + /module-planner
+   ada UI?                   → /pen-design (mockup dulu — murah)
+   PRD mini (1 halaman cukup)→ /prd-generator
+
+4. /sprint-planner
+   → sprint-0XX baru + pack 4 dokumen lengkap + cross-artifact check
+   → keputusan teknis baru (mis. perlu Redis) → ADR di DECISIONS.MD
+
+5. Loop standar (sama seperti sprint biasa):
+   /ai-coding-coach (dry run → approve → build;
+     UI marketing → /taste, UI produk → /impeccable)
+   → /acceptance-runner (+ /browser-skill untuk bukti visual)
+   → /security-dependency-auditor  ← WAJIB: fitur baru =
+     attack surface baru, dependency baru
+   → /deploy-production-gate (jika harus rilis)
+   → /state-keeper → sprint berikutnya ♻️
+```
+
+### 27.6.2 Kasus B — Revisi Fitur (ubah perilaku fitur yang sudah ada)
+
+Revisi lebih berisiko daripada fitur baru: ada perilaku lama yang
+**sedang dipakai user**. Karena itu aturan tambahannya:
+
+```
+1. /state-keeper → catat permintaan revisi + risiko regersi
+
+2. /idea-clarifier mini → pertanyaan KUNCI: "Perilaku LAMA mana yang
+   HARUS tetap (compatibility) dan mana yang BOLEH berubah?"
+   → daftar eksplisit: KEEP / CHANGE / REMOVE
+
+3. /entity-modeler → cek dampak data: schema berubah? data lama
+   harus dimigrasi? apa yang terjadi pada data user yang sudah ada?
+
+4. /sprint-planner dengan 3 aturan khusus revisi:
+   a. ACCEPTANCE.MD WAJIB berisi REGRESI:
+      - test untuk perilaku LAMA yang harus tetap jalan (KEEP)
+      - test untuk perilaku BARU (CHANGE)
+      - bukti perilaku yang dihapus benar-benar hilang (REMOVE)
+   b. BLUEPRINT wajib menyebut file lama mana yang disentuh
+   c. /browser-skill dijadwalkan sejak awal: tangkap screenshot
+      kondisi SEBELUM revisi → bandingkan SESUDAH
+
+5. Loop standar dengan fokus regresi:
+   build → /acceptance-runner (item regresi diuji DULUAN)
+   → /security-dependency-auditor → deploy gate → /state-keeper
+```
+
+### 27.6.3 Kasus C — Ganti Fitur (hapus fitur X, jadi fitur Y)
+
+Kasus paling jarang dan paling mahal kalau salah. Dua sprint kecil
+lebih aman daripada satu sprint besar:
+
+```
+1. /idea-clarifier mini → validasi: kenapa fitur X diganti?
+   Siapa yang masih pakai X? (kalau masih ada → pertanyaan ke user,
+   JANGAN lanjut — catat di QUESTIONS.MD)
+
+2. /sprint-planner → PISAHKAN jadi dua sprint:
+   Sprint A: DEKOMISI fitur X
+     - pack ringkas: hapus UI/endpoint X, migrasi data terkait,
+       komunikasi ke user (changelog/catatan),
+       ACCEPTANCE: X benar-benar hilang + tidak ada jejak broken
+       (link mati, error kosong) — dibuktikan via /browser-skill
+   Sprint B: FITUR baru Y (mengikuti Kasus A penuh)
+
+3. Antar dua sprint: /state-keeper mencatat transisi, dan
+   /security-dependency-auditor sprint B mengecek dependensi yatim
+   (library yang hanya dipakai fitur X — kini boleh dibuang)
+```
+
+### 27.6.4 Matriks Keputusan Cepat
+
+| Kondisi | Jalur | Pack |
+|---|---|---|
+| Fitur baru kecil, scope jelas | Kasus A, perencanaan mini | Pack ringkas (goal + blueprint ringkas + 3 acceptance) |
+| Fitur baru besar / ganti arsitektur | Kasus A penuh | Pack lengkap 4 dokumen |
+| Revisi perilaku fitur existing | Kasus B | Pack lengkap + wajib acceptance regresi (KEEP/CHANGE/REMOVE) |
+| Ganti fitur X → Y | Kasus C | 2 sprint: dekomisi X + sprint Y |
+| Bug kecil, penyebab jelas | Perbaikan langsung, TANPA sprint | Log ke STATE.MD via /state-keeper |
+| Typo / copy change | Langsung fix | Log STATE.MD |
+
+> **Aturan keputusan:** kalau Anda ragu masuk kategori mana — pilih jalur
+> yang LEBIH FORMAL. Birokrasi 15 menit lebih murah daripada regersi 3 hari.
+
+---
+
+**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix ditambahkan belakangan)
+**📚 Referensi utama:** Bab 8, 10, 12, 13, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
+**🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix

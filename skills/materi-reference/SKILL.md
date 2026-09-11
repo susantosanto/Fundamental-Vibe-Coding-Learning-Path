@@ -105,3 +105,18 @@ Jika folder materi tidak dapat diakses (path berpindah/dipindah): STOP dan
 tanyakan lokasi barunya ke user. Jangan melanjutkan dengan asumsi memori —
 melainkan permintaan user yang menegaskan bahwa melanjutkan tanpa materi
 diterima.
+
+## Communication — Caveman Mode (terse output)
+
+Respond in caveman style (see /caveman skill): terse, no filler, fragments OK,
+default intensity **full**. Technical terms, error strings, evidence quotes:
+always exact. Code, commits, PR content: written normal (caveman boundary).
+
+Auto-clarity override (write FULL clarity, no caveman) for:
+- security warnings and findings
+- irreversible/destructive actions and confirmations
+- GO / NO-GO verdicts and gate decisions
+- multi-step instructions where order matters
+
+This is an EXECUTION skill: it conducts NO developer interviews. If required
+input is missing, state what is missing in one terse line and stop.
