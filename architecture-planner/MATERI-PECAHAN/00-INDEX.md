@@ -71,6 +71,8 @@
 | No | Judul | File | Deskripsi |
 |----|-------|------|-----------|
 | 25 | [Skill Lengkap: Workflow 12 Skill dari Ide sampai Production](25-Skill-Lengkap-Workflow.md) | `25-Skill-Lengkap-Workflow.md` | 6 skill baru (Scaffolder, Sprint Planner, State Keeper, Acceptance Runner, Security Auditor, Deploy Gate) + peta alur 12 skill lengkap dengan kontrak folder & referensi bab |
+| 26 | [Riset Referensi GitHub: Skill #7–#12](26-Riset-Referensi-GitHub-Skill-7-12.md) | `26-Riset-Referensi-GitHub-Skill-7-12.md` | Riset repo GitHub populer (spec-kit, superpowers, BMAD, Memory Bank, gitleaks, dll) → pola terbukti untuk membangun 6 skill baru + format SKILL.md standar terbuka (agentskills.io) |
+| 27 | [Panduan End-to-End: Semua Skill dari Ide sampai Production](27-Panduan-EndToEnd-Semua-Skill.md) | `27-Panduan-EndToEnd-Semua-Skill.md` | Ritel operasional lengkap 13 skill pipeline + router materi-reference, termasuk kapan & di mana memakai taste, impeccable, browser-skill, dan pen-design (MCP Pencil) |
 
 ### BAGIAN 7: SYSTEM DESIGN & PRODUCTION (Bab 20-23) ⭐ BARU
 | No | Judul | File | Deskripsi |
@@ -86,7 +88,7 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Bab | 25 bab |
+| Total Bab | 27 bab |
 | Total Baris | 4.524 baris |
 | Sumber Utama | 12 sumber |
 | Bahasa | Indonesia |
@@ -114,9 +116,11 @@
 3. Ikuti Bab 8 (Workflow 6 tahap)
 4. Gunakan Bab 11 (Template prompt)
 5. Gunakan Bab 25 (Peta 12 skill + skill yang belum ada)
+6. Gunakan Bab 26 (Referensi repo untuk membangun skill baru)
+7. Gunakan Bab 27 (Panduan end-to-end semua skill, termasuk skill desain & browser)
 
 ---
 
-**📅 Terakhir diperbarui:** September 2026 (tambah Bab 25)  
+**📅 Terakhir diperbarui:** September 2026 (tambah Bab 25, 26, 27)  
 **✍️ Disusun dari:** 12 sumber utama  
 **🎯 Tujuan:** Materi pembelajaran ultra-detail untuk membangun perangkat lunak dengan AI secara terstruktur dan profesional
