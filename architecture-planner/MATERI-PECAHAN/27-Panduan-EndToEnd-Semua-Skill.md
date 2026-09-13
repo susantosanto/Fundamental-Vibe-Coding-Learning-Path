@@ -1,6 +1,6 @@
 # PANDUAN END-TO-END: Semua Skill dari Ide sampai Aplikasi Siap Production
 
-> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 4 skill pendukung (**taste**, **impeccable**, **browser-skill**, **pen-design**) dan 3 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**). Membawa **proyek existing** yang belum pernah memakai workflow ini? → mulai dari jalur adopsi di 27.8.
+> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 4 skill pendukung (**taste**, **impeccable**, **browser-skill**, **pen-design**) dan 4 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**, **constraint-driven-development**). Membawa **proyek existing** yang belum pernah memakai workflow ini? → mulai dari jalur adopsi di 27.8.
 
 ---
 
@@ -22,7 +22,7 @@ LAPIS 2 — LAPIS PENDUKUNG (4 skill, dipanggil DI DALAM tahap tertentu)
 /impeccable    → kualitas UI semua permukaan + polish/harden (Tahap 5-6)
 /browser-skill → bukti visual & verifikasi di browser nyata (Tahap 6)
 
-LAPIS 3 — SKILL OTENTIK PIHAK KETIGA (3 skill, verbatim dari sumber asli,
+LAPIS 3 — SKILL OTENTIK PIHAK KETIGA (4 skill, verbatim dari sumber asli,
 TANPA modifikasi — atribusi di 27.4b)
 ═══════════════════════════════════════════════════════════════════
 /observability-and-instrumentation → mata produksi: logging/metrics/
@@ -31,6 +31,8 @@ TANPA modifikasi — atribusi di 27.4b)
                                      (addyosmani)
 /systematic-debugging              → root-cause 4 fase (obra/
                                      superpowers)
+/constraint-driven-development     → quality contract CONSTRAINTS.md +
+                                     guard bar anti-turun (addyosmani)
 
 LAPIS 0 — ROUTER (selalu aktif)
 ═══════════════════════════════════════════════════════════════════
@@ -54,6 +56,7 @@ LAPIS 0 — ROUTER (selalu aktif)
 | `/tech-stack-advisor` | Tahap 3.2 | Setelah PRD; catat ADR ke DECISIONS.MD | Stack sudah terkunci proyek existing |
 | `/entity-modeler` | Tahap 3.3 | Setelah stack | Sprint tanpa perubahan data |
 | `/module-planner` | Tahap 3.4 | Setelah model data | — |
+| `/constraint-driven-development` 📦 | Tahap 3.4b | Setelah module-planner (batas modul & stack sudah terkunci): interview 4 pertanyaan dengan default → CONSTRAINTS.md (Floor + dimensi berangka + command nyata di kolom "Checked by") → gate siap dirujuk ACCEPTANCE. Ulang saat dimensi kualitas berubah atau saat adopsi 27.8 | Skrip sekali pakai, prototipe throwaway, proyek yang sudah punya CONSTRAINTS.md (baca, jangan timpa) |
 | `/sprint-planner` | Tahap 3.5 + loop | Rakit pack 4 dokumen; ulang tiap sprint baru | Bug sekecil typo (langsung fix, catat STATE.MD) |
 | `/state-keeper` | Setiap penutup tahap | Sprint selesai, keputusan baru, risiko/pertanyaan baru | — |
 | `/ai-coding-coach` | Tahap 4–5 | MODE DRY RUN dulu → approve → MODE BUILD | Tanpa architect pack (dilarang AGENTS.MD) |
@@ -116,6 +119,13 @@ LAPIS 0 — ROUTER (selalu aktif)
 9.  /tech-stack-advisor   → stack + ADR → DECISIONS.MD
 10. /entity-modeler       → model data (+ keputusan storage)
 11. /module-planner       → arsitektur + daftar file
+11b. /constraint-driven-development 📦 → interview 4 pertanyaan
+                             (default tersedia — "tidak tahu" tetap sah)
+                             → CONSTRAINTS.md di root proyek: Floor
+                             selalu-enforced + dimensi berangka dengan
+                             command nyata ("Checked by") + ratchet
+                             → gate kualitas siap dirujuk ACCEPTANCE
+                             (detail & atribusi: 27.4b)
 12. /sprint-planner       → rencana sprint 1..N + pack sprint-001:
                              REQUIREMENTS / BLUEPRINT (+ mockup terpilih
                              + Design Read) / ACCEPTANCE (Given-When-Then
@@ -238,13 +248,14 @@ BATAL  : Tugas tanpa browser.
 
 ## 27.4b Skill Otentik Pihak Ketiga (Verbatim, Tanpa Modifikasi)
 
-Tiga skill berikut **bukan kreasi materi ini** — diunduh apa adanya dari repo sumber terpercaya dan populer, tersimpan juga di `fundamental-vibe-coding/skills-vendor/` untuk sinkronisasi ulang:
+Empat skill berikut **bukan kreasi materi ini** — diunduh apa adanya dari repo sumber terpercaya dan populer, tersimpan juga di `fundamental-vibe-coding/skills-vendor/` untuk sinkronisasi ulang:
 
 | Skill | Sumber | Peran dalam pipeline | Pemetaan bab |
 |---|---|---|---|
 | `observability-and-instrumentation` | **addyosmani/agent-skills** (Addy Osmani, Google) | Mata produksi: telemetri sebagai bagian dari definisi selesai. Kunci: pertanyaan on-call dulu → structured logging + correlation ID + entry-point stamping → RED/USE metrics (p99, bukan average; label bebas cardinality bomb) → OpenTelemetry tracing → alert **symptom-based** + **runbook 3 baris** per alert → verifikasi telemetri itu sendiri | Bab 13, 22.5 |
 | `debugging-and-error-recovery` | **addyosmani/agent-skills** | Pasangan resmi skill observability: saat ada bug — root-cause sistematis sebelum fix | Bab 12, 17 |
 | `systematic-debugging` | **obra/superpowers** (Jesse Vincent) | Root-cause 4 fase dengan bukti per fase; anti-tebakan | Bab 12, 21 |
+| `constraint-driven-development` | **addyosmani/agent-skills** (Addy Osmani, Google) | Quality contract: CONSTRAINTS.md — bar kualitas tertulis dengan angka + command nyata per dimensi, ratchet "ukur & tahan", exceptions ber-expires, dan **guard bar**: threshold diturunkan / test di-skip / suppression baru (@ts-ignore, eslint-disable, nosemgrep) / stub = LOUD di diff. Posisi pipeline: **Tahap 3.4b** | Bab 13, 22 |
 
 **Aturan penggunaan (BUG FIX ROUTING — juga terpasang di WORKFLOW.md semua agent):**
 
@@ -270,6 +281,8 @@ ATURAN: TIDAK BOLEH menulis fix SEBELUM akar masalah terbukti.
 1. **Telemetri = definisi selesai**: fitur dengan retry/queue/external call tanpa telemetri = RED FLAG di dry run.
 2. **Setiap alert punya runbook 3 baris** (artinya → cek pertama → eskalasi ke siapa) di `docs/runbooks/` — diperbarui saat menutup incident.
 
+**Catatan khusus `constraint-driven-development` (Tahap 3.4b):** skill interview — blok Caveman ditempel dengan **Interview Exception O-CDD-1** (tercatat di `skills-vendor/OVERRIDES.md`): interview 4 pertanyaan & verdict block/warn per dimensi selalu ditulis JELAS PENUH; hanya laporan rutin yang terse. Aturan bawaan skill tetap berlaku penuh: *"This file does not get weakened to make a change pass."* CONSTRAINTS.md hanya berubah lewat keputusan manusia. Dependensi wajib: `references/floor-guard.md` (ikut disalin ke semua lokasi). Terdaftar di `skills-lock.json`.
+
 ---
 
 ## 27.5 Cheat Sheet Satu Halaman
@@ -284,6 +297,8 @@ IDE ─────────────────────────�
  ├─ /idea-clarifier .................. problem brief
  ├─ /pen-design ...................... mockup → setuju dulu, kode kemudian
  ├─ /prd-generator / /tech-stack-advisor / /entity-modeler / /module-planner
+ ├─ /constraint-driven-development ... quality contract → CONSTRAINTS.md
+ │                                      (gate ditegakkan mesin, bukan niat)
  ├─ /sprint-planner .................. pack 4 dokumen (+mockup+design read)
  ├─ /ai-coding-coach ................. dry run → approve → build
  │    ├─ UI marketing ................ /taste
@@ -686,6 +701,6 @@ DON'T
 
 ---
 
-**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing, ditambahkan belakangan)
+**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor)
 **📚 Referensi utama:** Bab 8, 10, 12, 13, 14, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
 **🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix, handoff antar AI agent, dan jalur adopsi untuk proyek existing (27.8)

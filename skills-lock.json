@@ -6,6 +6,33 @@
       "sourceType": "github",
       "skillPath": "skills/firecrawl-deep-research/SKILL.md",
       "computedHash": "3ceee2cd8d3ae85874cb2fa545f94f9be57cdf61ad03b73b67ef885d908bbfb0"
+    },
+    "observability-and-instrumentation": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/observability-and-instrumentation/SKILL.md",
+      "computedHash": "e7fcb0820306d46268de9594d676ad98e35040858926c412b7000faa52a61f87"
+    },
+    "debugging-and-error-recovery": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/debugging-and-error-recovery/SKILL.md",
+      "computedHash": "21f3960f5d7ae2cc95c40896545004dbbcbbd752ea65fc2d53962554d4174220"
+    },
+    "systematic-debugging": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/systematic-debugging/SKILL.md",
+      "computedHash": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787"
+    },
+    "constraint-driven-development": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/constraint-driven-development/SKILL.md",
+      "computedHash": "8a74682db310d85180daa3ac2b9145fc8116bef0140a53fa57b6b4e96505b818",
+      "extraFiles": [
+        "skills/constraint-driven-development/references/floor-guard.md"
+      ]
     }
   }
 }
