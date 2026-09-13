@@ -72,7 +72,7 @@
 |----|-------|------|-----------|
 | 25 | [Skill Lengkap: Workflow 12 Skill dari Ide sampai Production](25-Skill-Lengkap-Workflow.md) | `25-Skill-Lengkap-Workflow.md` | 6 skill baru (Scaffolder, Sprint Planner, State Keeper, Acceptance Runner, Security Auditor, Deploy Gate) + peta alur 12 skill lengkap dengan kontrak folder & referensi bab |
 | 26 | [Riset Referensi GitHub: Skill #7–#12](26-Riset-Referensi-GitHub-Skill-7-12.md) | `26-Riset-Referensi-GitHub-Skill-7-12.md` | Riset repo GitHub populer (spec-kit, superpowers, BMAD, Memory Bank, gitleaks, dll) → pola terbukti untuk membangun 6 skill baru + format SKILL.md standar terbuka (agentskills.io) |
-| 27 | [Panduan End-to-End: Semua Skill dari Ide sampai Production](27-Panduan-EndToEnd-Semua-Skill.md) | `27-Panduan-EndToEnd-Semua-Skill.md` | Ritel operasional lengkap 13 skill pipeline + router materi-reference, termasuk kapan & di mana memakai taste, impeccable, browser-skill, dan pen-design (MCP Pencil) |
+| 27 | [Panduan End-to-End: Semua Skill dari Ide sampai Production](27-Panduan-EndToEnd-Semua-Skill.md) | `27-Panduan-EndToEnd-Semua-Skill.md` | Ritel operasional lengkap 13 skill pipeline + router materi-reference, termasuk kapan & di mana memakai taste, impeccable, browser-skill, pen-design (MCP Pencil), workflow perubahan fitur (27.5b–27.6), checklist handoff antar AI agent (27.7: pindah zcode ↔ opencode di tengah pipeline), dan jalur adopsi untuk proyek existing yang belum pernah memakai workflow (27.8: mode adopsi + backfill + baseline, tanpa menambal retroaktif) |
 
 ### BAGIAN 7: SYSTEM DESIGN & PRODUCTION (Bab 20-23) ⭐ BARU
 | No | Judul | File | Deskripsi |

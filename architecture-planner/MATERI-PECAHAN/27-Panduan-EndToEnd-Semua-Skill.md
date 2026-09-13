@@ -1,6 +1,6 @@
 # PANDUAN END-TO-END: Semua Skill dari Ide sampai Aplikasi Siap Production
 
-> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 4 skill pendukung (**taste**, **impeccable**, **browser-skill**, **pen-design**) dan 3 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**).
+> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 4 skill pendukung (**taste**, **impeccable**, **browser-skill**, **pen-design**) dan 3 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**). Membawa **proyek existing** yang belum pernah memakai workflow ini? → mulai dari jalur adopsi di 27.8.
 
 ---
 
@@ -47,7 +47,7 @@ LAPIS 0 — ROUTER (selalu aktif)
 | Skill | Tahap | Dipakai kapan | TIDAK dipakai kapan |
 |---|---|---|---|
 | `/materi-reference` | SEMUA | Sebelum langkah penting skill mana pun — baca bab sumber dulu | — (selalu aktif) |
-| `/scaffolder` | Tahap 1 | Proyek baru, sekali jalan | Proyek existing |
+| `/scaffolder` | Tahap 1 | Proyek baru, sekali jalan; proyek existing → MODE ADOPS (27.8) | — |
 | `/idea-clarifier` | Tahap 2 | Ide masih mentah/ambigu | Requirement sudah jelas & teruji |
 | `/pen-design` ⭐ | Tahap 2–3 | Saat user butuh MELIHAT bentuk UI sebelum setuju: mockup halaman, wireframe dashboard, slide, aset marketing. Output `.pen` → diekspor gambar → jadi lampiran BLUEPRINT | Aplikasi tanpa UI; saat UI sudah ada dan hanya perlu diubah kecil |
 | `/prd-generator` | Tahap 3.1 | Setelah problem brief disetujui | — |
@@ -84,6 +84,10 @@ LAPIS 0 — ROUTER (selalu aktif)
                              builder [Claude Code/Codex/...]"
                              → folder + semua file template siap
 3. /constitution          → (disarankan) aturan proyek + standar keamanan
+
+   ⚠️ Proyek EXISTING (kode sudah ada, belum pernah pakai workflow)?
+   → JANGAN mulai dari /scaffolder proyek baru. Ikuti jalur adopsi
+     di 27.8: scaffolder MODE ADOPS + backfill folder + baseline.
 ```
 
 ### TAHAP 2 — Discovery & Visualisasi
@@ -274,6 +278,7 @@ ATURAN: TIDAK BOLEH menulis fix SEBELUM akar masalah terbukti.
 IDE ──────────────────────────────────────────────► PRODUCTION
  │
  ├─ /materi-reference ................ selalu: baca bab dulu, sitasi
+ ├─ proyek existing? ................. jalur adopsi 27.8 dulu (MODE ADOPS)
  ├─ /scaffolder ...................... folder + template
  ├─ /constitution .................... aturan proyek
  ├─ /idea-clarifier .................. problem brief
@@ -429,6 +434,258 @@ lebih aman daripada satu sprint besar:
 
 ---
 
-**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix ditambahkan belakangan)
-**📚 Referensi utama:** Bab 8, 10, 12, 13, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
-**🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix
+## 27.7 Workflow Berpindah AI Agent di Tengah Pipeline (Handoff Antar Tool)
+
+Kasus nyata: planning + PRD dibuat di agent A (mis. **zcode**), build dilanjutkan
+ di agent B (mis. **opencode**). Dasar aturannya sudah tertulis di Pilar #3 (Bab 6.2):
+
+> **Source of truth = folder proyek, BUKAN chat history.** Agent hanyalah
+> "pekerja" yang boleh berganti kapan saja — folder-lah yang diwariskan.
+
+Berpindah agent BUKAN mekanisme khusus — ia adalah handoff Architect ↔ Builder
+ biasa (Bab 2.1), hanya kedua ujungnya tool berbeda. Yang dibutuhkan hanya
+ disiplin checklist (Bab 14 session hygiene + Bab 7 kontrak file + Bab 8 ritel handoff).
+
+### 27.7.1 Checklist A — Menutup Session di Agent Lama (sebelum pindah)
+
+```
+[SEBELUM PINDAH — SEMUA HARUS ✅, GAGAL SATU → JANGAN PINDAH DULU]
+═══════════════════════════════════════════════════
+1. □ /state-keeper   → STATE.MD, DECISIONS.MD, RISKS.MD,
+                       QUESTIONS.MD ter-update (27.3 langkah 23)
+2. □ Pack sprint aktif tersimpan lengkap:
+     planning/sprints/sprint-XXX/
+       ├─ REQUIREMENTS.MD   ├─ BLUEPRINT.MD
+       ├─ ACCEPTANCE.MD     └─ HANDOFF-PROMPT.MD
+     + salinan di architect-packs/     (Bab 8.5 langkah 4.1)
+3. □ Semua keputusan punya entri ADR di DECISIONS.MD
+     (keputusan / alasan / dampak — Bab 7.4)
+4. □ Pertanyaan terbuka tercatat di QUESTIONS.MD —
+     tidak ada keputusan yang hanya hidup di chat (Bab 7.7)
+5. □ Commit + catat commit hash di STATE.MD (27.3 langkah 23)
+6. □ Chat lama DITUTUP — pindah tool SELALU = chat baru (Bab 14.3)
+═══════════════════════════════════════════════════
+```
+
+### 27.7.2 Checklist B — Membuka Proyek di Agent Baru
+
+```
+[MEMBUKA DI AGENT BARU — zcode → opencode, atau sebaliknya]
+═══════════════════════════════════════════════════
+1. □ Buka tool DI FOLDER proyek (Bab 8.5 langkah 4.2)
+2. □ Chat BARU — jangan impor history chat lama (Bab 14.3:
+     konteks bersih > konteks penuh)
+3. □ Minta agent membaca file dengan URUTAN (Bab 7.1):
+     AGENTS.MD → STATE.MD → DECISIONS.MD → DOMAIN.MD
+     → file sprint aktif
+4. □ Paste / arahkan ke HANDOFF-PROMPT.MD sprint aktif
+5. □ Sesuaikan peran agent baru:
+     BUILDER   → /ai-coding-coach MODE DRY RUN: baca pack +
+                 AGENTS.MD + STATE.MD → laporkan rencana →
+                 TUNGGU approve sebelum coding (27.3 langkah 15–16)
+     ARCHITECT → lanjutkan urutan skill 27.3 dari tahap
+                 terakhir yang tercatat di STATE.MD
+═══════════════════════════════════════════════════
+PINDAH DI TAHAP MANA PUN CARANYA SAMA: baca STATE.MD → temukan
+posisi di ritel 27.3 → jalankan skill pemilik tahap itu di agent
+baru, hormati kontrak folder (tabel 25.4).
+```
+
+### 27.7.3 Aturan Wajib Agent Baru (tertulis di AGENTS.MD — Bab 7.1)
+
+```
+- DILARANG mulai coding tanpa architect pack (aturan keras AGENTS.MD)
+- DILARANG mengubah requirements tanpa persetujuan
+- DILARANG pakai library di luar BLUEPRINT.MD (versi pinned — Bab 17.2)
+- Dry run dulu → tunggu approve → baru build (27.3 langkah 15–16)
+- Bukti, bukan klaim: output test asli + screenshot (27.3 langkah 19)
+- Selesai = folder ikut ter-update via /state-keeper — tinggalkan
+  jejak yang sama seperti yang dia baca
+- JANGAN memutuskan ulang: cek DECISIONS.MD dulu; pertanyaan baru
+  → QUESTIONS.MD, bukan asumsi diam-diam
+- /acceptance-runner WAJIB di konteks segar / fresh context
+  (Bab 12.4) — agent yang baru dibuka justru konteks ideal
+- Konsultasi /materi-reference sebelum langkah penting (Lapis 0, 27.1)
+```
+
+### 27.7.4 Catatan Khusus Antar Tool
+
+```
+1. SKILL = FILE PROMPT, bukan milik satu tool. Salin folder skills
+   ke dalam proyek agar semua agent bisa memanggilnya, mis.:
+   .opencode/skills/  .claude/skills/  .agents/skills/
+2. Aturan spesifik tool → file adapter per tool (CLAUDE.MD /
+   CODEX.MD, Bab 6.1); AGENTS.MD tetap router lintas-tool.
+3. JANGAN "menghidupkan kembali" konteks dengan paste history
+   chat lama — cukup folder (Bab 9: the answer is cleaner context).
+4. Setelah pindah, ritual fitur baru / revisi / bug tetap ikuti
+   27.5b, 27.6, dan routing bug fix 27.4b — pindah tool TIDAK
+   mengubah aturan workflow.
+```
+
+### 27.7.5 Contoh Ritel: zcode (planning) → opencode (build)
+
+```
+DI ZCODE (architect):
+ /idea-clarifier → /prd-generator → /tech-stack-advisor
+ → /entity-modeler → /module-planner → /sprint-planner
+ → /state-keeper → commit → tutup chat
+
+DI OPENCODE (builder):
+ cd folder-proyek && opencode   (chat baru)
+ "Kamu BUILDER (Bab 7.1). Baca AGENTS.MD, STATE.MD, DECISIONS.MD,
+  lalu planning/sprints/sprint-001/HANDOFF-PROMPT.MD.
+  Jalankan dry run dan TUNGGU persetujuan. JANGAN coding dulu."
+ → dry run dilaporkan → user: "Approved. Mulai coding."
+ → build + bukti → /acceptance-runner → dst. (27.3 Tahap 5–6)
+```
+
+---
+
+## 27.8 Jalur Adopsi: Masuk ke Proyek Existing yang Belum Pernah Memakai Workflow Ini
+
+Kasus nyata: kode sudah ada, git sudah jalan, mungkin sudah live di
+production — tetapi proyek belum pernah memakai pipeline Bab 25–27.
+Pertanyaannya: "Apakah saya harus memindah kode, mengganti struktur
+folder, atau membuat PRD untuk semua fitur yang sudah rilis?" **Tidak.**
+
+> **Aturan emas adopsi:** workflow ini berlaku MAJU, bukan mundur.
+> Sejak titik adopsi, semua kerja BARU mengikuti pipeline penuh 27.3.
+> Kode dan fitur lama cukup DIDOKUMENTASIKAN apa adanya (backfill) —
+> jangan pernah menambal retroaktif atau memperlakukan proyek existing
+> seperti proyek baru.
+
+### 27.8.1 Pilih Jalur Adopsi Dulu
+
+| Kondisi proyek | Jalur | Biaya kira-kira |
+|---|---|---|
+| Kecil–menengah, 1 tim, bisa alokasi 1 hari onboarding | **A — Onboarding standar** | 1 hari |
+| Besar / multi-tim / rilis rutin tidak boleh berhenti | **B — Bertahap per sprint** | 2–4 sprint |
+| Sudah kacau & memang akan dirombak besar | **C — Re-baseline (ulang total)** | Seperti proyek baru di atas kode existing |
+
+> Ragu pilih yang mana? Aturan keputusan sama dengan 27.6.4: pilih
+> jalur yang LEBIH FORMAL. Jalur A adalah default.
+
+### 27.8.2 Jalur A — Onboarding Standar (default)
+
+```
+RITEL ONBOARDING (SEKALI DI AWAL — SEBELUM sprint fitur pertama)
+ 1. /materi-reference     → baca Bab 06 + 07 (struktur & template file)
+ 2. /scaffolder MODE ADOPS → "Mode ADOPS: proyek existing [NAMA] —
+                             buatkan folder source-of-truth SAJA,
+                             JANGAN sentuh kode existing"
+                             → AGENTS.MD STATE.MD DECISIONS.MD
+                               RISKS.MD QUESTIONS.MD DOMAIN.MD
+                               planning/ architect-packs/ docs/runbooks/
+                             Kode existing TIDAK dipindah/diubah.
+ 3. BACKFILL folder dari kondisi AKTUAL (bukan kondisi ideal):
+    a. /state-keeper → STATE.MD: "sprint-000 ONBOARDING — titik
+       adopsi workflow, commit hash <hash>"
+    b. DECISIONS.MD → ADR "as adopted": stack, database, hosting,
+       library utama SEBAGAIMANA ADANYA + alasan yang masih
+       diketahui (alasannya hilang? tulis jujur: "legacy, belum
+       terdokumentasi" — JANGAN menebak)
+    c. DOMAIN.MD  → ringkas domain, pengguna, fitur utama saat ini
+    d. RISKS.MD + QUESTIONS.MD → isi semua yang sudah diketahui tim
+ 4. /constitution          → aturan proyek + standar keamanan
+                             (untuk kerja MAJU)
+ 5. AGENTS.MD              → aturan 27.7.3 + satu baris tambahan:
+                             "Kode lama: JANGAN refactor di luar
+                              cakupan sprint yang disetujui"
+ 6. /security-dependency-auditor → BASELINE pertama: npm audit +
+    secret scan + checklist P1 → hasil dicatat STATE.MD sebagai
+    garis awal (temuan belum wajib diperbaiki semua — jadwalkan
+    bertahap lewat RISKS.MD)
+ 7. /deploy-production-gate → kalau sudah live: jalankan checklist
+    P1 SEKALI sebagai pengukuran (GO/NO-GO dokumentatif,
+    bukan deploy baru)
+ 8. /observability-and-instrumentation → produksi jalan tanpa
+    telemetri? jadwalkan instrumentasi sebagai sprint
+    onboarding-001 (mulai dari pertanyaan on-call — 27.4b)
+
+ATURAN: TIDAK ADA sprint fitur sebelum langkah 1–6 selesai.
+```
+
+### 27.8.3 Jalur B — Adopsi Bertahap (proyek besar)
+
+Prinsip: adopsi SKILL berurutan dari yang paling murah ke paling
+mahal, satu–dua skill per sprint, TANPA menghentikan rilis yang
+sedang jalan.
+
+```
+Sprint adopsi-1 : /scaffolder MODE ADOPS + backfill /state-keeper
+                  + /constitution + aturan AGENTS.MD
+                  (langkah 2–5 Jalur A)
+Sprint adopsi-2 : /security-dependency-auditor baseline
+                  + bug fix routing 27.4b aktif penuh
+Sprint adopsi-3 : sprint fitur pertama dengan PIPELINE PENUH
+                  (/idea-clarifier → … → /sprint-planner → loop 27.3)
+Sprint adopsi-4 : /deploy-production-gate + observability
+Setelahnya      : semua kerja baru = pipeline penuh 27.3
+```
+
+Catatan: fitur baru / revisi / ganti fitur SELAMA masa adopsi tetap
+ikuti 27.5b + 27.6 — jalur perubahan TIDAK menunggu adopsi selesai.
+
+### 27.8.4 Jalur C — Re-baseline (Ulang Total)
+
+Dipakai kalau proyek memang akan dirombak besar dan kondisi existing
+sudah tidak layak jadi dasar. Perlakukan sebagai PROYEK BARU yang
+kebetulan punya kode lama:
+
+```
+1. /idea-clarifier     → kondisi existing = "kondisi awal",
+                         BUKAN requirement baru
+2. /prd-generator      → PRD untuk kondisi yang DIINGINKAN
+3. /tech-stack-advisor → boleh menilai ulang stack lama (ADR baru;
+                         stack lama tetap tercatat di DECISIONS.MD)
+4. /entity-modeler     → model data aktual vs target (+ migrasi)
+5. /module-planner + /sprint-planner → rencana migrasi bertahap;
+                         penggantian/pemusnahan komponen lama
+                         mengikuti pola dekomisi 27.6.3
+6. Lanjut pipeline penuh 27.3 — backfill langkah 3 Jalur A untuk
+   bagian kode lama yang TIDAK diubah
+```
+
+### 27.8.5 DO & DON'T Adopsi
+
+```
+DO
+ - Adopsi berlaku MAJU — sejak titik adopsi semua kerja baru pakai
+   pipeline penuh (ritel 27.3)
+ - Backfill dari kondisi AKTUAL — folder adalah peta kondisi
+   nyata, bukan harapan
+ - Keputusan lama → ADR "as adopted" tanpa menghakimi; alasan
+   yang hilang ditulis jujur "legacy"
+ - Baseline keamanan DULU sebelum sprint fitur pertama
+ - Tandai titik adopsi: sprint-000 + commit hash di STATE.MD
+
+DON'T
+ - DILARANG memindahkan/menimpa struktur kode existing agar
+   "cocok" dengan scaffold — folder source-of-truth MELENGKAPI
+   kode, bukan menggantikannya
+ - DILARANG membuat PRD retroaktif untuk fitur yang sudah rilis —
+   cukup tercatat di DOMAIN.MD
+ - DILARANG refactor kode lama "sekalian" di luar cakupan sprint
+   (aturan AGENTS.MD 27.7.3; perubahan lewat 27.5b/27.6)
+ - DILARANG menunda adopsi sampai "sempurna" — adopsi 80% hari
+   ini lebih baik daripada 100% tidak pernah
+ - DILARANG melewati baseline keamanan dengan alasan
+   "proyek lama sudah aman"
+```
+
+### 27.8.6 Setelah Adopsi: Semua Kembali ke Ritel Normal
+
+| Situasi | Rujukan |
+|---|---|
+| Sprint fitur baru | 27.3 Tahap 2–6 ♻️ |
+| Fitur baru / revisi / ganti fitur di tengah jalan | 27.5b + 27.6 |
+| Bug / error | Routing 27.4b |
+| Pindah AI agent (zcode ↔ opencode) | Checklist 27.7 |
+| Ragu kategori kerja | Matriks 27.6.4 + aturan "lebih formal" |
+
+---
+
+**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing, ditambahkan belakangan)
+**📚 Referensi utama:** Bab 8, 10, 12, 13, 14, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
+**🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix, handoff antar AI agent, dan jalur adopsi untuk proyek existing (27.8)
