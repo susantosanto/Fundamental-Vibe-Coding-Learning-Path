@@ -59,15 +59,29 @@ Write to `planning/sprints/sprint-XXX/`:
 2. **BLUEPRINT.MD** — how: system sketch, tech stack (from the advisor,
    unchanged), exact file list, dependency table **with pinned versions**
    (`exceljs: 4.4.0` — never `^4.4.0`), tasks broken down to 2–5 minutes each
-   with the files each task touches.
+   with the files each task touches. Every task carries a machine-checked
+   **definition-of-done**: the exact lint + type-check + unit-test commands
+   for that task (taken from CONSTRAINTS.md `Checked by` / `check:task` when
+   it exists). A task is COMPLETE only when those commands are green — the
+   builder pastes the output as evidence (shift-left: cheap sensors run per
+   task, not only at the final gate).
 3. **ACCEPTANCE.MD** — each criterion in testable Given/When/Then form with
    the exact command to run and the expected observable output. A criterion
    that cannot be mapped to a command + expected output must be rewritten
    until it can. Include 1–2 edge-case scenarios (empty input, partial data).
+   Add a **Task Gate** section at the top: before any sprint-level criterion
+   is judged, the per-task DoD commands from BLUEPRINT must already be green
+   (lint + type-check + tests). The final gate verifies behavior — it does
+   not replace the per-task gate.
 4. **HANDOFF-PROMPT.MD** — the builder prompt: read pack + AGENTS.MD +
-   STATE.MD first, DRY RUN first (report plan, files, dependencies, risks),
-   WAIT for approval before coding, and the JANGAN list (no changing
-   requirements, no libraries outside BLUEPRINT, no scope creep).
+   STATE.MD first, run the **bootstrap command block** (init script /
+   dev-server + sanity check — the deterministic setup steps, e.g.
+   `./init.sh` or `npm install && npm run dev` + smoke URL), then DRY RUN
+   first (report plan, files, dependencies, risks), WAIT for approval before
+   coding, and the JANGAN list (no changing requirements, no libraries
+   outside BLUEPRINT, no scope creep). If the project has no init script,
+   write the bootstrap commands explicitly in the prompt — the builder must
+   never burn context figuring out setup.
 
 ### Step 4: Cross-Artifact Consistency Check (mandatory)
 
@@ -77,7 +91,11 @@ Before handoff, verify — this catches expensive bugs cheaply (spec-kit
 ```
 □ Every REQUIREMENTS item appears in BLUEPRINT (file list or task)
 □ Every BLUEPRINT task has at least one ACCEPTANCE criterion
+□ Every BLUEPRINT task has machine-checked DoD commands (lint + type +
+  unit test) — no task whose "done" is only a human opinion
 □ ACCEPTANCE criteria do not require features absent from BLUEPRINT
+□ HANDOFF-PROMPT contains the bootstrap command block (init/dev-server +
+  sanity check)
 □ Dependencies in BLUEPRINT == dependencies the advisor chose (no drift)
 □ One sprint == one goal (no giant-prompt sprint, Bab 17 #6)
 ```
@@ -111,6 +129,8 @@ MUST NOT:
 | One sprint with many goals to "save overhead" | Split — one goal per sprint |
 | Loose versions (`^1.2.3`) "for flexibility" | Pin exact versions (Bab 17.2) |
 | Acceptance = "works correctly" | Rewrite as Given/When/Then + command |
+| Task DoD = "code written" / "looks done" | DoD = lint + type + test commands green, output pasted |
+| Builder figures out setup by itself | Bootstrap commands written in HANDOFF-PROMPT |
 | Skip the pack copy in architect-packs/ | Always save the copy — audit trail |
 | Hand off with open blocking questions | Close them first via QUESTIONS.MD |
 

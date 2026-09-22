@@ -57,9 +57,9 @@ LAPIS 0 — ROUTER (selalu aktif)
 | `/entity-modeler` | Tahap 3.3 | Setelah stack | Sprint tanpa perubahan data |
 | `/module-planner` | Tahap 3.4 | Setelah model data | — |
 | `/constraint-driven-development` 📦 | Tahap 3.4b | Setelah module-planner (batas modul & stack sudah terkunci): interview 4 pertanyaan dengan default → CONSTRAINTS.md (Floor + dimensi berangka + command nyata di kolom "Checked by") → gate siap dirujuk ACCEPTANCE. Ulang saat dimensi kualitas berubah atau saat adopsi 27.8 | Skrip sekali pakai, prototipe throwaway, proyek yang sudah punya CONSTRAINTS.md (baca, jangan timpa) |
-| `/sprint-planner` | Tahap 3.5 + loop | Rakit pack 4 dokumen; ulang tiap sprint baru | Bug sekecil typo (langsung fix, catat STATE.MD) |
+| `/sprint-planner` | Tahap 3.5 + loop | Rakit pack 4 dokumen (BLUEPRINT: DoD mesin per task; ACCEPTANCE: Task Gate; HANDOFF-PROMPT: blok bootstrap — 27.4c); ulang tiap sprint baru | Bug sekecil typo (langsung fix, catat STATE.MD) |
 | `/state-keeper` | Setiap penutup tahap | Sprint selesai, keputusan baru, risiko/pertanyaan baru | — |
-| `/ai-coding-coach` | Tahap 4–5 | MODE DRY RUN dulu → approve → MODE BUILD | Tanpa architect pack (dilarang AGENTS.MD) |
+| `/ai-coding-coach` | Tahap 4–5 | MODE DRY RUN dulu (bootstrap → rencana → tulis DRYRUN-REPORT.MD → TUNGGU approve) → MODE BUILD; task COMPLETE hanya bila command DoD hijau + output ditempel (27.4c) | Tanpa architect pack (dilarang AGENTS.MD) |
 | `/taste` ⭐ | Tahap 5 (UI build) | Halaman **marketing-facing**: landing page, portfolio, redesign, halaman publik. Agent membaca brief → keluarkan satu baris "Design Read" → set 3 dial (VARIANCE/MOTION/DENSITY) → tulis UI yang tidak terlihat template | **Dashboard, data table, product UI multi-step** (di luar scope-nya — di sana pakai `/impeccable` mode Operate) |
 | `/impeccable` ⭐ | Tahap 5–6 | **Semua permukaan UI**: product UI, dashboard, form, settings, empty state. Perintah kunci: `shape` (rencana UX), `critique` (review heuristik), `audit` (a11y/perf/responsive), `polish` (final pass), `harden` (error state, i18n, edge case), `adapt` (multi-device), `live` (varian visual di browser) | Backend-only / non-UI |
 | `/acceptance-runner` | Tahap 6a | Builder lapor "selesai" — fresh context, jalankan ACCEPTANCE.MD | Review gaya/penyusunan (bukan correctness) |
@@ -128,8 +128,10 @@ LAPIS 0 — ROUTER (selalu aktif)
                              (detail & atribusi: 27.4b)
 12. /sprint-planner       → rencana sprint 1..N + pack sprint-001:
                              REQUIREMENTS / BLUEPRINT (+ mockup terpilih
-                             + Design Read) / ACCEPTANCE (Given-When-Then
-                             + command persis) / HANDOFF-PROMPT
+                             + Design Read + DoD mesin per task: command
+                             lint+type+test — 27.4c) / ACCEPTANCE (Given-
+                             When-Then + command persis + Task Gate) /
+                             HANDOFF-PROMPT (+ blok perintah bootstrap)
                              → cross-artifact check WAJIB
 13. /state-keeper         → catat: perencanaan selesai
 ```
@@ -138,9 +140,15 @@ LAPIS 0 — ROUTER (selalu aktif)
 
 ```
 14. Buka builder tool di folder proyek (chat BARU — Bab 14.3)
-15. /ai-coding-coach MODE DRY RUN → baca pack + AGENTS.MD + STATE.MD
-    → laporkan rencana → TUNGGU approve
+15. /ai-coding-coach MODE DRY RUN → jalankan dulu blok bootstrap dari
+    HANDOFF-PROMPT (init script / dev-server + sanity check — 27.4c)
+    → baca pack + AGENTS.MD + STATE.MD
+    → laporkan rencana → tulis planning/sprints/sprint-XXX/
+    DRYRUN-REPORT.MD → TUNGGU approve
 16. User review dry run → ubah poin yang salah ATAU "Approved"
+    → /ai-coding-coach MODE BUILD (resmi didefinisikan di SKILL.md
+    sejak 18 Sep 2026 — sebelumnya mode hanya hidup di dokumen ini;
+    menyimpang dari report yang di-approve = STOP + re-approve)
 ```
 
 ### TAHAP 5 — Build (sinergi dengan lapis pendukung)
@@ -282,6 +290,44 @@ ATURAN: TIDAK BOLEH menulis fix SEBELUM akar masalah terbukti.
 2. **Setiap alert punya runbook 3 baris** (artinya → cek pertama → eskalasi ke siapa) di `docs/runbooks/` — diperbarui saat menutup incident.
 
 **Catatan khusus `constraint-driven-development` (Tahap 3.4b):** skill interview — blok Caveman ditempel dengan **Interview Exception O-CDD-1** (tercatat di `skills-vendor/OVERRIDES.md`): interview 4 pertanyaan & verdict block/warn per dimensi selalu ditulis JELAS PENUH; hanya laporan rutin yang terse. Aturan bawaan skill tetap berlaku penuh: *"This file does not get weakened to make a change pass."* CONSTRAINTS.md hanya berubah lewat keputusan manusia. Dependensi wajib: `references/floor-guard.md` (ikut disalin ke semua lokasi). Terdaftar di `skills-lock.json`.
+
+---
+
+## 27.4c Task Gate & Bootstrap — Hasil Riset Harness Engineering (Sep 2026)
+
+Riset terhadap sumber resmi harness engineering — OpenAI *"Harness engineering: leveraging Codex in an agent-first world"* (Feb 2026), dua artikel engineering Anthropic (*Effective harnesses for long-running agents*, *Harness design for long-running application development*), Martin Fowler *"Harness engineering for coding agent users"*, dan GitHub spec-kit — menemukan dua gap di pipeline ini: verifikasi baru terjadi di gate akhir sprint (Tahap 6), dan builder memulai sesi tanpa perintah setup deterministik. Keduanya kini ditutup oleh aturan berikut (sudah terpasang di `sprint-planner` Step 3–4 dan `ai-coding-coach` Step 2/4/6):
+
+```
+ATURAN 1 — TASK GATE (shift-left, Fowler: sensor computational murah
+           dijalankan per perubahan, bukan hanya di pipeline akhir):
+  - Setiap task di BLUEPRINT.MD wajib punya definition-of-done MESIN:
+    command persis lint + type-check + unit test (ambil dari kolom
+    "Checked by" / check:task di CONSTRAINTS.md bila ada).
+  - Task boleh ditandai COMPLETE hanya bila command itu HIJAU —
+    builder menempel output sebagai bukti, bukan klaim
+    (konsisten Iron Law acceptance-runner, Bab 12).
+  - ACCEPTANCE.MD mendapat section "Task Gate" di atas: kriteria
+    sprint baru dinilai setelah DoD per task hijau. Gate akhir
+    memverifikasi PERILAKU — tidak menggantikan gate per task.
+
+ATURAN 2 — BOOTSTRAP (Anthropic: init.sh + dev server + sanity check
+           di awal sesi menghemat token dan mencegah setup trial-error):
+  - HANDOFF-PROMPT.MD wajib memuat blok perintah bootstrap:
+    init script ATAU command eksplisit (install → migrate → dev server
+    → smoke check). Proyek tanpa init.sh? Tulis command-nya manual
+    di prompt — builder tidak boleh membakar konteks mencari cara setup.
+  - Builder menjalankan bootstrap SEBELUM dry run (Tahap 4 langkah 15).
+
+CHECK BARU di cross-artifact check sprint-planner (Step 4):
+  □ Setiap task BLUEPRINT punya command DoD mesin
+  □ HANDOFF-PROMPT memuat blok bootstrap
+```
+
+**Mengapa ini standar, bukan bikinan:** OpenAI menegakkan arsitektur secara *mekanis* ("bukan lewat niat"); Anthropic mewajibkan agen memverifikasi lewat tool nyata sebelum menandai fitur selesai dan menyediakan `init.sh` di awal sesi; Fowler: *"Run fast computational sensors before commits; defer expensive inferential checks to pipelines."* CONSTRAINTS.md (Tahap 3.4b) adalah sumber command-nya — Task Gate adalah cara command itu ditegakkan per task.
+
+**Keputusan lanjutan (18 Sep 2026, disetujui pemilik):**
+1. **Formalisasi mode ai-coding-coach** — riset menunjukkan industri memisah *fase* plan/build lewat mode (Cline Plan & Act, Claude Code plan mode) ATAU lewat skill terpisah dengan artefak file di antaranya (superpowers `writing-plans`/`executing-plans`, Anthropic planner–generator–evaluator). Dipilih jalur mode (satu skill, dua mode) + artefak file: `MODE DRY RUN` kini resmi didefinisikan di SKILL.md dan **wajib menulis `DRYRUN-REPORT.MD`** ke folder sprint sebelum minta approve; `MODE BUILD` hanya jalan setelah approve dan wajib STOP + re-approve bila menyimpang dari report. Sebelumnya mode ini hanya hidup di dokumen Bab 27 — mismatch dokumen↔skill sudah ditutup.
+2. **Caveman diperluas ke skill eksekusi yang belum punya** — blok standar ditempel ke `adversarial-verifier` (verdict PASS/CONDITIONAL/FAIL = gate decision → auto-clarity penuh) dan `google-apps-script`. Skill planning/interview dan skill vendor TIDAK ditempeli (keputusan pemilik; preseden O-CDD-1 tetap tersedia bila nanti dibutuhkan). Dasar riset: repo `juliusbrussee/caveman` — hemat ~65–75% token output dengan auto-clarity untuk keamanan/aksi irreversibel.
 
 ---
 
@@ -701,6 +747,6 @@ DON'T
 
 ---
 
-**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor)
+**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor; 18 Sep 2026: 27.4c Task Gate & Bootstrap — DoD mesin per task di BLUEPRINT/ACCEPTANCE + blok bootstrap di HANDOFF-PROMPT + formalisasi MODE DRY RUN/BUILD & DRYRUN-REPORT.MD di ai-coding-coach + caveman di adversarial-verifier & google-apps-script, hasil riset harness engineering OpenAI/Anthropic/Fowler/spec-kit/Cline/superpowers)
 **📚 Referensi utama:** Bab 8, 10, 12, 13, 14, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
 **🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix, handoff antar AI agent, dan jalur adopsi untuk proyek existing (27.8)
