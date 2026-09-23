@@ -318,12 +318,48 @@ ATURAN 2 — BOOTSTRAP (Anthropic: init.sh + dev server + sanity check
     di prompt — builder tidak boleh membakar konteks mencari cara setup.
   - Builder menjalankan bootstrap SEBELUM dry run (Tahap 4 langkah 15).
 
+ATURAN 3 — DSA GATE (shift-left untuk efisiensi algoritma — saudara
+           produksi dari baris SIM-3/SIM-5b di Mode Belajar, Bab 28):
+  - Setiap task BLUEPRINT yang menyentuh HOT PATH (endpoint utama,
+    handler per-request, loop atas koleksi user, job berkala) wajib
+    punya SATU baris DSA:
+      "DSA: <struktur data/algoritma utama> — <operasi terpanas>
+       <Big-O> — <alasan satu kalimat>"
+    Contoh: "DSA: hash map id→objek — lookup per request O(1);
+    tanpa ini scan list O(n) per request."
+  - ACCEPTANCE.MD (section Task Gate) menambah baris: "□ Baris DSA
+    tercantum untuk semua task hot path" — diverifikasi ADA dan
+    konsisten dengan BLUEPRINT, BUKAN dinilai optimalnya (optimalnya
+    diukur tangga tes/observability, bukan opini review).
+  - Task non-hot-path bebas baris DSA — jangan birokrasi kosong.
+
+  BELAJAR-DI-PROYEK (Learn-As-You-Build — proyek nyata = studi kasus
+  terbaik untuk developer yang masih belajar arsitektur):
+  - Belum paham cara mengisi baris DSA? BOLEH bertanya DI CHAT YANG
+    SAMA. Agent menjawab dengan mini-protokol 4 blok ringkas:
+    pertanyaan ↔ kenapa penting (2 angka) ↔ analogi ↔ contoh jawaban.
+    Batas: MAKS 2 pertanyaan DSA per task — sprint tetap sprint.
+  - Catatan belajar singkat → QUESTIONS.MD (file produksi yang sudah
+    ada) — DILARANG membuat folder/artefak belajar di repo produksi
+    (larangan kontaminasi Bab 28.6 tetap berlaku).
+  - Butuh lebih dari 2 pertanyaan atau belajar mendalam → catat di
+    QUESTIONS.MD, jadwalkan /teach-dsa atau /dsa-review di workspace
+    belajar SETELAH sprint (Bab 28) — konteks terpisah, repo produksi
+    tidak disentuh.
+  - Gate TETAP KERAS: "belum paham" boleh menunda PENGISIAN selama
+    bertanya, tidak pernah MENGHAPUS baris DSA. Bantuan ada untuk
+    memahami, bukan untuk melonggarkan gate (satu rumpun dengan
+    "This file does not get weakened to make a change pass" — 27.4b).
+
 CHECK BARU di cross-artifact check sprint-planner (Step 4):
   □ Setiap task BLUEPRINT punya command DoD mesin
   □ HANDOFF-PROMPT memuat blok bootstrap
+  □ Task hot path punya baris DSA (struktur data + Big-O operasi terpanas)
 ```
 
 **Mengapa ini standar, bukan bikinan:** OpenAI menegakkan arsitektur secara *mekanis* ("bukan lewat niat"); Anthropic mewajibkan agen memverifikasi lewat tool nyata sebelum menandai fitur selesai dan menyediakan `init.sh` di awal sesi; Fowler: *"Run fast computational sensors before commits; defer expensive inferential checks to pipelines."* CONSTRAINTS.md (Tahap 3.4b) adalah sumber command-nya — Task Gate adalah cara command itu ditegakkan per task.
+
+**Mengapa DSA Gate bergaya begini (ATURAN 3):** sensor murah Fowler berlaku sama untuk efisiensi algoritma — satu baris DSA per hot-path task adalah sensor termurah yang memaksa keputusan struktur data dibuat TERANGKAL saat perencanaan, bukan ditemukan saat produksi. Format barisnya identik dengan SIM-3/SIM-5b Mode Belajar: developer yang lulus jalur belajar (Bab 28) sudah hafal bentuknya — gate produksi hanya meneruskan kebiasaan. Dan karena gate ini bisa menahan developer yang belum paham DSA, jalur Learn-As-You-Build (maks 2 pertanyaan terpandu per task + rujukan /teach-dsa setelah sprint) menjaga gate tetap manusiawi tanpa melonggarkannya.
 
 **Keputusan lanjutan (18 Sep 2026, disetujui pemilik):**
 1. **Formalisasi mode ai-coding-coach** — riset menunjukkan industri memisah *fase* plan/build lewat mode (Cline Plan & Act, Claude Code plan mode) ATAU lewat skill terpisah dengan artefak file di antaranya (superpowers `writing-plans`/`executing-plans`, Anthropic planner–generator–evaluator). Dipilih jalur mode (satu skill, dua mode) + artefak file: `MODE DRY RUN` kini resmi didefinisikan di SKILL.md dan **wajib menulis `DRYRUN-REPORT.MD`** ke folder sprint sebelum minta approve; `MODE BUILD` hanya jalan setelah approve dan wajib STOP + re-approve bila menyimpang dari report. Sebelumnya mode ini hanya hidup di dokumen Bab 27 — mismatch dokumen↔skill sudah ditutup.
@@ -747,6 +783,69 @@ DON'T
 
 ---
 
-**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor; 18 Sep 2026: 27.4c Task Gate & Bootstrap — DoD mesin per task di BLUEPRINT/ACCEPTANCE + blok bootstrap di HANDOFF-PROMPT + formalisasi MODE DRY RUN/BUILD & DRYRUN-REPORT.MD di ai-coding-coach + caveman di adversarial-verifier & google-apps-script, hasil riset harness engineering OpenAI/Anthropic/Fowler/spec-kit/Cline/superpowers)
+### 27.9 Mode Belajar — Saat Yang Membaca Masih Belajar Arsitektur
+
+Bab 27 ditulis untuk pemilik proyek. Jika Anda sedang **belajar** arsitektur
+desain sistem (bukan sedang menjalankan proyek nyata), JANGAN menjalankan
+pipeline penuh ini sebagai latihan — gunakan **Mode Belajar** (Bab 28):
+
+```
+PEMBELAJAR ARSITEKTUR:
+  /teach-system-design → asesmen posisi + roadmap 12 fase (12–18 bulan)
+  → /teach-clarifier   (interview interaktif 4 blok — "belum tahu" sah)
+  → /teach-build-coach (LEARN: 1 konsep/sesi; BUILD-SIM: simulasi Tahap 2–6
+                        Bab 27 di proyek latihan, SIM-1..SIM-7)
+  → /teach-case-study  (bedah arsitektur nyata + latihan interview)
+  → /teach-test-ladder (tangga tes k6: smoke→load→stress→spike→
+                        breakpoint→soak — menambal gap performance
+                        testing di pipeline produksi ini)
+  → /teach-dsa         (fondasi DSA untuk arsitektur: struktur data &
+                        algoritma yang tepat + protokol pemecahan masalah
+                        7 langkah + disiplin Big-O; jalur 10 minggu
+                        paralel dengan roadmap 12 fase)
+  → /dsa-review        (review bersama kode latihan dengan lensa DSA —
+                        khusus BEGINNER: pertanyaan interaktif terpandu,
+                        maks 3 temuan/sesi, pembelajar yang menemukan;
+                        detail di 27.9b)
+
+ATURAN KERAS: workspace belajar TERPISAH dari repo produksi mana pun
+(kontaminasi dilarang — Bab 28.6). Skill produksi di bab ini hanya untuk
+proyek nyata; simulasi versi ringannya disediakan di teach-build-coach.
+Keluarga skill belajar kini 7 skill: router 1 + pekerja 6.
+```
+
+#### 27.9b — Fase DSA-Review (Beginner): /dsa-review
+
+Posisi fase ini di alur belajar: setelah task inti proyek latihan hijau
+(SIM-5) dan SEBELUM acceptance ringan (SIM-6) — jembatan antara "kode jalan"
+dan "kode jalan dengan alasan yang bisa dihitung".
+
+```
+KAPAN   : 1x per proyek latihan (SIM-5b), atau saat pembelajar bertanya
+          "kenapa ini lambat?" di kode latihannya
+SIAPA   : developer yang MASIH belajar — bukan reviewer senior;
+          review berjalan BERSAMA, bukan verdict satu arah
+FORMAT  : tiap temuan = protokol 4 blok (temuan + kenapa penting dengan
+          2 angka + analogi + SATU pertanyaan terpandu) → pembelajar
+          menemukan perbaikannya sendiri; petunjuk bertingkat L1–L4
+          kalau meleset; pujian ⭐ untuk keputusan DSA yang tepat
+BATAS   : maks 3 temuan per sesi (beban kognitif pemula); hanya lensa
+          DSA — gaya penulisan, keamanan, dan logika bisnis bukan
+          ranahnya (skill lain masing-masing)
+ARTEFAK : REVIEW-NOTES.md di proyek latihan — pola berulang ≥2 sesi
+          = input lesson /teach-dsa + bahan retrospektif SIM-7
+GRADUASI: konsisten 🟢 3 sesi → review mandiri dengan checklist,
+          lalu menuju review produksi (code-review-and-quality)
+
+DILARANG: memakai skill ini untuk kode PROYEK PRODUKSI nyata —
+          itu ranah /acceptance-runner + code-review-and-quality (Bab 12).
+```
+
+Detail lengkap: **Bab 28 — Panduan Mode Belajar**
+(`28-Panduan-Mode-Belajar-Workflow.md`).
+
+---
+
+**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor; 18 Sep 2026: 27.4c Task Gate & Bootstrap — DoD mesin per task di BLUEPRINT/ACCEPTANCE + blok bootstrap di HANDOFF-PROMPT + formalisasi MODE DRY RUN/BUILD & DRYRUN-REPORT.MD di ai-coding-coach + caveman di adversarial-verifier & google-apps-script, hasil riset harness engineering OpenAI/Anthropic/Fowler/spec-kit/Cline/superpowers; 23 Sep 2026: 27.9 Mode Belajar — skill `teach-*` + Bab 28 untuk pembelajar arsitektur, termasuk Tangga Tes k6 yang menambal gap performance testing + jalur DSA (teach-dsa) + fase DSA-Review beginner (dsa-review, 27.9b); 23 Sep 2026 (lanjutan): 27.4c ATURAN 3 DSA Gate — task hot path wajib baris struktur data + Big-O operasi terpanas di BLUEPRINT/ACCEPTANCE + jalur Learn-As-You-Build (maks 2 pertanyaan terpandu per task, belajar mendalam di workspace belajar setelah sprint))
 **📚 Referensi utama:** Bab 8, 10, 12, 13, 14, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
-**🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix, handoff antar AI agent, dan jalur adopsi untuk proyek existing (27.8)
+**🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix, handoff antar AI agent, jalur adopsi untuk proyek existing (27.8), dan Mode Belajar untuk pembelajar arsitektur (27.9 → Bab 28)
