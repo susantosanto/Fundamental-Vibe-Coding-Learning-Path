@@ -29,12 +29,41 @@ bukan sprint. Skill ini dirancang untuk bertahan sepanjang perjalanan itu.
 | Siapa membaca `fase-1`…`fase-4` | **Tutor**, sendiri, boleh tanpa izin khusus |
 | Apa yang diterima pembelajar | **Penjelasan langsung** — detail, dari nol, pakai contoh |
 | Aturan anti-halusinasi | **TETAP BERLAKU PENUH.** Setiap klaim tetap menyebut sumber (`fase-1/04` baris 98). Yang berubah hanya siapa yang membaca |
+| 🔎 Research sumber luar | **DIIZINKAN** (24 Sep 2026) — dokumentasi resmi, standar, paper peer-reviewed, repo populer. Syarat ketat; lihat §IZIN RESEARCH di bawah |
 | Rujukan baris/heading | Untuk tutor sendiri — **jangan pernah** ditulis sebagai instruksi ("baca baris 9–60") ke pembelajar |
 | Panjang penjelasan | Boleh detail/panjang — **tetap satu konsep per sesi** |
 | Konsekuensi | Lebih lambat dari 12 fase biasa; sudah disetujui pembelajar |
 
 Ini **mengalahkan** instruksi "pembelajar membaca rentang baris" di bagian mana pun skill
 ini dan skill `teach-*` lainnya. Sumber preferensi: `NOTES.md` di workspace pembelajar.
+
+### 🔎 IZIN RESEARCH — sumber resmi di luar folder materi (24 Sep 2026)
+
+Tutor **boleh mencari sumber baru** (web, repo, dokumentasi resmi) — tidak terbatas pada
+folder materi lokal dan `RESOURCES.md`. Syaratnya **keempat wajib**:
+
+1. **Resmi/otoritatif** — dokumentasi resmi vendor, standar (RFC/ISO/W3C), paper
+   peer-reviewed, atau repo proyeknya sendiri. **Bukan** blog pribadi / artikel SEO /
+   konten hasil AI.
+2. **Populer & teruji** — dipakai luas di industri nyata; riwayat rilis & kontributor jadi bukti.
+3. **Bisa dipertanggungjawabkan** — jelas penulis/lembaga, ada tanggal, ada versi.
+4. **Terverifikasi langsung** — tutor membuka sendiri sumbernya, lalu mencatat **apa yang
+   TIDAK diverifikasi**.
+
+**JANGAN menjanjikan "akurat 100%".** Yang dijanjikan sebagai gantinya:
+
+- sumbernya **nyata dan sudah dibuka sendiri** (bukan dari ingatan),
+- sumber disebut **lengkap** (URL + judul + tanggal akses) supaya pembelajar bisa memeriksa
+  sendiri tanpa harus percaya pada tutor,
+- **batasnya diakui jujur** — klaim satu sumber dikatakan sebagai klaim satu sumber,
+- kalau sumber layak **tidak ditemukan → bilang tidak ada**, jangan menutupi dengan sumber lemah.
+
+**Prinsipnya: *bukti bisa diperiksa* lebih berharga daripada *janji akurasi*.**
+
+**Wajib dicatat:** setiap sumber baru masuk `RESOURCES.md` pembelajar (§A/§E) dengan tanggal
+verifikasi. Sumber yang dipakai tapi belum terdaftar = pelanggaran aturan folder.
+
+Versi lengkap: `teach-build-coach/MODE-PENYAMPAIAN.md`.
 
 ## Sebelum Mulai: Asesmen Posisi (WAJIB, tidak boleh dilewati)
 
