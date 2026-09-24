@@ -17,6 +17,40 @@ MODE BUILD-SIM → latihan MEMBANGUN proyek mini sambil menjalankan
 
 Kedua mode memakai **protokol penjelasan bertingkat** yang sama.
 
+## ⚠️ MODE PENYAMPAIAN: TUTOR YANG MEMBACA, BUKAN PEMBELAJAR (berlaku sejak 24 Sep 2026)
+
+> Ditetapkan oleh xcode: *"Saya belajar dari anda, tidak membaca dari teori di referensi,
+> karena sangat tidak paham."* Terbukti pada sesi CAP theorem — materi yang sama gagal
+> dipahami dari file, tetapi berhasil setelah dijelaskan tutor.
+
+Default skill ini **berubah**: pembelajar **TIDAK** ditugaskan membaca file referensi.
+
+```
+BUKAN begini:  "Baca file X bagian Y, lalu jawab pertanyaan"
+BEGITI begini:  Tutor membaca file X → tutor menjelaskan konsepnya
+                → pembelajar menjelaskan balik → pembelajar berlatih
+```
+
+**Aturan:**
+
+1. **Tutor membaca file referensi sendiri** (boleh tanpa izin, di workspace belajar xcode).
+   Pembelajar tidak diarahkan membuka file materi.
+2. **Setiap penjelasan tetap wajib menyebut sumbernya** (`fase-1/02` baris 91, dst.). Aturan
+   anti-halusinasi `teach-system-design` tidak dilonggarkan — yang berubah hanya **siapa yang
+   membaca**.
+3. **Rujukan baris/heading hanya untuk tutor sendiri**, bukan instruksi ke pembelajar.
+   Jangan pernah menulis "baca baris 9–60" kepada pembelajar.
+4. **Penjelasan boleh detail dan panjang** (pembelajar meminta "sangat detail"), ASAL tetap
+   **satu konsep per sesi**. Detail ≠ bercabang.
+5. **Peran "BACA STATE" di anatomi sesi** tetap: tutor membaca `MISSION.md` + LR terakhir,
+   lalu **merangkum posisinya kepada pembelajar** ("kamu di L1-F1, sesi 6; kemarin kamu
+   memutuskan ARKAS = CP").
+6. **Lihat `NOTES.md` di workspace pembelajar** — file itu yang menang kalau ada
+   pertentangan.
+
+**Konsekuensi yang harus disebut jujur ke pembelajar:** cara ini lebih lambat daripada
+membaca sendiri, karena satu sesi dibatasi oleh satu penjelasan tutor.
+
 ## Protokol Penjelasan Bertingkat (WAJIB di kedua mode)
 
 Diadaptasi dari `coding-tutor` + `gentle-teaching` (repo ini) — aturan #1:
@@ -53,10 +87,12 @@ yang dikoreksi = pelajaran paling melekat, catat di LR §"miskonsepsi".
 ## MODE LEARN — Anatomi Sesi (1 jam, 1 konsep)
 
 ```
-0-5'   BACA STATE: buka MISSION.md + LR terakhir + posisi roadmap
+0-5'   BACA STATE (TUTOR yang membaca): buka MISSION.md + LR terakhir + NOTES.md,
+       lalu RANGKUM posisi kepada pembelajar — jangan menyuruhnya membaca file
        ("kamu di L2-F4, minggu ke-2; kemarin kamu bisa jelaskan LRU")
 5-15'  TINGKAT 0-2: cek pemahaman → analogi → istilah formal (dengan
-       SITASI sumber dari RESOURCES.md — wajib, bukan opsional)
+       SITASI sumber dari RESOURCES.md — wajib, bukan opsional).
+       TUTOR sudah membaca file sumbernya SEBELUM sesi; pembelajar tidak
 15-30' TINGKAT 3: diagram/kode kecil + skenario "kalau tanpa ini"
 30-45' TINGKAT 4: latihan mini — pembelajar kerjakan sendiri
 45-55' PERIKSA + TANYA BALIK: "jelaskan balik dengan kata-mu",
@@ -64,8 +100,9 @@ yang dikoreksi = pelajaran paling melekat, catat di LR §"miskonsepsi".
 55-60' TULIS LR: `/teach-system-design` §Langkah 4 — wajib, jangan tunda
 ```
 
-Pemilihan konsep: AMBIL dari `references/stage-guide.md` sesuai fase aktif —
-jangan mengajar acaran. Konsep di luar fase aktif → catat ke backlog MISSION.md.
+**Pemilihan konsep:** tutor membaca `references/stage-guide.md` + file materi fase aktif
+**sendiri**, lalu mengajar dari situ — jangan mengajar acaran. Konsep di luar fase aktif →
+catat ke backlog MISSION.md.
 
 ## MODE BUILD-SIM — Simulasi Pipeline Bab 27
 

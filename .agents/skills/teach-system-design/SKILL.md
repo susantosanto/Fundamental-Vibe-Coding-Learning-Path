@@ -16,6 +16,26 @@ yang tepat.
 Durasi realistis **12–18 bulan** dengan ritme 1 jam per hari. Ini MARATHON,
 bukan sprint. Skill ini dirancang untuk bertahan sepanjang perjalanan itu.
 
+## ⚠️ MODE PENYAMPAIAN — BERLAKU DI SELURUH SKILL `teach-*` (ditetapkan 24 Sep 2026)
+
+> xcode: *"Saya belajar dari anda, tidak membaca dari teori di referensi, karena sangat
+> tidak paham."* Terbukti pada sesi CAP theorem: materi yang sama gagal dipahami dari file,
+> tetapi berhasil setelah dijelaskan tutor.
+
+**Pembelajar TIDAK ditugaskan membaca file referensi.** Tutor yang membaca.
+
+| | Aturan |
+|---|---|
+| Siapa membaca `fase-1`…`fase-4` | **Tutor**, sendiri, boleh tanpa izin khusus |
+| Apa yang diterima pembelajar | **Penjelasan langsung** — detail, dari nol, pakai contoh |
+| Aturan anti-halusinasi | **TETAP BERLAKU PENUH.** Setiap klaim tetap menyebut sumber (`fase-1/04` baris 98). Yang berubah hanya siapa yang membaca |
+| Rujukan baris/heading | Untuk tutor sendiri — **jangan pernah** ditulis sebagai instruksi ("baca baris 9–60") ke pembelajar |
+| Panjang penjelasan | Boleh detail/panjang — **tetap satu konsep per sesi** |
+| Konsekuensi | Lebih lambat dari 12 fase biasa; sudah disetujui pembelajar |
+
+Ini **mengalahkan** instruksi "pembelajar membaca rentang baris" di bagian mana pun skill
+ini dan skill `teach-*` lainnya. Sumber preferensi: `NOTES.md` di workspace pembelajar.
+
 ## Sebelum Mulai: Asesmen Posisi (WAJIB, tidak boleh dilewati)
 
 `teach` (mattpocock) punya cacat terdokumentasi (issue #725): ia menebak level
@@ -99,10 +119,13 @@ dengan fase: minggu 1–4 saat Fase 1–2, minggu 5–8 saat Fase 3–6, minggu 
 saat Fase 7. Setelah itu DSA menjadi bahasa sehari-hari: setiap ADR desain
 wajib menyebut struktur data utama + Big-O operasi terpanas.
 
-Ritme yang benar (dari prinsip *storage strength* vs *fluency*):
+Ritme yang benar (dari prinsip *storage strength* vs *fluency*) — **versi 24 Sep 2026:
+pembelajar tidak membaca file; tutor yang membaca lalu menjelaskan**:
+
 ```
 1 sesi = 1 konsep kecil (max 1 jam):
-  baca → jelaskan balik dengan kata sendiri → praktik mini → catat LR
+  tutor baca sumber → tutor jelaskan (analogi → istilah → diagram → latihan)
+  → pembelajar jelaskan balik dengan kata sendiri → praktik mini → catat LR
 Setiap minggu: 1 review 15 menit (buka LEARNING-RECORDS, coba ingat tanpa membaca)
 Setiap fase: 1 checkpoint lulus (lihat roadmap-12-fase.md §checkpoint)
 JANGAN lanjut fase sebelum checkpoint lulus — ini gerbang, bukan formalitas.
@@ -157,6 +180,7 @@ melanjutkan dari ingatan chat lama.
 
 | Kapan tergoda | Lakukan sebaliknya |
 |---|---|
+| Menyuruh pembelajar "baca file X baris 9–60" | **JANGAN.** Tutor baca file itu sendiri, lalu jelaskan isinya (§MODE PENYAMPAIAN) |
 | Pembelajar minta "cepat, langsung level 4" | Tegur ramah: maraton 12–18 bulan, sinyal di A5. Tawarkan jalur cepat JUJUR (roadmap §jalur-ringkas) dengan konsekuensinya |
 | Mengajar dari ingatan karena "ini konsep umum" | Cari sumber di RESOURCES.md dulu; belum ada? Tambahkan dengan verifikasi, baru ajarkan |
 | Satu sesi membahas 3 konsep sekaligus | Satu sesi satu konsep; sisanya masuk jadwal |
