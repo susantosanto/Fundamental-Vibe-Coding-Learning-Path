@@ -127,14 +127,21 @@ Bergilir, jangan pakai satu jenis terus. Masing-masing melatih hal berbeda.
 
 ### (a) LACAK — melacak nilai variabel
 
-**Cara:** pembelajar menulis tabel nilai tiap variabel di tiap langkah, **sebelum**
-menjalankan.
+**Cara:** pembelajar menulis nilai tiap variabel di tiap langkah, **sebelum** menjalankan.
 
 ```markdown
-| baris | <nama 1> | <nama 2> | catatan |
-|-------|----------|----------|---------|
-| 1     |          |          |         |
-| 2     |          |          |         |
+- baris 1 →
+- baris 2 →
+- baris 3 →
+```
+
+⚠️ **Jangan pakai tabel markdown untuk isian.** Kolom yang harus sejajar menyiksa untuk diisi
+di editor teks — aturan lengkapnya di §Anti-Pattern `SKILL.md`. Kalau butuh nama kolomnya,
+**tutor** yang menulis labelnya, pembelajar mengisi di belakang `→`:
+
+```markdown
+- baris 1 → saldo = ___ · pengeluaran = ___
+- baris 2 →
 ```
 
 **Yang dilatih:** model mental tentang bagaimana program berjalan — PRIMM menyebutnya
@@ -144,7 +151,7 @@ menjalankan.
 menemukan pembelajar butuh **akurasi 50%** dalam melacak kode sebelum bisa menulis kode
 mandiri dengan percaya diri. Karena itu **Gerbang 1 mengukur tepat kemampuan ini.**
 
-**Jangan:** mengisi tabel untuk pembelajar. Kalau macet, mundur satu baris dan tanya
+**Jangan:** mengisi jawabannya untuk pembelajar. Kalau macet, mundur satu baris dan tanya
 "baris ini mengubah apa?".
 
 ---

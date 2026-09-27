@@ -1,6 +1,6 @@
 # PANDUAN END-TO-END: Semua Skill dari Ide sampai Aplikasi Siap Production
 
-> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 4 skill pendukung (**taste**, **impeccable**, **browser-skill**, **pen-design**) dan 4 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**, **constraint-driven-development**). Membawa **proyek existing** yang belum pernah memakai workflow ini? → mulai dari jalur adopsi di 27.8.
+> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 5 skill pendukung (**pen-design**, **birdview**, **taste**, **impeccable**, **browser-skill**) dan 4 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**, **constraint-driven-development**). Membawa **proyek existing** yang belum pernah memakai workflow ini? → mulai dari jalur adopsi di 27.8.
 
 ---
 
@@ -15,9 +15,11 @@ LAPIS 1 — PIPELINE UTAMA (13 skill, berurutan, punya pemilik tahap)
 → /acceptance-runner → /security-dependency-auditor
 → /deploy-production-gate → /state-keeper ♻️ per sprint
 
-LAPIS 2 — LAPIS PENDUKUNG (4 skill, dipanggil DI DALAM tahap tertentu)
+LAPIS 2 — LAPIS PENDUKUNG (5 skill, dipanggil DI DALAM tahap tertentu)
 ═══════════════════════════════════════════════════════════════════
 /pen-design    → visualisasi mockup SEBELUM coding (Tahap 2-3)
+/birdview      → peta arsitektur + konfirmasi visual scope perubahan
+                 (Tahap 3.5-4; dipanggil ulang di 27.6 Kasus B)
 /taste         → arah desain anti-slop untuk halaman marketing (Tahap 5)
 /impeccable    → kualitas UI semua permukaan + polish/harden (Tahap 5-6)
 /browser-skill → bukti visual & verifikasi di browser nyata (Tahap 6)
@@ -52,6 +54,7 @@ LAPIS 0 — ROUTER (selalu aktif)
 | `/scaffolder` | Tahap 1 | Proyek baru, sekali jalan; proyek existing → MODE ADOPS (27.8) | — |
 | `/idea-clarifier` | Tahap 2 | Ide masih mentah/ambigu | Requirement sudah jelas & teruji |
 | `/pen-design` ⭐ | Tahap 2–3 | Saat user butuh MELIHAT bentuk UI sebelum setuju: mockup halaman, wireframe dashboard, slide, aset marketing. Output `.pen` → diekspor gambar → jadi lampiran BLUEPRINT | Aplikasi tanpa UI; saat UI sudah ada dan hanya perlu diubah kecil |
+| `/birdview` ⭐ | Tahap 3.5–4 + 27.6 Kasus B | Setelah pack selesai (langkah 12b): module map + CONSTRAINTS.md → peta arsitektur HTML ("architect pack visual"); saat DRY RUN (langkah 15b): scope perubahan builder tampil DI PETA → konfirmasi scope lebih awal sebelum MODE BUILD; revisi fitur: comparison view scope vs arsitektur penuh | Skrip sekali pakai / throwaway; bug kecil tanpa module map (27.6.4); BUKAN pengganti acceptance-runner (fresh context) maupun browser-skill (bukti UI) |
 | `/prd-generator` | Tahap 3.1 | Setelah problem brief disetujui | — |
 | `/tech-stack-advisor` | Tahap 3.2 | Setelah PRD; catat ADR ke DECISIONS.MD | Stack sudah terkunci proyek existing |
 | `/entity-modeler` | Tahap 3.3 | Setelah stack | Sprint tanpa perubahan data |
@@ -133,6 +136,14 @@ LAPIS 0 — ROUTER (selalu aktif)
                              When-Then + command persis + Task Gate) /
                              HANDOFF-PROMPT (+ blok perintah bootstrap)
                              → cross-artifact check WAJIB
+12b. /birdview ⭐         → SAAT INI: konversi hasil perencanaan jadi PETA:
+                             module map + dependency graph →
+                             architecture.json; CONSTRAINTS.md →
+                             constraints.reviewed.json → render peta HTML
+                             → peta = "architect pack visual": user MELIHAT
+                             modul, aturan, dan keterkaitannya sebelum
+                             build (paralel pen-design di Tahap 2, tapi
+                             untuk arsitektur — bukan mockup UI)
 13. /state-keeper         → catat: perencanaan selesai
 ```
 
@@ -145,7 +156,13 @@ LAPIS 0 — ROUTER (selalu aktif)
     → baca pack + AGENTS.MD + STATE.MD
     → laporkan rencana → tulis planning/sprints/sprint-XXX/
     DRYRUN-REPORT.MD → TUNGGU approve
+15b. /birdview ⭐         → builder deklarasikan scope perubahan ke
+    activity.jsonl → render activity.html: modul/file yang akan
+    disentuh tampil DI PETA → user cek cakupan sebelum approve
+    (birdview MENAMPILKAN rencana; keputusan tetap lewat chat —
+    konfirmasi di peta BUKAN write lock)
 16. User review dry run → ubah poin yang salah ATAU "Approved"
+    (review PETA birdview + DRYRUN-REPORT.MD berdampingan)
     → /ai-coding-coach MODE BUILD (resmi didefinisikan di SKILL.md
     sejak 18 Sep 2026 — sebelumnya mode hanya hidup di dokumen ini;
     menyimpang dari report yang di-approve = STOP + re-approve)
@@ -181,6 +198,9 @@ LAPIS 0 — ROUTER (selalu aktif)
     │   → bsk session stop  → screenshot jadi lampiran bukti
     ├─ PASS  → lanjut
     └─ FAIL/UNTESTED → rework builder (maks 5 putaran → manusia)
+20b. /birdview ⭐          → verdict + daftar check yang benar-benar
+    dijalankan → catat ke activity.jsonl → tampil di tab Verification
+    peta birdview ("hanya hasil check tercatat yang berlaku")
 
 21. /security-dependency-auditor → npm audit + secret scan
     + drift BLUEPRINT + Checklist P1 → CLEAN / temuan
@@ -198,7 +218,7 @@ LAPIS 0 — ROUTER (selalu aktif)
 
 ---
 
-## 27.4 Aturan Batin 4 Skill Pendukung
+## 27.4 Aturan Batin 5 Skill Pendukung
 
 ### /pen-design (MCP Pencil / pen.dev CLI)
 
@@ -250,6 +270,32 @@ TANGGA : observe → probe-hover → snapshot → get-html → screenshot
 AMAN   : Agent Window terisolasi; tab user hanya via tab borrow/return;
          JANGAN ekstrak kredensial/cookie/token.
 BATAL  : Tugas tanpa browser.
+```
+
+### /birdview
+
+```
+KAPAN  : (a) Tahap 3.5: pack selesai → peta arsitektur (architect pack visual);
+         (b) Tahap 4: DRY RUN → deklarasi scope ke activity.jsonl →
+             peta perubahan tampil → konfirmasi scope sebelum MODE BUILD;
+         (c) 27.6 Kasus B: revisi fitur → comparison view (scope vs penuh);
+         (d) 27.8: MODE ADOPS → peta arsitektur "as adopted" dari backfill.
+KONTRAK: architecture.json ← module-planner (module map + dependency graph);
+         constraints.reviewed.json ← CONSTRAINTS.md (Tahap 3.4b);
+         activity.jsonl ← ditulis ai-coding-coach MODE DRY RUN (bersama
+         DRYRUN-REPORT.MD). Semua artefak di .birdview/ — milik folder
+         proyek, ikut diwariskan saat handoff antar agent (27.7).
+SIKLUS : konversi → render (scripts/validate.mjs + render.mjs) → buka HTML
+         → peta + tab Architecture/Constraints/Verification.
+ATURAN : birdview MENAMPILKAN rencana dan hasil check tercatat — ia BUKAN
+         pengganti acceptance-runner (fresh context + Iron Law), BUKAN
+         security auditor (tool nyata), BUKAN bukti UI (itu browser-skill).
+         Konfirmasi tetap lewat CHAT + DRYRUN-REPORT.MD (persetujuan di
+         peta bukan write lock — dinyatakan sendiri oleh birdview).
+         materi-source belum dipetakan → aturan materi-reference:
+         baca file skema di skill birdview dulu, jangan menebak dari ingatan.
+BATAL  : Skrip sekali pakai / throwaway; bug kecil tanpa module map
+         (jalur 27.6.4); proyek tanpa UI kompleks — jangan birokrasi kosong.
 ```
 
 ---
@@ -382,6 +428,8 @@ IDE ─────────────────────────�
  ├─ /constraint-driven-development ... quality contract → CONSTRAINTS.md
  │                                      (gate ditegakkan mesin, bukan niat)
  ├─ /sprint-planner .................. pack 4 dokumen (+mockup+design read)
+ ├─ /birdview ........................ peta arsitektur + konfirmasi visual
+ │                                      scope (Tahap 3.5–4; ulang di 27.6 B)
  ├─ /ai-coding-coach ................. dry run → approve → build
  │    ├─ UI marketing ................ /taste
  │    └─ UI produk/dashboard ......... /impeccable (shape→critique→polish→harden)
@@ -486,6 +534,9 @@ Revisi lebih berisiko daripada fitur baru: ada perilaku lama yang
    b. BLUEPRINT wajib menyebut file lama mana yang disentuh
    c. /browser-skill dijadwalkan sejak awal: tangkap screenshot
       kondisi SEBELUM revisi → bandingkan SESUDAH
+   d. /birdview ⭐ → render comparison view: scope revisi
+      (KEEP/CHANGE/REMOVE) vs arsitektur penuh —
+      konfirmasi visual dampak sebelum build
 
 5. Loop standar dengan fokus regresi:
    build → /acceptance-runner (item regresi diuji DULUAN)
@@ -846,6 +897,6 @@ Detail lengkap: **Bab 28 — Panduan Mode Belajar**
 
 ---
 
-**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor; 18 Sep 2026: 27.4c Task Gate & Bootstrap — DoD mesin per task di BLUEPRINT/ACCEPTANCE + blok bootstrap di HANDOFF-PROMPT + formalisasi MODE DRY RUN/BUILD & DRYRUN-REPORT.MD di ai-coding-coach + caveman di adversarial-verifier & google-apps-script, hasil riset harness engineering OpenAI/Anthropic/Fowler/spec-kit/Cline/superpowers; 23 Sep 2026: 27.9 Mode Belajar — skill `teach-*` + Bab 28 untuk pembelajar arsitektur, termasuk Tangga Tes k6 yang menambal gap performance testing + jalur DSA (teach-dsa) + fase DSA-Review beginner (dsa-review, 27.9b); 23 Sep 2026 (lanjutan): 27.4c ATURAN 3 DSA Gate — task hot path wajib baris struktur data + Big-O operasi terpanas di BLUEPRINT/ACCEPTANCE + jalur Learn-As-You-Build (maks 2 pertanyaan terpandu per task, belajar mendalam di workspace belajar setelah sprint))
+**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor; 18 Sep 2026: 27.4c Task Gate & Bootstrap — DoD mesin per task di BLUEPRINT/ACCEPTANCE + blok bootstrap di HANDOFF-PROMPT + formalisasi MODE DRY RUN/BUILD & DRYRUN-REPORT.MD di ai-coding-coach + caveman di adversarial-verifier & google-apps-script, hasil riset harness engineering OpenAI/Anthropic/Fowler/spec-kit/Cline/superpowers; 23 Sep 2026: 27.9 Mode Belajar — skill `teach-*` + Bab 28 untuk pembelajar arsitektur, termasuk Tangga Tes k6 yang menambal gap performance testing + jalur DSA (teach-dsa) + fase DSA-Review beginner (dsa-review, 27.9b); 23 Sep 2026 (lanjutan): 27.4c ATURAN 3 DSA Gate — task hot path wajib baris struktur data + Big-O operasi terpanas di BLUEPRINT/ACCEPTANCE + jalur Learn-As-You-Build (maks 2 pertanyaan terpandu per task, belajar mendalam di workspace belajar setelah sprint); 25 Sep 2026: Lapis 2 jadi 5 skill pendukung — /birdview (Qiuner/birdview) masuk: Tahap 3.5 langkah 12b architect pack visual (architecture.json + constraints.reviewed.json), Tahap 4 langkah 15b konfirmasi scope visual via activity.jsonl/activity.html, Tahap 6a langkah 20b tab Verification, 27.6.2 d comparison view, 27.8 peta as-adopted, aturan batin 27.4))
 **📚 Referensi utama:** Bab 8, 10, 12, 13, 14, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
 **🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix, handoff antar AI agent, jalur adopsi untuk proyek existing (27.8), dan Mode Belajar untuk pembelajar arsitektur (27.9 → Bab 28)

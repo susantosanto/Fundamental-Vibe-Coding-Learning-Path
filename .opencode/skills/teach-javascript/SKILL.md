@@ -362,6 +362,7 @@ melanjutkan dari ingatan chat lama.
 | **Menjelaskan 5 bentuk sintaks sekaligus karena pembelajar bertanya** | **JANGAN.** Satu bentuk per kejadian. Menumpuk = menenggelamkan |
 | **Menyerahkan debugging ke AI** | **JANGAN.** RCT Anthropic: **gap terbesar** justru di debugging. AI hanya untuk memeriksa **setelah** pembelajar menemukannya |
 | **Menggabungkan Unit 12 (cari bug dengan membaca) dan Unit 13 (telusur)** | **JANGAN.** Dua kemampuan berbeda — statis vs dinamis. Ajarkan terpisah, uji terpisah |
+| **Meminta pembelajar mengisi tabel markdown** | **JANGAN.** Kolom tabel harus sejajar — di editor teks itu menyiksa untuk diisi. Terjadi 27 Sep 2026: xcode menulis *"format tabel nya acak2an ketika mau saya isi"*, lalu memindahkan jawabannya ke file lain. Pakai **daftar ber-panah** (`- baris 2 →`). Tabel hanya untuk **bacaan** yang tutor isi sendiri. Kalau pembelajar menulis jawaban di file lain dan isinya jelas → **terima apa adanya**, jangan pindahkan — yang dinilai isinya, bukan letak filenya |
 
 ## False Positives
 
