@@ -54,7 +54,26 @@ Sebelum langkah penting, konsultasi **`/materi-reference`** — folder materi ad
 - Verifikasi di konteks segar (/acceptance-runner)
 ```
 
+## 5. Sinkronisasi skill workflow — WAJIB
+
+**24 skill alur pengembangan aplikasi** (Bab 27) harus **identik di 11 lokasi agen**.
+Aturan lengkap: **`SINKRONISASI-SKILL.md`**.
+
+```
+- Ubah skill di SATU tempat (sumber: skills/<nama>/ di repo ini).
+- JANGAN menyalin manual ke 11 lokasi.
+- Setelah SETIAP perubahan skill → jalankan:
+      python tools/sync-skill-workflow.py
+      python tools/sync-skill-workflow.py --check      # wajib: HILANG=0, BEDA=0
+- Jangan percaya exit-code saja; baca output verifikasi.
+- Gemini memakai junction, bukan salinan. Jangan cp -R ke ~/.gemini/config/skills.
+- CRLF bukan drift: verifikasi memakai md5 setelah normalisasi \r.
+- Satu skill = satu nama folder. design-taste-frontend disimpan sebagai
+  taste-skill di lokasi yang sudah memakai nama itu.
+- teach-* / dsa-review / latihan-* / architecture-diagram DI LUAR cakupan sync.
+```
+
 ---
 
 **📅 Dibuat:** September 2026
-**📚 Terkait:** `MODEL-POLICY.md` · `skills-vendor/OVERRIDES.md` · `architecture-planner/MATERI-PECAHAN/27-Panduan-EndToEnd-Semua-Skill.md`
+**📚 Terkait:** `MODEL-POLICY.md` · `skills-vendor/OVERRIDES.md` · `SINKRONISASI-SKILL.md` · `architecture-planner/MATERI-PECAHAN/27-Panduan-EndToEnd-Semua-Skill.md`

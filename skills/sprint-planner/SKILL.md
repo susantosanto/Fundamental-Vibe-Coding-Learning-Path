@@ -59,20 +59,21 @@ Write to `planning/sprints/sprint-XXX/`:
 2. **BLUEPRINT.MD** — how: system sketch, tech stack (from the advisor,
    unchanged), exact file list, dependency table **with pinned versions**
    (`exceljs: 4.4.0` — never `^4.4.0`), tasks broken down to 2–5 minutes each
-   with the files each task touches. Every task carries a machine-checked    **definition-of-done**: the exact lint + type-check + unit-test commands
-    for that task (taken from CONSTRAINTS.md `Checked by` / `check:task` when
-    it exists). A task is COMPLETE only when those commands are green — the
-    builder pastes the output as evidence (shift-left: cheap sensors run per
-    task, not only at the final gate). **DSA line (27.4c ATURAN 3):** every
-    task touching a HOT PATH (main endpoint, per-request handler, loop over
-    user collections, recurring job) carries one DSA line — "DSA: <main data
-    structure/algorithm> — <hottest operation> <Big-O> — <one-sentence
-    reason>". Non-hot-path tasks are exempt. If the user is still learning
-    and cannot fill it, answer with the mini 4-block protocol (question ↔
-    why it matters with two numbers ↔ analogy ↔ example answer), MAX 2 DSA
-    questions per task, note learning points in QUESTIONS.MD, and route
-    deeper study to teach-dsa / dsa-review AFTER the sprint (Bab 28) —
-    the gate itself never gets removed.
+   with the files each task touches. Every task carries a machine-checked
+   **definition-of-done**: the exact lint + type-check + unit-test commands
+   for that task (taken from CONSTRAINTS.md `Checked by` / `check:task` when
+   it exists). A task is COMPLETE only when those commands are green — the
+   builder pastes the output as evidence (shift-left: cheap sensors run per
+   task, not only at the final gate). **DSA line (27.4c ATURAN 3):** every
+   task touching a HOT PATH (main endpoint, per-request handler, loop over
+   user collections, recurring job) carries one DSA line — "DSA: <main data
+   structure/algorithm> — <hottest operation> <Big-O> — <one-sentence
+   reason>". Non-hot-path tasks are exempt. If the user is still learning
+   and cannot fill it, answer with the mini 4-block protocol (question ↔
+   why it matters with two numbers ↔ analogy ↔ example answer), MAX 2 DSA
+   questions per task, note learning points in QUESTIONS.MD, and route
+   deeper study to teach-dsa / dsa-review AFTER the sprint (Bab 28) —
+   the gate itself never gets removed.
 3. **ACCEPTANCE.MD** — each criterion in testable Given/When/Then form with
    the exact command to run and the expected observable output. A criterion
    that cannot be mapped to a command + expected output must be rewritten

@@ -1,3 +1,12 @@
 .aider*
 nul
 .workbuddy-ai/
+
+# Dependensi (jangan pernah di-commit)
+node_modules/
+
+# Backup lokal sinkronisasi skill (jangan di-commit)
+_backup/
+
+# tools/birdview = repo pihak ketiga tersendiri (punya .git sendiri)
+tools/birdview/

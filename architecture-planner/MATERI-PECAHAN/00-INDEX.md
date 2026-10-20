@@ -73,6 +73,12 @@
 | 25 | [Skill Lengkap: Workflow 12 Skill dari Ide sampai Production](25-Skill-Lengkap-Workflow.md) | `25-Skill-Lengkap-Workflow.md` | 6 skill baru (Scaffolder, Sprint Planner, State Keeper, Acceptance Runner, Security Auditor, Deploy Gate) + peta alur 12 skill lengkap dengan kontrak folder & referensi bab |
 | 26 | [Riset Referensi GitHub: Skill #7–#12](26-Riset-Referensi-GitHub-Skill-7-12.md) | `26-Riset-Referensi-GitHub-Skill-7-12.md` | Riset repo GitHub populer (spec-kit, superpowers, BMAD, Memory Bank, gitleaks, dll) → pola terbukti untuk membangun 6 skill baru + format SKILL.md standar terbuka (agentskills.io) |
 | 27 | [Panduan End-to-End: Semua Skill dari Ide sampai Production](27-Panduan-EndToEnd-Semua-Skill.md) | `27-Panduan-EndToEnd-Semua-Skill.md` | Ritel operasional lengkap 13 skill pipeline + router materi-reference, termasuk kapan & di mana memakai taste, impeccable, browser-skill, pen-design (MCP Pencil), workflow perubahan fitur (27.5b–27.6), checklist handoff antar AI agent (27.7: pindah zcode ↔ opencode di tengah pipeline), dan jalur adopsi untuk proyek existing yang belum pernah memakai workflow (27.8: mode adopsi + backfill + baseline, tanpa menambal retroaktif) |
+| 28 | [Panduan Mode Belajar Workflow](28-Panduan-Mode-Belajar-Workflow.md) | `28-Panduan-Mode-Belajar-Workflow.md` | Mode Belajar: saat yang membaca masih belajar arsitektur — skill `teach-*`, Tangga Tes k6, jalur DSA |
+
+### BAGIAN 8: ALAT PRODUKSI (Bab 29) 🛠️ BARU
+| No | Judul | File | Deskripsi |
+|----|-------|------|-----------|
+| 29 | [Sentry: Logging Error di Production](29-Sentry-Logging-Error-Produksi.md) | `29-Sentry-Logging-Error-Produksi.md` | **Alat**, bukan skill. Menutup celah Bab 27 yang menyebut Sentry di Tahap 6 tapi tidak pernah mengajarkan pemasangannya. Isi: konsep 3 jenis data (error/tracing/replay) · kenyataan paket gratis (5k error/bln, kuota lewat = data dibuang **bukan** ditagih) · **Langkah 0–8** pemasangan yang bisa diperiksa (termasuk Langkah 5 "buktikan error tes benar-benar masuk") · **integrasi MCP** supaya AI agent membaca error sendiri (`https://mcp.sentry.dev/mcp`, scope token, pembatasan tool) · **4 titik sambung ke workflow Bab 27** (Tahap 5 instrumentasi · Tahap 6 deploy gate · loop insiden pasca-rilis · bug-fix routing 27.4b) · 13 jebakan · checklist siap-production |
 
 ### BAGIAN 7: SYSTEM DESIGN & PRODUCTION (Bab 20-23) ⭐ BARU
 | No | Judul | File | Deskripsi |
@@ -88,7 +94,7 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Bab | 27 bab |
+| Total Bab | 29 bab |
 | Total Baris | 4.524 baris |
 | Sumber Utama | 12 sumber |
 | Bahasa | Indonesia |
@@ -118,9 +124,10 @@
 5. Gunakan Bab 25 (Peta 12 skill + skill yang belum ada)
 6. Gunakan Bab 26 (Referensi repo untuk membangun skill baru)
 7. Gunakan Bab 27 (Panduan end-to-end semua skill, termasuk skill desain & browser)
+8. Saat aplikasi akan dipakai orang lain → **Bab 29 (Sentry)** untuk logging error produksi
 
 ---
 
-**📅 Terakhir diperbarui:** September 2026 (tambah Bab 25, 26, 27)  
+**📅 Terakhir diperbarui:** 9 Oktober 2026 (tambah Bab 28, 29)  
 **✍️ Disusun dari:** 12 sumber utama  
 **🎯 Tujuan:** Materi pembelajaran ultra-detail untuk membangun perangkat lunak dengan AI secara terstruktur dan profesional

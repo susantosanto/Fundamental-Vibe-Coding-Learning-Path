@@ -16,7 +16,7 @@ Jawabannya: **tidak, dan memang tidak boleh.**
 | | Sumber resmi | Kurikulum (skill ini) |
 |---|---|---|
 | Tujuan | **Referensi** — dipakai saat sudah tahu apa yang dicari | **Kurikulum** — berurutan, untuk orang yang belum tahu apa pun |
-| Ukuran | RFC 9110: **10.785 baris** · RFC 9111: **2.400+ baris** · OpenAPI 3.1.0: **± 4.000 baris** | 18 unit, 4 gerbang |
+| Ukuran | RFC 9110: **10.785 baris** · RFC 9111: **1.956 baris** · OpenAPI 3.1.0: **± 4.000 baris** | 18 unit, 4 gerbang |
 | Bentuk | Spesifikasi lengkap (termasuk yang tidak akan pernah dipakai) | **Urutan kemampuan**, bukan urutan topik |
 | Kalau tidak lengkap | **Cacat** — ada yang tidak bisa ditemukan | **Bukan cacat** — ia sengaja memilih |
 | Yang penting | Kelengkapan | **Bisa dipakai** |

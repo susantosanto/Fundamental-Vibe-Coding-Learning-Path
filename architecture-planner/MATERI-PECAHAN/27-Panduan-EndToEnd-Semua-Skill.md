@@ -1,6 +1,6 @@
 # PANDUAN END-TO-END: Semua Skill dari Ide sampai Aplikasi Siap Production
 
-> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 5 skill pendukung (**pen-design**, **birdview**, **taste**, **impeccable**, **browser-skill**) dan 4 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**, **constraint-driven-development**). Membawa **proyek existing** yang belum pernah memakai workflow ini? → mulai dari jalur adopsi di 27.8.
+> **💬 Bayangkan ini:** Bab 25 memetakan 12 skill utama, Bab 26 memberi dasar risetnya, dan folder skill Anda kini berisi pipeline lengkap plus router anti-halusinasi (`materi-reference`). Bab ini adalah **buku panduan operasionalnya**: ritel persis dari ide pertama sampai aplikasi ter-deploy dan dipantau — termasuk **di mana dan kapan** memakai 5 skill pendukung (**pen-design** — atau alternatifnya **stitch-design**, **birdview**, **taste**, **impeccable**, **browser-skill**), 4 skill otentik pihak ketiga (**observability-and-instrumentation**, **debugging-and-error-recovery**, **systematic-debugging**, **constraint-driven-development**), dan 1 **alat produksi** (**Sentry** — logging error + MCP untuk agent, → Bab 29). Membawa **proyek existing** yang belum pernah memakai workflow ini? → mulai dari jalur adopsi di 27.8.
 
 ---
 
@@ -18,6 +18,8 @@ LAPIS 1 — PIPELINE UTAMA (13 skill, berurutan, punya pemilik tahap)
 LAPIS 2 — LAPIS PENDUKUNG (5 skill, dipanggil DI DALAM tahap tertentu)
 ═══════════════════════════════════════════════════════════════════
 /pen-design    → visualisasi mockup SEBELUM coding (Tahap 2-3)
+/stitch-design → ALTERNATIF /pen-design di slot yang sama (Tahap 2).
+                 Pilih salah satu, jangan dua-duanya. Tanya dulu.
 /birdview      → peta arsitektur + konfirmasi visual scope perubahan
                  (Tahap 3.5-4; dipanggil ulang di 27.6 Kasus B)
 /taste         → arah desain anti-slop untuk halaman marketing (Tahap 5)
@@ -35,6 +37,12 @@ TANPA modifikasi — atribusi di 27.4b)
                                      superpowers)
 /constraint-driven-development     → quality contract CONSTRAINTS.md +
                                      guard bar anti-turun (addyosmani)
+
+ALAT PRODUKSI (bukan skill — layanan yang dipasang, dijelaskan di Bab 29)
+═══════════════════════════════════════════════════════════════════
+/sentry        → logging error produksi: dashboard + alert + MCP untuk
+                 agent. Wadah untuk /observability-and-instrumentation.
+                 Tahap 5 (instrumentasi) · Tahap 6 (gate) · pasca-rilis.
 
 LAPIS 0 — ROUTER (selalu aktif)
 ═══════════════════════════════════════════════════════════════════
@@ -54,6 +62,7 @@ LAPIS 0 — ROUTER (selalu aktif)
 | `/scaffolder` | Tahap 1 | Proyek baru, sekali jalan; proyek existing → MODE ADOPS (27.8) | — |
 | `/idea-clarifier` | Tahap 2 | Ide masih mentah/ambigu | Requirement sudah jelas & teruji |
 | `/pen-design` ⭐ | Tahap 2–3 | Saat user butuh MELIHAT bentuk UI sebelum setuju: mockup halaman, wireframe dashboard, slide, aset marketing. Output `.pen` → diekspor gambar → jadi lampiran BLUEPRINT | Aplikasi tanpa UI; saat UI sudah ada dan hanya perlu diubah kecil |
+| `/stitch-design` ⭐ | Tahap 2 (alternatif) | **Salah satu dari dua** pilihan mockup. Pakai ini kalau butuh HTML/DESIGN.md, bukan sekadar gambar — agent bisa baca strukturnya. Output HTML + PNG → `references/mockups/` | Kalau `/pen-design` sudah dipakai; tanpa UI; perubahan kecil; jangan di Tahap 3.5/5 |
 | `/birdview` ⭐ | Tahap 3.5–4 + 27.6 Kasus B | Setelah pack selesai (langkah 12b): module map + CONSTRAINTS.md → peta arsitektur HTML ("architect pack visual"); saat DRY RUN (langkah 15b): scope perubahan builder tampil DI PETA → konfirmasi scope lebih awal sebelum MODE BUILD; revisi fitur: comparison view scope vs arsitektur penuh | Skrip sekali pakai / throwaway; bug kecil tanpa module map (27.6.4); BUKAN pengganti acceptance-runner (fresh context) maupun browser-skill (bukti UI) |
 | `/prd-generator` | Tahap 3.1 | Setelah problem brief disetujui | — |
 | `/tech-stack-advisor` | Tahap 3.2 | Setelah PRD; catat ADR ke DECISIONS.MD | Stack sudah terkunci proyek existing |
@@ -71,12 +80,15 @@ LAPIS 0 — ROUTER (selalu aktif)
 | `/deploy-production-gate` | Sprint akhir | Checklist P1 berbukti → GO/NO-GO | Deploy "sekalian coba-coba" tanpa gate |
 | `/constitution` | Awal proyek (opsional tapi disarankan) | Tetapkan aturan proyek + standar keamanan sekali di awal | — |
 | `/observability-and-instrumentation` 📦 | Tahap 5 (bersama build) + saat butuh bukti produksi | Fitur punya retry/queue/external call → instrumentasi DIBERSAMA build: 2-4 pertanyaan on-call dulu, log structured + requestId, RED metrics, OTel tracing, alert symptom-based + runbook | Diagnosis bug yang sedang terjadi (itu ranah debugging) |
+| `/sentry` 🛠️ | Tahap 5 + Tahap 6 + pasca-rilis | **Alat**, bukan skill. Logging error produksi: dashboard, alert, session replay, dan **MCP** supaya agent bisa membaca error sendiri. Gratis (paket Developer: 5k error/bln). Langkah pemasangan + integrasi MCP: **Bab 29** | Proyek lokal/sekali pakai yang tidak dipakai orang lain; prototipe throwaway |
 | `/debugging-and-error-recovery` 📦 | Saat bug/error muncul | Tests gagal, build rusak, "kemarin jalan sekarang error" → root-cause sistematis, BUKAN tebakan | langsung patch tanpa akar masalah |
 | `/systematic-debugging` 📦 | Saat bug/error muncul (alternatif/pasangan) | 4 fase root-cause: akar masalah → pola → hipotesis minimal → implement, dengan bukti per fase | — |
 
 📦 = skill otentik pihak ketiga (verbatim dari repo sumber, atribusi di 27.4b).
 
 ⭐ = fokus bab ini (lapis pendukung).
+
+🛠️ = **alat** (layanan pihak ketiga, bukan skill) — cara pakainya di Bab 29.
 
 ---
 
@@ -101,12 +113,14 @@ LAPIS 0 — ROUTER (selalu aktif)
 ```
 4. /idea-clarifier        → interview terpandu → problem brief
                              → isi DOMAIN.MD + QUESTIONS.MD
-5. /pen-design  ⭐         → SAAT INI: user butuh melihat, belum membaca.
-                             "Buatkan mockup 3 layar utama: [deskripsi]"
-                             → .pen file → export gambar
+5. Mockup  ⭐              → SAAT INI: user butuh melihat, belum membaca.
+                             TANYA DULU (jangan pilih sendiri):
+                               A. /pen-design    → .pen → export gambar
+                               B. /stitch-design → HTML + PNG + DESIGN.md
                              → simpan ke references/mockups/ (audit trail)
 6. User pilih mockup      → mockup terpilih jadi LAMPIRAN wajib BLUEPRINT
                              (builder tidak menebak desain — ada gambarnya)
+                             ⚠️ HTML Stitch tetap lampiran, BUKAN kode (§27.4)
 7. /taste  ⭐ (read only)  → jika ada halaman marketing/landing: minta
                              "Design Read" satu baris sejak sekarang
                              ("Reading this as: ...") → catat di BLUEPRINT
@@ -187,6 +201,14 @@ LAPIS 0 — ROUTER (selalu aktif)
 
 19. Selama build: screenshot bukti antara (lihat Tahap 6a untuk
     browser-skill) — builder melaporkan BUKTI, bukan klaim.
+
+19b. /observability-and-instrumentation + /sentry 🛠️
+    → instrumentasi DIBERSAMA build, bukan sesudah deploy.
+      - structured log + requestId (hubungkan Sentry ↔ log server)
+      - Sentry: SDK dipasang, DSN di .env, release tag = commit hash
+      - ⚠️ Buktikan error tes MASUK dashboard, lalu hapus
+    → langkah lengkap: Bab 29 (Langkah 4-6)
+    → Fitur tanpa telemetri (retry/queue/external call) = RED FLAG dry run
 ```
 
 ### TAHAP 6 — Verifikasi, Keamanan, Deploy
@@ -204,9 +226,17 @@ LAPIS 0 — ROUTER (selalu aktif)
 
 21. /security-dependency-auditor → npm audit + secret scan
     + drift BLUEPRINT + Checklist P1 → CLEAN / temuan
+    ⚠️ secret scan WAJIB memeriksa: DSN, SENTRY_ACCESS_TOKEN,
+       dan .env tidak ter-commit
 
 22. /deploy-production-gate → ci.yml + /health + Sentry + UptimeRobot
     + .env.example + rollback plan → centang P1 SATU PER SATU
+    ├─ Bagian Sentry dari checklist P1 (Bab 29 §29.8):
+    │   □ DSN produksi terpasang sebagai env var (bukan di kode)
+    │   □ environment = production (bukan development)
+    │   □ 🔴 error tes TERBUKTI masuk dashboard → lalu dihapus
+    │   □ alert "error baru" aktif + runbook 3 baris ada
+    │   □ session replay TIDAK aktif untuk semua orang
     Setelah deploy: /browser-skill ⭐ verifikasi ulang halaman LIVE
     (buka URL produksi, cek /health, screenshot) → bukti GO
 
@@ -214,11 +244,25 @@ LAPIS 0 — ROUTER (selalu aktif)
     + "sprint baru = chat baru"
 24. Masih ada sprint? → kembali ke langkah 12 ♻️
 25. 🚀 PRODUCTION — dipantau Sentry + UptimeRobot
+    → sejak titik ini, alert Sentry yang jadi pemicu loop insiden:
+      alert masuk → agent BACA error via MCP Sentry (Bab 29 §29.6)
+      → /debugging-and-error-recovery (akar masalah, BUKAN tebakan)
+      → fix via /ai-coding-coach → /acceptance-runner
+      → perbarui runbook 3 baris
+    → cicilan kuota? pantau Stats → Usage (Bab 29 §29.5 Langkah 8)
 ```
 
 ---
 
-## 27.4 Aturan Batin 5 Skill Pendukung
+## 27.4 Aturan Batin 5 Skill Pendukung (+ 1 Alat Produksi)
+
+> ⚠️ **Satu slot, dua pilihan.** `/pen-design` dan `/stitch-design` menempati
+> **slot Tahap 2 yang sama**. Pilih **salah satu per sesi** — jangan dua-duanya.
+> **Agent WAJIB bertanya** mana yang dipakai; tidak boleh memilih sendiri
+> (polling ada di §27.4 `/stitch-design`).
+>
+> 🛠️ Blok terakhir di bagian ini (`/sentry`) adalah **alat**, bukan skill — tapi
+> aturannya ditulis dengan bentuk yang sama supaya gampang dirujuk.
 
 ### /pen-design (MCP Pencil / pen.dev CLI)
 
@@ -230,6 +274,40 @@ OUTPUT : file .pen → export gambar → references/mockups/
 ATURAN : Mockup BUKAN kode. Jangan pernah membiarkan mockup menjadi
          implementasi — ia lampiran BLUEPRINT, builder yang menulis kode.
 BATAL  : Proyek tanpa UI; perubahan kecil pada UI existing (edit langsung).
+```
+
+### /stitch-design (Google Stitch) — ALTERNATIF /pen-design
+
+> ➕ Ditambahkan 7 Okt 2026. **Bukan tambahan, tapi pilihan kedua di slot yang sama.**
+
+```
+KAPAN  : Tahap 2 — sama persis dengan /pen-design. PILIH SALAH SATU, jangan dua-duanya.
+         Pakai /stitch-design kalau: butuh HTML (bukan sekadar gambar PNG),
+         pen.dev tidak tersedia, atau butuh design system (DESIGN.md) sekaligus.
+BUTUH  : stitch CLI (@google/stitch) + auth (`stitch login` — OAuth browser)
+         atau STITCH_API_KEY. Kredensial JANGAN pernah masuk repo.
+OUTPUT : HTML per-screen + screenshot PNG + assets/ → references/mockups/<slug>/
+ATURAN : 🔴 HTML Stitch = LAMPIRAN BLUEPRINT, BUKAN implementasi.
+         Ini lebih berbahaya daripada /pen-design, karena Stitch menghasilkan
+         HTML nyata yang menggoda untuk di-copy langsung. JANGAN copy-paste.
+         Pakai HTML-nya sebagai SPESIFIKASI (struktur, hierarki, komponen).
+         Builder tetap yang menulis kode.
+         DILARANG memilih modelId — serahkan ke default atau tanya xcode
+         (MODEL-POLICY.md).
+LARANG : Jangan taruh di Tahap 3.5 (itu /birdview) atau Tahap 5 (/impeccable).
+BATAL  : Proyek tanpa UI; perubahan kecil UI existing;
+         kalau /pen-design sudah dipakai di sesi ini.
+```
+
+**Cara agent bertanya (Tahap 2):**
+
+```
+Mockup Tahap 2 — mau pakai yang mana?
+  A. /pen-design     → file .pen, hasil export GAMBAR. Ringan, cepat.
+  B. /stitch-design  → HTML + screenshot + DESIGN.md. Lebih berat,
+                       tapi agent bisa BACA strukturnya, bukan menafsir gambar.
+Default kalau xcode tidak memilih: A (jalur yang sudah terbukti).
+Selalu tanya — jangan pilih sendiri.
 ```
 
 ### /taste
@@ -298,6 +376,36 @@ BATAL  : Skrip sekali pakai / throwaway; bug kecil tanpa module map
          (jalur 27.6.4); proyek tanpa UI kompleks — jangan birokrasi kosong.
 ```
 
+### /sentry (alat produksi — BUKAN skill)
+
+> 🛠️ **Alat**, bukan skill: layanan pihak ketiga yang dipasang ke kode.
+> Panduan lengkap: **Bab 29**.
+
+```
+KAPAN  : Tahap 5 (instrumentasi BERSAMA build), Tahap 6 (bagian checklist
+         P1 di deploy gate), dan setiap kali ada bug produksi.
+         Pemicu: aplikasi sudah/belum live tapi akan dipakai ORANG LAIN.
+BUTUH  : Akun Sentry (paket Developer, GRATIS — 5k error/bln, tanpa kartu
+         kredit). DSN sebagai env var. Untuk agent: MCP Sentry
+         (https://mcp.sentry.dev/mcp) + User Auth Token.
+OUTPUT : Dashboard Sentry + alert email + runbook 3 baris di docs/runbooks/
+         + akses MCP supaya agent bisa membaca error sendiri.
+ATURAN : 🔴 Sentry = PENUNJUK ARAH, bukan pengganti log server.
+         Log lengkap tetap di server, dihubungkan lewat requestId.
+         DILARANG memasang Sentry SETELAH deploy — instrumentasi
+         DIBERSAMA build, sama seperti aturan observability.
+         DILARANG mengaktifkan session replay untuk semua orang
+         (kuota gratis hanya 50).
+         DILARANG menulis fix sebelum akar masalah terbukti (27.4b).
+         DILARANG memilih provider LLM untuk tool pencarian AI Sentry
+         (MODEL-POLICY.md) — itu keputusan manusia.
+         ⚠️ "1 pengguna" paket gratis = siapa yang buka DASHBOARD,
+         bukan berapa orang memakai aplikasi.
+         ⚠️ Kuota lewat = data DIBUANG, bukan ditagih — aman dicoba.
+BATAL  : Proyek lokal/sekali pakai yang tidak akan dipakai orang lain;
+         prototipe throwaway. Self-hosted TIDAK disarankan (butuh 16 GB RAM).
+```
+
 ---
 
 ## 27.4b Skill Otentik Pihak Ketiga (Verbatim, Tanpa Modifikasi)
@@ -317,6 +425,10 @@ Empat skill berikut **bukan kreasi materi ini** — diunduh apa adanya dari repo
 BUG/ERROR DITEMUKAN
   1. Perlu tahu APA yang terjadi?    → /observability-and-instrumentation
      (cari requestId di log structured, metrics p99, trace)
+     └─ produksi sudah live? → BACA ERROR DARI SENTRY dulu:
+        via MCP Sentry (Bab 29 §29.6) — agent membaca error sendiri,
+        lengkap dengan release, browser, dan requestId
+     ⚠️ Membaca error = langkah 1. BUKAN izin langsung fix.
   2. Cari AKAR MASALAH, bukan gejala → /debugging-and-error-recovery
      ATAU /systematic-debugging
   3. Klasifikasi per CHANGE MANAGEMENT (27.6):
@@ -432,16 +544,24 @@ IDE ─────────────────────────�
  │                                      scope (Tahap 3.5–4; ulang di 27.6 B)
  ├─ /ai-coding-coach ................. dry run → approve → build
  │    ├─ UI marketing ................ /taste
- │    └─ UI produk/dashboard ......... /impeccable (shape→critique→polish→harden)
+ │    ├─ UI produk/dashboard ......... /impeccable (shape→critique→polish→harden)
+ │    └─ instrumentasi ............... /observability-and-instrumentation
+ │                                      + /sentry (Bab 29) — DIBERSAMA build
  ├─ /acceptance-runner ............... fresh context + bukti
  │    └─ bukti visual ................ /browser-skill
  ├─ /security-dependency-auditor ..... tool nyata, gate severity
+ │                                      (+ scan DSN/token Sentry bocor)
  ├─ /deploy-production-gate .......... P1 berbukti → GO/NO-GO
+ │    └─ bagian Sentry ................ DSN + error tes terbukti + alert
+ │                                      + runbook (Bab 29 §29.8)
  │    └─ verifikasi live ............. /browser-skill (lagi)
  └─ /state-keeper .................... folder ter-update → chat baru ♻️
 
+SEJAK PRODUCTION: alert Sentry = pemicu loop insiden ↓
+
 SAAT ADA BUG:
  /observability-and-instrumentation → lihat APA yang terjadi
+   └─ produksi live? → BACA error dari Sentry via MCP (Bab 29 §29.6)
    → /debugging-and-error-recovery atau /systematic-debugging
    → klasifikasi per 27.6 → fix → /acceptance-runner (gejala asli)
    → /state-keeper + perbarui runbook
@@ -494,7 +614,8 @@ kebutuhan baru. Aturan emasnya (Bab 8.7 Tahap 6.5 + Bab 17 #5):
 3. Perencanaan mini (right-sized — pakai yang relevan saja):
    butuh data baru?          → /entity-modeler
    endpoint/UI baru?         → /tech-stack-advisor + /module-planner
-   ada UI?                   → /pen-design (mockup dulu — murah)
+   ada UI?                   → mockup dulu (murah) — pilih /pen-design
+                               ATAU /stitch-design, tanya xcode dulu
    PRD mini (1 halaman cukup)→ /prd-generator
 
 4. /sprint-planner
@@ -750,6 +871,9 @@ RITEL ONBOARDING (SEKALI DI AWAL — SEBELUM sprint fitur pertama)
  8. /observability-and-instrumentation → produksi jalan tanpa
     telemetri? jadwalkan instrumentasi sebagai sprint
     onboarding-001 (mulai dari pertanyaan on-call — 27.4b)
+    └─ sudah live DAN ada pengguna nyata? → pasang /sentry lebih
+       dulu (paling murah, paling cepat berguna — Bab 29).
+       Ia menjawab "apa yang rusak" sebelum "apa yang lambat".
 
 ATURAN: TIDAK ADA sprint fitur sebelum langkah 1–6 selesai.
 ```
@@ -897,6 +1021,21 @@ Detail lengkap: **Bab 28 — Panduan Mode Belajar**
 
 ---
 
-**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor; 18 Sep 2026: 27.4c Task Gate & Bootstrap — DoD mesin per task di BLUEPRINT/ACCEPTANCE + blok bootstrap di HANDOFF-PROMPT + formalisasi MODE DRY RUN/BUILD & DRYRUN-REPORT.MD di ai-coding-coach + caveman di adversarial-verifier & google-apps-script, hasil riset harness engineering OpenAI/Anthropic/Fowler/spec-kit/Cline/superpowers; 23 Sep 2026: 27.9 Mode Belajar — skill `teach-*` + Bab 28 untuk pembelajar arsitektur, termasuk Tangga Tes k6 yang menambal gap performance testing + jalur DSA (teach-dsa) + fase DSA-Review beginner (dsa-review, 27.9b); 23 Sep 2026 (lanjutan): 27.4c ATURAN 3 DSA Gate — task hot path wajib baris struktur data + Big-O operasi terpanas di BLUEPRINT/ACCEPTANCE + jalur Learn-As-You-Build (maks 2 pertanyaan terpandu per task, belajar mendalam di workspace belajar setelah sprint); 25 Sep 2026: Lapis 2 jadi 5 skill pendukung — /birdview (Qiuner/birdview) masuk: Tahap 3.5 langkah 12b architect pack visual (architecture.json + constraints.reviewed.json), Tahap 4 langkah 15b konfirmasi scope visual via activity.jsonl/activity.html, Tahap 6a langkah 20b tab Verification, 27.6.2 d comparison view, 27.8 peta as-adopted, aturan batin 27.4))
-**📚 Referensi utama:** Bab 8, 10, 12, 13, 14, 22, 25, 26 + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
+**📅 Ditambahkan:** September 2026 (27.4b + routing bug fix + 27.7 handoff antar AI agent + 27.8 jalur adopsi proyek existing; 13 Sep 2026: Tahap 3.4b `constraint-driven-development` + Lapis 3 jadi 4 skill vendor; 18 Sep 2026: 27.4c Task Gate & Bootstrap — DoD mesin per task di BLUEPRINT/ACCEPTANCE + blok bootstrap di HANDOFF-PROMPT + formalisasi MODE DRY RUN/BUILD & DRYRUN-REPORT.MD di ai-coding-coach + caveman di adversarial-verifier & google-apps-script, hasil riset harness engineering OpenAI/Anthropic/Fowler/spec-kit/Cline/superpowers; 23 Sep 2026: 27.9 Mode Belajar — skill `teach-*` + Bab 28 untuk pembelajar arsitektur, termasuk Tangga Tes k6 yang menambal gap performance testing + jalur DSA (teach-dsa) + fase DSA-Review beginner (dsa-review, 27.9b); 23 Sep 2026 (lanjutan): 27.4c ATURAN 3 DSA Gate — task hot path wajib baris struktur data + Big-O operasi terpanas di BLUEPRINT/ACCEPTANCE + jalur Learn-As-You-Build (maks 2 pertanyaan terpandu per task, belajar mendalam di workspace belajar setelah sprint); 25 Sep 2026: Lapis 2 jadi 5 skill pendukung — /birdview (Qiuner/birdview) masuk: Tahap 3.5 langkah 12b architect pack visual (architecture.json + constraints.reviewed.json), Tahap 4 langkah 15b konfirmasi scope visual via activity.jsonl/activity.html, Tahap 6a langkah 20b tab Verification, 27.6.2 d comparison view, 27.8 peta as-adopted, aturan batin 27.4); 7 Okt 2026: **`/stitch-design` (Google Stitch) masuk sebagai
+ALTERNATIF `/pen-design`** di slot Tahap 2 yang sama — agent WAJIB bertanya mana yang
+dipakai, tidak boleh memilih sendiri. Aturan batin baru di 27.4: HTML Stitch = lampiran
+BLUEPRINT, bukan implementasi; dilarang di Tahap 3.5 (`/birdview`) dan Tahap 5
+(`/impeccable`); dilarang memilih `modelId` (`MODEL-POLICY.md`). Riset:
+`riset-stitch-cli-mcp-sdk.md`); 9 Okt 2026: **`/sentry` masuk sebagai ALAT PRODUKSI**
+(lapis baru: bukan skill, tapi layanan yang dipasang). Sentry sudah disebut di Tahap 6
+langkah 22 & 25 sejak awal, tapi **tidak pernah diajarkan cara memasangnya** — celah itu
+ditutup oleh **Bab 29**. Perubahan: 27.1 (lapis alat produksi) · 27.2 (baris routing 🛠️) ·
+27.3 Tahap 5 langkah **19b** (instrumentasi + Sentry DIBERSAMA build) · 27.3 Tahap 6
+langkah 21 (secret scan termasuk DSN/token) · langkah 22 (checklist P1 bagian Sentry
+eksplisit) · langkah 25 (loop insiden pasca-production) · 27.4 (aturan batin `/sentry`) ·
+27.4b (bug fix routing langkah 1: baca error via MCP Sentry) · 27.5 cheat sheet.
+Fakta kunci: paket Developer **gratis selamanya** (5k error/bln) · kuota lewat = **data
+dibuang, bukan ditagih** · MCP `https://mcp.sentry.dev/mcp` · self-hosted butuh 16 GB RAM
+→ tidak disarankan. Riset: `riset-sentry.md`))
+**📚 Referensi utama:** Bab 8, 10, 12, 13, 14, 22, 25, 26 + **Bab 29 (Sentry)** + SKILL.md asli dari taste-skill, impeccable, browser-skill, pen-design, stitch (Google Stitch) + skill otentik dari addyosmani/agent-skills dan obra/superpowers (27.4b)
 **🎯 Tujuan:** Panduan operasional harian: ritel semua skill — utama, pendukung, skill otentik pihak ketiga, dan router — dari ide sampai aplikasi dipantau di production, termasuk alur bug fix, handoff antar AI agent, jalur adopsi untuk proyek existing (27.8), dan Mode Belajar untuk pembelajar arsitektur (27.9 → Bab 28)
